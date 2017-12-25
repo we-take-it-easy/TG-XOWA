@@ -10,6 +10,27 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# build tmp
+dev/100_core/bin/
+dev/110_gfml/bin/
+dev/140_dbs/bin/
+dev/150_gfui/bin/
+dev/gplx.gflucene/bin/
+dev/400_xowa/bin/
+
+# runtime tmp
+/file/
+/user/
+/wiki/
+dev/400_xowa/user/
+dev/400_xowa/file/
+dev/400_xowa/wiki/
+
+# eclipse project
+.classpath
+.project
+.settings/
+
 # Package Files #
 *.jar
 *.war

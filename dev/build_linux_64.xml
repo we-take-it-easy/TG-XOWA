@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_jar" name="create runnable jar for XOWA">
+    <target name="compile_core">
+        <delete dir="100_core/bin"/>
+        <mkdir dir="100_core/bin"/>
+        <javac fork="yes" includeantruntime="false" sourcepath="" srcdir="100_core" destdir="100_core/bin" classpath="lib/junit.jar:100_core/lib/commons-compress-1.5.jar:100_core/lib/xz-1.5.jar">
+          <include name="**/*.java"/>
+        </javac>
+    </target>
+    <target name="compile_gfml">
+        <delete dir="110_gfml/bin"/>
+        <mkdir dir="110_gfml/bin"/>
+        <javac fork="yes" includeantruntime="false" sourcepath="" srcdir="110_gfml" destdir="110_gfml/bin" classpath="lib/junit.jar:100_core/bin">
+          <include name="**/*.java"/>
+        </javac>
+    </target>
+    <target name="compile_dbs">
+        <delete dir="140_dbs/bin"/>
+        <mkdir dir="140_dbs/bin"/>
+        <javac fork="yes" includeantruntime="false" sourcepath="" srcdir="140_dbs" destdir="140_dbs/bin" classpath="lib/junit.jar:100_core/bin:140_dbs/lib/sqlite-jdbc-3.8.11.2.jar">
+          <include name="**/*.java"/>
+        </javac>
+    </target>
+    <target name="compile_gfui">
+        <delete dir="150_gfui/bin"/>
+        <mkdir dir="150_gfui/bin"/>
+        <javac fork="yes" includeantruntime="false" sourcepath="" srcdir="150_gfui" destdir="150_gfui/bin" classpath="lib/junit.jar:150_gfui/lib/swt_linux_64.jar:100_core/bin:110_gfml/bin">
+          <include name="**/*.java"/>
+        </javac>
+    </target>
+    <target name="compile_gflucene">
+        <delete dir="gplx.gflucene/bin"/>
+        <mkdir dir="gplx.gflucene/bin"/>
+        <javac fork="yes" includeantruntime="false" sourcepath="" srcdir="gplx.gflucene" destdir="gplx.gflucene/bin" classpath="lib/junit.jar:100_core/bin:gplx.gflucene/lib/5.3.0.drd/lucene-analyzers-common-5.3.0-mobile-2.jar:gplx.gflucene/lib/5.3.0.drd/lucene-core-5.3.0-mobile-2.jar:gplx.gflucene/lib/5.3.0.drd/lucene-highlighter-5.3.0-mobile-2.jar:gplx.gflucene/lib/5.3.0.drd/lucene-memory-5.3.0-mobile-2.jar:gplx.gflucene/lib/5.3.0.drd/lucene-queries-5.3.0-mobile-2.jar:gplx.gflucene/lib/5.3.0.drd/lucene-queryparser-5.3.0-mobile-2.jar">
+          <include name="**/*.java"/>
+        </javac>
+    </target>
+    <target name="compile_xowa" depends="compile_core,compile_gfml,compile_dbs,compile_gfui,compile_gflucene">
+        <delete dir="400_xowa/bin"/>
+        <mkdir dir="400_xowa/bin"/>
+        <javac fork="yes" includeantruntime="false" sourcepath="" srcdir="400_xowa" destdir="400_xowa/bin" classpath="lib/junit.jar:100_core/bin:110_gfml/bin:140_dbs/bin:150_gfui/bin:gplx.gflucene/bin:400_xowa/lib/luaj_xowa.jar:400_xowa/lib/jtidy_xowa.jar:400_xowa/lib/icu4j-4_8.jar">
+          <compilerarg line="-encoding utf-8"/>
+          <include name="**/*.java"/>
+        </javac>
+    </target>
+    <target name="create_jar" depends="compile_xowa">
+        <jar destfile="../xowa_linux_64.jar">
+            <manifest>
+                <attribute name="Main-Class" value="gplx.xowa.Xowa_main"/>
+                <attribute name="Class-Path" value=". bin/linux_64/swt/swt.jar bin/any/java/apache/commons-compress-1.5.jar bin/any/java/jdbc/sqlite/sqlite-jdbc-3.8.11.2.jar bin/any/java/luaj/luaj_xowa.jar bin/any/java/jtidy/jtidy_xowa.jar bin/any/java/lucene/5.3.0.drd/*"/>
+            </manifest>
+            <fileset dir="100_core/bin"/>
+            <fileset dir="110_gfml/bin"/>
+            <fileset dir="140_dbs/bin"/>
+            <fileset dir="150_gfui/bin"/>
+            <fileset dir="gplx.gflucene/bin"/>
+            <fileset dir="400_xowa/bin"/>
+        </jar>
+    </target>
+</project>

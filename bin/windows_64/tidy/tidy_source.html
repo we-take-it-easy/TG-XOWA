@@ -1,0 +1,139 @@
+<p>Welcome to XOWA
+</p>
+
+<p>
+</p>
+
+<h2><span class='mw-headline' id='Disclaimer'>Disclaimer</span></h2>
+
+<p>Please note that this program is alpha software, and that there are defects and unfinished features. Many items are works in progress, and are subject to change in future releases. Although it is my best hope that you find this program functional and useful, I make no assurances regarding stability or fitness of purpose. For more details, see <a href="/wiki/Help:License/Program">Help:License/Program</a>.
+</p>
+
+<h2><span class='mw-headline' id='Release_notes'>Release notes</span></h2>
+
+<p>v0.2.2 features support for sortable and collapsible tables (generously provided by Schnark). It also includes a number of fixes to handle localization.
+</p>
+
+<p>If you wish to view more details about this release, please see <a href="/wiki/Help:Change_log">Help:Change log</a>.
+</p>
+
+<h2><span class='mw-headline' id='Upgrade_users'>Upgrade users</span></h2>
+
+<p>v0.2.1 users: If you are using a non-English wiki, you should click "Set up non-English languages" to get the latest changes.
+</p>
+
+<p>v0.2.0 users: If you've enabled image download or math rendering, you will need to enable them again.
+</p>
+
+<p>If you're uncertain about which version number applies to you, please see <a href="/wiki/Help:Upgrade_notes">Help:Upgrade notes</a> for more info.
+</p>
+
+<h2><span class='mw-headline' id='First_time_users'>First time users</span></h2>
+
+<p>If this is the first time you've run XOWA, then you will need to do some further setup.
+</p>
+
+<ul>
+  <li> Import Simple Wikipedia
+  </li>
+</ul>
+<dl>
+  <dd> Simple Wikipedia is a small wiki that fits in 1 GB. It can be setup in about 3 minutes, depending on internet connectivity.
+  </dd>
+  <dd> When you are ready to start, click this link:
+    <dl>
+      <dd> <a href="xowa:%0Aapp.install_mgr.cmd_mgr%0A.dump_add_many('simple.wikipedia.org'%2C%20'latest'%2C%20'pages-articles'%2C%20'wiki.download'%2C%20'wiki.unzip'%2C%20'wiki.import').owner%0A.run;%0A">Set up Simple Wikipedia<img src="file:///C:/xowa/user/anonymous/app/img/xowa/protocol.png"/></a>
+      </dd>
+    </dl>
+  </dd>
+  <dd> Feel free to look around during the import process. You can start at <a href="/wiki/Help:Contents">Help:Contents</a>. When the process completes, it will open Simple Wikipedia.
+  </dd>
+  <dd> If you encounter problems, please visit <a href="/wiki/Help:Importing_the_first_wiki">Help:Importing the first wiki</a> for more information.
+  </dd>
+</dl>
+<ul>
+  <li> Set up images
+  </li>
+</ul>
+<dl>
+  <dd> Image support requires additional programs (ImageMagick and Inkscape). These programs will use another 500 MB and can be setup in about 5 minutes.
+  </dd>
+  <dd> When you are ready to start, click one of these links:
+    <dl>
+      <dd> <a href="xowa:%0Aapp.install_mgr.cmd_mgr%0A%0A%2F%2F%20imageMagick%0A.cmd_add('download.imageMagick'%2C%20'%7E%7B%3C%3Ebin_plat_dir%3C%3E%7Dimagemagick.zip').owner%0A.cmd_add('file.unzip'%2C%20'%7E%7B%3C%3Ebin_plat_dir%3C%3E%7Dimagemagick.zip'%2C%20'%7E%7B%3C%3Ebin_plat_dir%3C%3E%7Dimagemagick%5C').rename_dir_('y').owner%0A%0A%2F%2F%20inkscape%0A.cmd_add('file.download'%2C%20'http:%2F%2Fsourceforge.net%2Fprojects%2Finkscape%2Ffiles%2Finkscape%2F0.48.4%2Finkscape-0.48.4-1-win32.7z'%2C%20'%7E%7B%3C%3Ebin_plat_dir%3C%3E%7Dinkscape.zip').owner%0A.cmd_add('file.unzip'%2C%20'%7E%7B%3C%3Ebin_plat_dir%3C%3E%7Dinkscape.zip'%2C%20'%7E%7B%3C%3Ebin_plat_dir%3C%3E%7Dinkscape%5C').rename_dir_('y').owner%0A%0A%2F%2F%20Config%20file%0A.cmd_add('wiki.image_cfg'%2C%20'%7E%7B%3C%3Euser_cfg_dir%3C%3E%7Duser_system_cfg.gfs')%0A%20%20.add('.download.enabled_(''n'')'%2C%20'.download.enabled_(''y'')'%0A).owner%0A.cmd_add('msg.ok'%2C%20'finished%20setting%20up%20images').owner%0A%0A.run;%0A">Set up images (Windows)<img src="file:///C:/xowa/user/anonymous/app/img/xowa/protocol.png"/></a> If the install fails, please visit <a href="/wiki/Help:Set_up_images/Windows">Set up images (Windows)</a>
+      </dd>
+      <dd> <a href="/wiki/Help:Set_up_images/Linux">Set up images (Linux)</a>
+      </dd>
+      <dd> <a href="/wiki/Help:Set_up_images/Mac_OS_X">Set up images (Mac OS X)</a>
+      </dd>
+    </dl>
+  </dd>
+</dl>
+<ul>
+  <li> Set up non-English languages
+  </li>
+</ul>
+<dl>
+  <dd> Non-English language wikis will require extra files. These files will use 45 MB and can be setup in about 1 minute.
+  </dd>
+  <dd> When you are ready to start, click this link:
+    <dl>
+      <dd> <a href="xowa:%0Aapp.install_mgr.cmd_mgr%0A.cmd_add('file.download'%2C%20'http:%2F%2Fsourceforge.net%2Fprojects%2Fxowa%2Ffiles%2Fsupport%2Fxowa_files_langs.zip'%2C%20'%7E%7B%3C%3Exowa_root_dir%3C%3E%7Dxowa_files_langs.zip').owner%0A.cmd_add('file.unzip'%2C%20'%7E%7B%3C%3Exowa_root_dir%3C%3E%7Dxowa_files_langs_v0.2.2.0.zip'%2C%20'%7E%7B%3C%3Exowa_root_dir%3C%3E%7D').src_ext_('.zip').delete_trg_if_exists_('n').term_cmd_for_src_('noop').owner%0A.cmd_add('msg.ok'%2C%20'finished%20installing%20languages').owner%0A.run;%0A">Set up non-English languages<img src="file:///C:/xowa/user/anonymous/app/img/xowa/protocol.png"/></a> If the install fails, please visit <a href="/wiki/Help:Set_up_languages">Help:Set up languages</a>
+      </dd>
+    </dl>
+  </dd>
+</dl>
+
+<h2><span class='mw-headline' id='Other_wikis'> Other wikis </span></h2>
+
+<ul>
+  <li> If you are interested in other wikis, please visit <b><a href="/wiki/Help:List_of_data_dumps">the list of data dumps</a></b>
+  </li>
+</ul>
+
+<h2><span class='mw-headline' id='FAQs'>FAQs</span></h2>
+
+<p>Please see here for <a href="/wiki/Help:FAQs">FAQs</a>.
+</p>
+
+<h2><span class='mw-headline' id='Tips_and_tricks'>Tips and tricks</span></h2>
+
+<ul>
+  <li> The "&lt;" and ">" symbols in the upper left-hand corner represent the back and forward button. Click on them just like you would in a web browser. You can also use Alt+Left and Alt+Right.
+  </li>
+  <li> Press Ctrl+F on your keyboard. This will take you to the Find box (in the lower left-hand corner). Type "tips". Notice that the word "Tips" is highlighted above. See <a href="/wiki/Help:Find_box">Help:Find box</a> for more info.
+  </li>
+  <li> Press Alt+D on your keyboard. This will take you to the Address bar (at the top of the screen). Type "s.w:Earth" (no quotes) and press Enter. This will open the Simple Wikipedia page for Earth. See <a href="/wiki/Help:Address_bar/Shortcuts#Default_shortcuts">Help:Address bar/Shortcuts</a> for more shortcuts.
+  </li>
+  <li> Copy and paste urls directly into the address bar with the middle mouse button to open the page. For example:
+    <ul>
+      <li> Highlight the following url: <code><a href="/site/simple.wikipedia.org/wiki/World">http://simple.wikipedia.org/wiki/World</a> history</code>
+      </li>
+      <li> Press Ctrl+C
+      </li>
+      <li> Click the middle mouse button in the url bar above. The "World history" page in "Simple Wikipedia" will open.
+      </li>
+    </ul>
+  </li>
+</ul>
+<dl>
+  <dd>
+    <dl>
+      <dd> Now you can copy and paste any Wikipedia url directly into XOWA and its page will open (and all its images will download.) See <a href="/wiki/Help:Address_bar/URLs">Help:Address bar/URLs</a> for more info
+      </dd>
+    </dl>
+  </dd>
+</dl>
+
+<h2><span class='mw-headline' id='Information'>Information</span></h2>
+
+<p>This is the Main Page. By default, it lists introductory notes above and available wikis below. You can change the Main Page by clicking <b>Edit</b> in the top right hand corner.
+</p>
+
+<p>For more information, please visit the <a href="/wiki/Help:Contents">Help:Contents</a> page.
+</p>
+
+<h2><span class='mw-headline' id='List_of_wikis'>List of wikis</span></h2>
+
+<p><a href="/site/simple.wikipedia.org/wiki/">simple.wikipedia.org</a><br/>
+</p>
