@@ -31,6 +31,10 @@ dev/400_xowa/wiki/
 .project
 .settings/
 
+# intellij project
+.idea
+*.iml
+
 # Package Files #
 *.war
 *.ear
