@@ -25,6 +25,7 @@ dev/400_xowa/bin/
 dev/400_xowa/user/
 dev/400_xowa/file/
 dev/400_xowa/wiki/
+/bin/any/xowa/wiki/home/home.xowa
 
 # eclipse project
 .classpath
