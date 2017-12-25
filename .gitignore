@@ -17,6 +17,9 @@ dev/140_dbs/bin/
 dev/150_gfui/bin/
 dev/gplx.gflucene/bin/
 dev/400_xowa/bin/
+/xowa_linux_64.jar
+/xowa_macosx_64.jar
+/xowa_windows_64.jar
 
 # runtime tmp
 /file/
