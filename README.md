@@ -1,4 +1,6 @@
 ## Overview
+We add search complete logging into XOWA.
+
 XOWA is an offline Wikipedia application that lets you run Wikipedia on your computer.
 
 ![XOWA showing Wikipedia's article on Wikipedia](http://xowa.sourceforge.net/wiki/file_screenshot_wikipedia_xowa.png)
