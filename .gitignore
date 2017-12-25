@@ -32,7 +32,6 @@ dev/400_xowa/wiki/
 .settings/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 *.zip
