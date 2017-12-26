@@ -13,10 +13,17 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.addons.wikis.directorys.specials.items.bldrs; import gplx.*; import gplx.xowa.*; import gplx.xowa.addons.*; import gplx.xowa.addons.wikis.*; import gplx.xowa.addons.wikis.directorys.*; import gplx.xowa.addons.wikis.directorys.specials.*; import gplx.xowa.addons.wikis.directorys.specials.items.*;
-import gplx.dbs.*; import gplx.dbs.cfgs.*;
-import gplx.xowa.wikis.data.*; import gplx.xowa.wikis.data.tbls.*; import gplx.xowa.addons.wikis.ctgs.dbs.*;
-import gplx.xowa.addons.wikis.directorys.dbs.*;
+package gplx.xowa.addons.wikis.directorys.specials.items.bldrs; import gplx.*;
+import gplx.dbs.*;
+import gplx.dbs.cfgs.Db_cfg_tbl;
+import gplx.xowa.Xoae_app;
+import gplx.xowa.addons.wikis.ctgs.dbs.Xodb_cat_link_tbl;
+import gplx.xowa.addons.wikis.directorys.dbs.Xowdir_wiki_props_mgr;
+import gplx.xowa.addons.wikis.directorys.dbs.Xowdir_wiki_props_mgr_;
+import gplx.xowa.wikis.data.Xow_db_mgr;
+import gplx.xowa.wikis.data.Xowd_cfg_key_;
+import gplx.xowa.wikis.data.Xowd_cfg_tbl_;
+import gplx.xowa.wikis.data.tbls.Xowd_page_tbl;
 public class Xow_wiki_upgrade_ {
 	// correlates loosely to App_.Version; however, should only change when new cases are added to this class
 	private static final int 

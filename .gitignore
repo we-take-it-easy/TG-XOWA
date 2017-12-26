@@ -17,19 +17,28 @@ dev/140_dbs/bin/
 dev/150_gfui/bin/
 dev/gplx.gflucene/bin/
 dev/400_xowa/bin/
+/xowa_linux_64.jar
+/xowa_macosx_64.jar
+/xowa_windows_64.jar
 
 # runtime tmp
 /file/
 /user/
 /wiki/
+/wiki
 dev/400_xowa/user/
 dev/400_xowa/file/
 dev/400_xowa/wiki/
+/bin/any/xowa/wiki/home/home.xowa
 
 # eclipse project
 .classpath
 .project
 .settings/
+
+# intellij project
+.idea
+*.iml
 
 # Package Files #
 *.war
