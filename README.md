@@ -74,7 +74,7 @@ Intellij比eclipse更加好用，我们已经有了eclipse工程文件（.classp
 然后打开菜单栏File -> Project Structure，确保Project标签页下的Project language level为8
 
 然后打开菜单栏Run -> Edit Configurations，点左上角的绿色加号，新建一个Application的run configuration，然后填入如下图所示的内容：
-![XOWA showing Wikipedia's article on Wikipedia](resources/intellij.png)
+![IntelliJ Run Configuration](resources/intellij.png)
 
 其中Program arguments和Working directory的值和eclipse中的一样。点击OK.
 
