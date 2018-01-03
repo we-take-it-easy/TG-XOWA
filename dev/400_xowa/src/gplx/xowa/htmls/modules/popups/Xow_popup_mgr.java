@@ -13,15 +13,17 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.htmls.modules.popups; import gplx.*; import gplx.xowa.*; import gplx.xowa.htmls.*; import gplx.xowa.htmls.modules.*;
-import gplx.core.primitives.*; import gplx.core.threads.*; import gplx.core.envs.*;
-import gplx.core.js.*;
-import gplx.xowa.addons.apps.cfgs.*;
-import gplx.xowa.wikis.nss.*;
-import gplx.xowa.guis.views.*;
-import gplx.xowa.htmls.hrefs.*;
-import gplx.xowa.specials.*;
-import gplx.xowa.apps.apis.xowa.html.modules.*;
+package gplx.xowa.htmls.modules.popups; import gplx.*;
+import gplx.core.js.Js_wtr;
+import gplx.core.primitives.Int_obj_ref;
+import gplx.core.threads.Thread_adp_;
+import gplx.xowa.*;
+import gplx.xowa.guis.views.Xog_tab_itm;
+import gplx.xowa.guis.views.Xog_win_itm__prog_href_mgr;
+import gplx.xowa.specials.Xow_special_meta_;
+import gplx.xowa.wikis.nss.Xow_ns;
+import gplx.xowa.wikis.nss.Xow_ns_;
+import gplx.xowa.wikis.nss.Xow_ns_mgr;
 public class Xow_popup_mgr implements Gfo_invk, Gfo_evt_itm {
 	private Xoae_app app; private Xowe_wiki wiki; private Js_wtr js_wtr = new Js_wtr();
 	private int show_init_word_count, show_more_word_count;
@@ -49,7 +51,9 @@ public class Xow_popup_mgr implements Gfo_invk, Gfo_evt_itm {
 		Xog_tab_itm tab = cur_page.Tab_data().Tab();
 		if (tab != null && tab.Tab_is_loading()) return "";	// NOTE: tab is null when previewing
 		Xow_popup_itm itm = new Xow_popup_itm(id, href, tooltip, show_init_word_count);
+		System.out.println("show init..." + new String(href));
 		String rv = String_.new_u8(Get_popup_html(Cur_wiki(), cur_page, itm));
+		//System.out.println(rv);
 		return tab != null && tab.Tab_is_loading() ? "" : rv;
 	}
 	public void Show_more(String popup_id) {
@@ -69,6 +73,7 @@ public class Xow_popup_mgr implements Gfo_invk, Gfo_evt_itm {
 		synchronized (thread_lock) {
 			if (async_itm != null) async_itm.Cancel();
 			async_itm = new Xow_popup_itm(++async_id_next, href, Bry_.Empty, show_init_word_count);
+			System.out.println("get async bgn: " + href);
 			String id_str = async_itm.Popup_id();
 			Thread_adp_.Start_by_key(id_str, this, Invk_show_popup_async);
 			return id_str;
@@ -142,8 +147,10 @@ public class Xow_popup_mgr implements Gfo_invk, Gfo_evt_itm {
 	public void Show_popup_html(String cbk, byte[] mode, Xow_popup_itm popup_itm) {
 		Xog_tab_itm cur_tab = app.Gui_mgr().Browser_win().Active_tab();
 		cur_tab.Html_box().Html_js_eval_script(Xow_popup_mgr_.Bld_js_cmd(js_wtr, cbk, mode, popup_itm.Page_href(), popup_itm.Popup_html()));
+		System.out.println(popup_itm.Page_ttl() + ",,,," + popup_itm.Popup_html());
 	}
 	private void Show_popup_async() {
+		System.out.println("show popup async");
 		try {
 			synchronized (thread_lock) {
 				Xoae_page cur_page = app.Gui_mgr().Browser_win().Active_page();

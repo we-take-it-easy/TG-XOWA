@@ -13,13 +13,25 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa; import gplx.*;
-import gplx.xowa.langs.*; import gplx.xowa.wikis.pages.*;
-import gplx.xowa.guis.*; import gplx.xowa.guis.views.*;
-import gplx.xowa.files.*; import gplx.xowa.files.xfers.*;
-import gplx.xowa.parsers.*; import gplx.xowa.wikis.pages.lnkis.*; import gplx.xowa.xtns.cites.*; import gplx.xowa.xtns.wbases.*; import gplx.xowa.xtns.wbases.pfuncs.*;
-import gplx.xowa.htmls.*; import gplx.xowa.htmls.core.htmls.*; import gplx.xowa.addons.htmls.tocs.*; import gplx.xowa.htmls.modules.popups.*;
-import gplx.xowa.wikis.pages.wtxts.*; import gplx.xowa.wikis.pages.dbs.*; import gplx.xowa.wikis.pages.redirects.*; import gplx.xowa.wikis.pages.hdumps.*; import gplx.xowa.wikis.pages.htmls.*;
+package gplx.xowa; import gplx.Guid_adp;
+import gplx.Guid_adp_;
+import gplx.List_adp;
+import gplx.List_adp_;
+import gplx.xowa.files.xfers.Xof_xfer_queue;
+import gplx.xowa.htmls.Xoh_cmd_mgr;
+import gplx.xowa.htmls.modules.popups.Xopg_popup_mgr;
+import gplx.xowa.langs.Xol_lang_itm;
+import gplx.xowa.parsers.Xop_root_tkn;
+import gplx.xowa.wikis.pages.Xoa_page__commons_mgr;
+import gplx.xowa.wikis.pages.Xopg_tab_data;
+import gplx.xowa.wikis.pages.Xopg_tmpl_prepend_mgr;
+import gplx.xowa.wikis.pages.dbs.Xopg_db_data;
+import gplx.xowa.wikis.pages.hdumps.Xopg_hdump_data;
+import gplx.xowa.wikis.pages.htmls.Xopg_html_data;
+import gplx.xowa.wikis.pages.redirects.Xopg_redirect_mgr;
+import gplx.xowa.wikis.pages.wtxts.Xopg_wtxt_data;
+import gplx.xowa.xtns.cites.Ref_itm_mgr;
+import gplx.xowa.xtns.wbases.pfuncs.Wdata_external_lang_links_data;
 public class Xoae_page implements Xoa_page {
 	Xoae_page(Xowe_wiki wiki, Xoa_ttl ttl) {
 		this.wiki = wiki; this.ttl = ttl;
@@ -79,7 +91,6 @@ public class Xoae_page implements Xoa_page {
 		html.Clear();
 		hdump.Clear();
 		wtxt.Clear();
-
 		lnki_list.Clear();
 		file_math.Clear();
 		file_queue.Clear();

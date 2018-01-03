@@ -13,9 +13,13 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.guis.bnds; import gplx.*; import gplx.xowa.*; import gplx.xowa.guis.*;
-import gplx.gfui.*; import gplx.gfui.ipts.*; import gplx.gfui.controls.elems.*;
-import gplx.xowa.guis.views.*; import gplx.xowa.guis.cmds.*; import gplx.xowa.guis.menus.dom.*;
+package gplx.xowa.guis.bnds; import gplx.*;
+import gplx.gfui.controls.elems.GfuiElem;
+import gplx.gfui.ipts.*;
+import gplx.xowa.Xoae_app;
+import gplx.xowa.guis.cmds.Xog_cmd_itm_;
+import gplx.xowa.guis.cmds.Xog_cmd_mgr_invk;
+import gplx.xowa.guis.views.Xog_win_itm;
 public class Xog_bnd_mgr implements Gfo_invk {
 	private Xoae_app app;
 	private Xog_win_itm win; private Xog_cmd_mgr_invk invk_mgr;

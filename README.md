@@ -3,7 +3,7 @@ We add search log into XOWA.
 
 XOWA is an offline Wikipedia application that lets you run Wikipedia on your computer.
 
-![XOWA showing Wikipedia's article on Wikipedia](http://xowa.sourceforge.net/wiki/file_screenshot_wikipedia_xowa.png)
+![XOWA showing Wikipedia's article on Wikipedia](resources/xowa.png)
 
 ## Features
 * Run a complete copy of English Wikipedia from your computer.
@@ -29,79 +29,59 @@ XOWA is an offline Wikipedia application that lets you run Wikipedia on your com
 XOWA is written in Java and requires 1.7 or above.
 
 ## Installation
-* Download xowa_app_your_operating_system_name.zip from https://github.com/gnosygnu/xowa/releases/
-* Unzip to any folder on your hard drive (or flash memory card)
-* Run XOWA
-   * On '''Windows''', double-click '''C:\xowa\xowa_64.exe'''
-   * On '''Linux''', open a terminal and run <code>sh /home/your_user_name/xowa/xowa_linux_64.sh</code>
-   * On '''OS X''', open a terminal and run <code>sh /Users/your_user_name/xowa/xowa_macosx_64.sh</code>
+此文档中plat_name是：linux_64 / macosx_64 / windows_64，选择自己对应的平台名称。
 
-## Development Info
-### Dependencies
-XOWA has seven dependencies:
+### 下载源码
+从https://github.com/we-take-it-easy/xowa fork一个repo到自己的github账号 (如Ielool) 下，然后将自己fork出来的repo  clone到自己本地的一个目录下 (例如/home/hank/git) 并增加一个remote到we-take-it-easy/xowa：
+$ cd /home/hank/git/
+$ git clone git@github.com:Ielool/xowa.git
+$ cd xowa
+$ git remote add we git@github.com:we-take-it-easy/xowa.git
+$ git pull we master
+$ git push origin master
 
-* JUnit 4.8.2 (default version with Eclipse)
-* [SWT 4.5.1](http://download.eclipse.org/eclipse/downloads/drops4/R-4.5-201506032000/)
-* [LuaJ](https://github.com/gnosygnu/luaj_xowa)
-* [JTidy](https://github.com/gnosygnu/jtidy_xowa jtidy_xowa.jar)
-* [SQLite JDBC](https://bitbucket.org/xerial/sqlite-jdbc/downloads)
-* [MySQL JDBC](https://dev.mysql.com/downloads/connector/j/)
-* [Postgres JDBC](https://jdbc.postgresql.org/download.html)
+解压其中的eclipse.tar.gz
+$ tar -zxvf eclipse.tar.gz
+将加压出来的目录中的dev、bin和user目录拷贝到xowa目录下，和现有的dev以及bin目录merge. 然后将解压出来的目录删除。
 
-### Compilation instructions (ANT command-line)
-#### Setup the XOWA app
-* Download the latest XOWA app package for your operating system. For example, if you're on a 64-bit Linux system, "xowa_app_linux_64_v1.9.5.1.zip".
-* Unzip the XOWA app package to a directory. For the sake of simplicity, these instructions assume this directory is "/xowa/"
-* Review your directories. You should have the following:
-    * An XOWA jar: "/xowa/xowa_linux_64.jar"
-    * An XOWA "/bin/any/" directory with several jar files. For example, "/xowa/bin/any/java/apache/commons-compress-1.5.jar"
-    * An XOWA "/bin/linux_64/" directory with an SWT jar: "/xowa/bin/linux_64/swt/swt.jar"
+找到/home/hank/git/xowa/dev/150_gfui/.classpath文件，注意这是个隐藏文件，将其中的swt_macosx_64.jar改成swt_[plat_name].jar
 
-#### Setup the XOWA source
-* Download the latest XOWA source archive. For example: "xowa_source_v1.9.5.1.7z"
-* Unzip the source to "/xowa/dev". When you're done, you'll have a file called "/xowa/dev/build.xml" as well as others
-    * NOTE: if you're not on a Linux 64-bit system, overwrite the swt jar at "/xowa/dev/150_gfui/lib/swt.jar" with the copy from your "/bin/OS" directory. For example, if you're on a 64 bit Windows system, replace "/xowa/dev/150_gfui/lib/swt.jar" with "/bin/windows_64/swt/swt.jar"
+### 编译
+此时：
+$ cd /home/hank/git/xowa/dev
+$ ant -buildfile build_[plat_name].xml
+编译完之后，/xowa/xowa_[plat_name].jar这个文件会被覆盖，通过ls -l命令可以看到该文件的修改时间戳为刚刚编译结束的时间点。
 
-#### Run the ant file
-* Open up a console, and run "ant -buildfile build.xml -Dplat_name=linux_64"
+下面建eclipse工程和建IntelliJ工程二选一即可。
 
-### IDE instructions (Eclipse)
-#### Environment
-The '''xowa_source.7z''' was built with Eclipse Indigo. There are no OS dependencies, nor are there dependencies on Eclipse.
+### 建eclipse工程
+然后我们来创建eclipse工程。打开eclipse，选择new -> java project，取消use default location，然后将project的location选择到/home/hank/git/xowa/dev/100_core，然后finish就可以。之后以此类推，按照build.xml中targer从上到下的顺序把110、140、150、gfluence和400_xowa的工程依次建出来。
 
-#### Setup
-* Follow the steps in these two sections from above:
-    * Setup the XOWA app
-    * Setup the XOWA source
-* Launch Eclipse. Choose a workbench folder of "/xowa/dev"
-* If the projects don't load, do File -> Import -> Existing Projects Into Workspace
-* Select all projects. Do File -> Refresh.
-* Right-click on 400_xowa in the Package Explorer. Select Debug As -> Java Application. Select Xowa_main. XOWA should launch.
-* Right-click on 400_xowa in the Package Explorer. Select Debug As -> JUnit Test. All tests should pass.
+刷新各个工程确保没有报错，右击400_xowa的工程，选择run as -> run configurations，新建一个java application的run configuration，main class选择gplx.xowa.Xowa_main，在arguments里面添加program arguments: 
+--root_dir /home/hank/git/xowa/ --show_license n --show_args n
+添加VM arguments:
+-Xmx256m
+并选择working directory为other，从file system中选择/home/hank/git/xowa/。
+在environment里面添加一个环境变量SWT_GTK3，value为0
 
-#### Eclipse-specific settings
-This section documents specific project customizations that differ from the standard Eclipse defaults.
+然后把我们之前老版本中的wiki目录拷到/home/hank/git/xowa/下，如果太大，创建一个链接（快捷方式）也可以，试了下貌似没问题，但是看xowa的release node里面貌似说链接有可能有bug。
 
-##### Project properties
-Resource -> Text file encoding -> Other -> UTF-8
+### 建IntelliJ工程
+Intellij比eclipse更加好用，我们已经有了eclipse工程文件（.classpath、.project和.settings），可以直接用Intellij识别eclipse工程，方便地创建IntelliJ工程。
 
-##### Preferences
-These settings are available under Window -> Preferences
+打开IntelliJ，菜单栏File -> New -> Project from Existing Sources -> 选择/home/hank/git/xowa (xowa的目录) -> 选择import from external model中的eclipse -> 在next中选择create module files near .classpath files，然后一路next到底，finish.
 
-* Disable Spelling
-    * General -> Editors -> Text Editors -> Spelling
-*Ignore Warnings
-    * Java -> Compiler -> Errors/Warnings
-        * Annotations -> Unhandled token in '@SuppressWarnings'
-        * Potential programming problems -> Serializable class without serialVersionUID
-        * Generic Types -> Unnecessary generic type operation (In Eclipse Luna: "Unchecked generic type operation")
-        * Generic Types -> Usage of a raw type
-        * Unnecessary Code -> Unused import
+然后打开菜单栏File -> Project Structure，确保Project标签页下的Project language level为8
 
-##### Configuration arguments
-* Configuration arguments
-    * Run -> Debug Configurations -> Arguments
-        * <code>--root_dir /xowa/ --show_license n --show_args n</code>
+然后打开菜单栏Run -> Edit Configurations，点左上角的绿色加号，新建一个Application的run configuration，然后填入如下图所示的内容：
+![IntelliJ Run Configuration](resources/intellij.png)
+
+其中Program arguments和Working directory的值和eclipse中的一样。点击OK.
+
+然后就可以在菜单栏Run中选择Run 'Xowa'了，运行成功说明IntelliJ工程就建成啦。
+
+### 运行
+现在不论是从命令行里运行/home/hank/git/xowa/xowa_[plat_name].sh还是在从IDE中都可以正常运行了。
 
 ## License
 XOWA is licensed under the terms of the General Public License (GPL) Version 3,

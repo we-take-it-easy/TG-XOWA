@@ -13,14 +13,22 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.specials.xowa.popup_history; import gplx.*; import gplx.xowa.*; import gplx.xowa.specials.*; import gplx.xowa.specials.xowa.*;
-import gplx.core.brys.fmtrs.*;
-import gplx.xowa.htmls.modules.popups.*;
+package gplx.xowa.specials.xowa.popup_history; import gplx.Bry_;
+import gplx.Bry_bfr;
+import gplx.Byte_ascii;
+import gplx.Ordered_hash;
+import gplx.core.brys.fmtrs.Bry_fmtr;
+import gplx.xowa.*;
+import gplx.xowa.htmls.modules.popups.Xow_popup_itm;
+import gplx.xowa.specials.Xow_special_meta;
+import gplx.xowa.specials.Xow_special_meta_;
+import gplx.xowa.specials.Xow_special_page;
 public class Popup_history_page implements Xow_special_page {
 	public Xow_special_meta Special__meta() {return Xow_special_meta_.Itm__popup_history;}
 	public void Special__gen(Xow_wiki wikii, Xoa_page pagei, Xoa_url url, Xoa_ttl ttl) {
 		Xowe_wiki wiki = (Xowe_wiki)wikii; Xoae_page page = (Xoae_page)pagei;
-		Xoae_page cur_page = wiki.Appe().Gui_mgr().Browser_win().Active_page(); if (cur_page == null) return;
+		Xoae_page cur_page = wiki.Appe().Gui_mgr().Browser_win().Active_page();
+		if (cur_page == null) return;
 		Ordered_hash hash = cur_page.Popup_mgr().Itms();
 		int len = hash.Count();
 		Bry_bfr bfr = wiki.Utl__bfr_mkr().Get_k004();
