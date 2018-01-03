@@ -13,8 +13,9 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.apps.apis.xowa.html.modules; import gplx.*; import gplx.xowa.*; import gplx.xowa.apps.*; import gplx.xowa.apps.apis.*; import gplx.xowa.apps.apis.xowa.*; import gplx.xowa.apps.apis.xowa.html.*;
-import gplx.xowa.htmls.modules.popups.*;
+package gplx.xowa.apps.apis.xowa.html.modules; import gplx.*;
+import gplx.xowa.Xoae_app;
+import gplx.xowa.Xowe_wiki;
 public class Xoapi_popups implements Gfo_invk, Gfo_evt_mgr_owner {
 	private Xoae_app app;
 	public Xoapi_popups() {
@@ -31,6 +32,7 @@ public class Xoapi_popups implements Gfo_invk, Gfo_evt_mgr_owner {
 		wiki.Html_mgr().Head_mgr().Popup_mgr().Show_all(popup_id);
 	}
 	public Object Invk(GfsCtx ctx, int ikey, String k, GfoMsg m) {
+		System.out.println("invk");
 		if		(ctx.Match(k, Invk_show_more))	 					Show_more(m.ReadStr("popup_id"));
 		else if	(ctx.Match(k, Invk_show_all))	 					Show_all (m.ReadStr("popup_id"));
 		else	return Gfo_invk_.Rv_unhandled;

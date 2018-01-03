@@ -38,7 +38,7 @@
     <target name="compile_xowa" depends="compile_core,compile_gfml,compile_dbs,compile_gfui,compile_gflucene">
         <delete dir="400_xowa/bin"/>
         <mkdir dir="400_xowa/bin"/>
-        <javac fork="yes" includeantruntime="false" sourcepath="" srcdir="400_xowa" destdir="400_xowa/bin" classpath="lib/junit.jar:100_core/bin:110_gfml/bin:140_dbs/bin:150_gfui/bin:gplx.gflucene/bin:400_xowa/lib/luaj_xowa.jar:400_xowa/lib/jtidy_xowa.jar:400_xowa/lib/icu4j-4_8.jar">
+        <javac fork="yes" includeantruntime="false" sourcepath="" srcdir="400_xowa" destdir="400_xowa/bin" classpath="lib/junit.jar:100_core/bin:110_gfml/bin:140_dbs/bin:150_gfui/bin:gplx.gflucene/bin:400_xowa/lib/luaj_xowa.jar:400_xowa/lib/jtidy_xowa.jar:400_xowa/lib/icu4j-4_8.jar:150_gfui/lib/swt_linux_64.jar:400_xowa/lib/jface/forms-3.0m8.jar:400_xowa/lib/jface/jface-3.0m8.jar:400_xowa/lib/jface/osgi-3.0m8.jar:400_xowa/lib/jface/runtime-3.0m8.jar">
           <compilerarg line="-encoding utf-8"/>
           <include name="**/*.java"/>
         </javac>
@@ -47,7 +47,7 @@
         <jar destfile="../xowa_linux_64.jar">
             <manifest>
                 <attribute name="Main-Class" value="gplx.xowa.Xowa_main"/>
-                <attribute name="Class-Path" value=". bin/linux_64/swt/swt.jar bin/any/java/apache/commons-compress-1.5.jar bin/any/java/jdbc/sqlite/sqlite-jdbc-3.8.11.2.jar bin/any/java/luaj/luaj_xowa.jar bin/any/java/jtidy/jtidy_xowa.jar bin/any/java/lucene/5.3.0.drd/*"/>
+                <attribute name="Class-Path" value=". bin/linux_64/swt/swt.jar bin/any/java/apache/commons-compress-1.5.jar bin/any/java/jdbc/sqlite/sqlite-jdbc-3.8.11.2.jar bin/any/java/luaj/luaj_xowa.jar bin/any/java/jtidy/jtidy_xowa.jar bin/any/java/lucene/5.3.0.drd/* bin/any/java/jface/forms-3.0m8.jar bin/any/java/jface/jface-3.0m8.jar bin/any/java/jface/osgi-3.0m8.jar bin/any/java/jface/runtime-3.0m8.jar"/>
             </manifest>
             <fileset dir="100_core/bin"/>
             <fileset dir="110_gfml/bin"/>

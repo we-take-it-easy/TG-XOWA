@@ -13,12 +13,17 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.htmls.js; import gplx.*; import gplx.xowa.*; import gplx.xowa.htmls.*;
-import gplx.core.threads.*; import gplx.xowa.xtns.pfuncs.ifs.*; import gplx.xowa.wikis.data.tbls.*;
-import gplx.langs.jsons.*;
-import gplx.xowa.htmls.js.*;
-import gplx.xowa.guis.views.*;
-import gplx.xowa.parsers.*;
+package gplx.xowa.htmls.js; import gplx.*;
+import gplx.core.threads.Thread_adp_;
+import gplx.xowa.Xoa_ttl;
+import gplx.xowa.Xoae_app;
+import gplx.xowa.Xoae_page;
+import gplx.xowa.Xowe_wiki;
+import gplx.xowa.guis.views.Xog_html_itm;
+import gplx.xowa.parsers.Xop_ctx;
+import gplx.xowa.parsers.Xop_root_tkn;
+import gplx.xowa.wikis.data.tbls.Xowd_page_itm;
+import gplx.xowa.xtns.pfuncs.ifs.Pfunc_ifexist;
 public class Xoh_js_cbk implements Gfo_invk {
 	private Xoae_app app;
 	private Xog_html_itm html_itm;

@@ -13,13 +13,36 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.parsers; import gplx.*; import gplx.xowa.*;
-import gplx.core.btries.*; import gplx.core.log_msgs.*;
-import gplx.xowa.langs.*;
-import gplx.xowa.guis.*;
-import gplx.xowa.xtns.scribunto.*; import gplx.xowa.xtns.wbases.*; import gplx.xowa.xtns.lst.*;
-import gplx.xowa.parsers.apos.*; import gplx.xowa.parsers.amps.*; import gplx.xowa.parsers.lnkes.*; import gplx.xowa.parsers.hdrs.*; import gplx.xowa.parsers.lists.*; import gplx.xowa.parsers.tblws.*; import gplx.xowa.parsers.paras.*; import gplx.xowa.parsers.xndes.*; import gplx.xowa.parsers.lnkis.*; import gplx.xowa.parsers.tmpls.*;
-import gplx.xowa.parsers.logs.*; import gplx.xowa.htmls.modules.popups.keeplists.*;
+package gplx.xowa.parsers; import gplx.*;
+import gplx.core.log_msgs.Gfo_msg_itm;
+import gplx.core.log_msgs.Gfo_msg_log;
+import gplx.xowa.Xoa_page_;
+import gplx.xowa.Xoae_app;
+import gplx.xowa.Xoae_page;
+import gplx.xowa.Xowe_wiki;
+import gplx.xowa.htmls.modules.popups.keeplists.Xop_keeplist_wiki;
+import gplx.xowa.langs.Xol_lang_itm;
+import gplx.xowa.parsers.amps.Xop_amp_wkr;
+import gplx.xowa.parsers.apos.Xop_apos_wkr;
+import gplx.xowa.parsers.hdrs.Xop_hdr_wkr;
+import gplx.xowa.parsers.lists.Xop_list_wkr;
+import gplx.xowa.parsers.lnkes.Xop_lnke_wkr;
+import gplx.xowa.parsers.lnkis.Xop_lnki_wkr;
+import gplx.xowa.parsers.logs.Xop_log_invoke_wkr;
+import gplx.xowa.parsers.logs.Xop_log_property_wkr;
+import gplx.xowa.parsers.paras.Xop_para_wkr;
+import gplx.xowa.parsers.tblws.Xop_tblw_tkn;
+import gplx.xowa.parsers.tblws.Xop_tblw_wkr;
+import gplx.xowa.parsers.tmpls.Xop_curly_wkr;
+import gplx.xowa.parsers.tmpls.Xot_defn_trace;
+import gplx.xowa.parsers.tmpls.Xot_defn_trace_null;
+import gplx.xowa.parsers.tmpls.Xot_invk_wkr;
+import gplx.xowa.parsers.xndes.Xop_xnde_tag_;
+import gplx.xowa.parsers.xndes.Xop_xnde_tag_regy;
+import gplx.xowa.parsers.xndes.Xop_xnde_tkn;
+import gplx.xowa.parsers.xndes.Xop_xnde_wkr;
+import gplx.xowa.xtns.lst.Lst_section_nde_mgr;
+import gplx.xowa.xtns.scribunto.Scrib_xtn_mgr;
 public class Xop_ctx {
 	private final    Xop_ctx_wkr[] wkrs;
 	Xop_ctx(Xowe_wiki wiki, Xoae_page page) {

@@ -13,12 +13,23 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.htmls.modules.popups; import gplx.*; import gplx.xowa.*; import gplx.xowa.htmls.*; import gplx.xowa.htmls.modules.*;
-import gplx.core.btries.*;
-import gplx.xowa.wikis.domains.*;
-import gplx.xowa.apps.apis.xowa.html.modules.*; import gplx.xowa.htmls.modules.popups.keeplists.*; import gplx.xowa.htmls.core.htmls.*; import gplx.xowa.htmls.core.wkrs.hdrs.*;
-import gplx.xowa.guis.views.*;
-import gplx.xowa.parsers.*; import gplx.xowa.parsers.hdrs.*; import gplx.xowa.parsers.tblws.*; import gplx.xowa.parsers.tmpls.*;	
+package gplx.xowa.htmls.modules.popups; import gplx.*;
+import gplx.core.btries.Btrie_fast_mgr;
+import gplx.xowa.Xoa_ttl;
+import gplx.xowa.Xoae_app;
+import gplx.xowa.Xoae_page;
+import gplx.xowa.Xowe_wiki;
+import gplx.xowa.guis.views.Xog_tab_itm;
+import gplx.xowa.htmls.core.htmls.Xoh_wtr_ctx;
+import gplx.xowa.htmls.core.wkrs.hdrs.Xoh_hdr_html;
+import gplx.xowa.htmls.modules.popups.keeplists.Xop_keeplist_wiki;
+import gplx.xowa.parsers.*;
+import gplx.xowa.parsers.hdrs.Xop_hdr_tkn;
+import gplx.xowa.parsers.tblws.Xop_tblw_lxr;
+import gplx.xowa.parsers.tmpls.Xot_compile_data;
+import gplx.xowa.parsers.tmpls.Xot_invk_temp;
+import gplx.xowa.parsers.tmpls.Xot_tmpl_wtr;
+import gplx.xowa.wikis.domains.Xow_domain_itm_;
 public class Xow_popup_parser {
 	private Xoae_app app; private Xowe_wiki wiki; private Xop_parser parser;
 	private Btrie_fast_mgr tmpl_trie, wtxt_trie; private Xop_tkn_mkr tkn_mkr;

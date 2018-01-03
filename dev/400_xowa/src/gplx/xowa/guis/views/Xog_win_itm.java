@@ -13,16 +13,27 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.guis.views; import gplx.*; import gplx.xowa.*; import gplx.xowa.guis.*;
-import gplx.core.threads.*; import gplx.core.envs.*;
-import gplx.gfui.*; import gplx.gfui.draws.*; import gplx.gfui.kits.core.*; import gplx.gfui.controls.windows.*; import gplx.gfui.controls.standards.*;
-import gplx.xowa.guis.*; import gplx.xowa.guis.history.*; import gplx.xowa.guis.langs.*; import gplx.xowa.guis.urls.*; import gplx.xowa.guis.views.*; 
-import gplx.gfui.layouts.swts.*;
-import gplx.xowa.langs.*; import gplx.xowa.langs.msgs.*;
-import gplx.xowa.wikis.pages.*; import gplx.xowa.apps.urls.*; import gplx.xowa.files.*;
-import gplx.xowa.htmls.hrefs.*;
-import gplx.xowa.wikis.pages.lnkis.*; import gplx.xowa.specials.*; import gplx.xowa.xtns.math.*; 	
-import gplx.xowa.guis.views.url_box_fmts.*;
+package gplx.xowa.guis.views; import gplx.*;
+import gplx.core.envs.Env_;
+import gplx.core.threads.Thread_adp;
+import gplx.core.threads.Thread_adp_;
+import gplx.gfui.controls.standards.*;
+import gplx.gfui.controls.windows.GfuiWin;
+import gplx.gfui.draws.FontAdp;
+import gplx.gfui.kits.core.Gfui_kit;
+import gplx.gfui.layouts.swts.Swt_layout_data__grid;
+import gplx.gfui.layouts.swts.Swt_layout_mgr__grid;
+import gplx.xowa.*;
+import gplx.xowa.guis.Xoa_gui_mgr;
+import gplx.xowa.guis.history.Xog_history_itm;
+import gplx.xowa.guis.history.Xog_history_stack;
+import gplx.xowa.guis.langs.Xol_font_info;
+import gplx.xowa.guis.urls.Xog_url_wkr;
+import gplx.xowa.guis.views.url_box_fmts.Xog_urlfmtr_mgr;
+import gplx.xowa.htmls.hrefs.Xoh_href_gui_utl;
+import gplx.xowa.langs.Xol_lang_itm;
+import gplx.xowa.langs.msgs.Xol_msg_itm_;
+import gplx.xowa.wikis.pages.Xopg_page_;
 public class Xog_win_itm implements Gfo_invk, Gfo_evt_itm {
 	private Gfo_invk sync_cmd;
 	private Xog_url_box__selection_changed url_box__selection_changed;

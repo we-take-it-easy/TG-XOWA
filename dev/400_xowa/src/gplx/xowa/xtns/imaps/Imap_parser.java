@@ -13,9 +13,21 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.xtns.imaps; import gplx.*; import gplx.xowa.*; import gplx.xowa.xtns.*;
-import gplx.core.btries.*; import gplx.core.primitives.*;
-import gplx.xowa.parsers.*; import gplx.xowa.parsers.lnkis.*; import gplx.xowa.parsers.lnkis.files.*; import gplx.xowa.parsers.xndes.*; import gplx.xowa.parsers.tmpls.*;
+package gplx.xowa.xtns.imaps; import gplx.*;
+import gplx.core.btries.Btrie_rv;
+import gplx.core.btries.Btrie_slim_mgr;
+import gplx.core.primitives.Byte_obj_val;
+import gplx.core.primitives.Double_obj_val;
+import gplx.xowa.*;
+import gplx.xowa.parsers.Xop_ctx;
+import gplx.xowa.parsers.Xop_root_tkn;
+import gplx.xowa.parsers.Xop_tkn_itm;
+import gplx.xowa.parsers.Xop_tkn_itm_;
+import gplx.xowa.parsers.lnkis.Xop_lnki_tkn;
+import gplx.xowa.parsers.lnkis.Xop_lnki_type;
+import gplx.xowa.parsers.lnkis.files.Xop_file_logger_;
+import gplx.xowa.parsers.tmpls.Xop_tkn_;
+import gplx.xowa.parsers.xndes.Xop_xnde_tkn;
 import gplx.xowa.xtns.imaps.itms.*;
 public class Imap_parser {
 	private Imap_xtn_mgr xtn_mgr; private Xoa_url page_url; private Gfo_usr_dlg usr_dlg = Gfo_usr_dlg_.Instance;

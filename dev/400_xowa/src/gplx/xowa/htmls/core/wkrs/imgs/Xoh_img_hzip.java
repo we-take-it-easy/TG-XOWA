@@ -13,13 +13,39 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.htmls.core.wkrs.imgs; import gplx.*; import gplx.xowa.*; import gplx.xowa.htmls.*; import gplx.xowa.htmls.core.*; import gplx.xowa.htmls.core.wkrs.*;
-import gplx.core.primitives.*; import gplx.core.brys.*; import gplx.core.threads.poolables.*; import gplx.core.encoders.*;
-import gplx.langs.htmls.*; import gplx.langs.htmls.docs.*; import gplx.langs.htmls.encoders.*;
-import gplx.xowa.htmls.hrefs.*; import gplx.xowa.htmls.core.hzips.*;
-import gplx.xowa.htmls.core.wkrs.bfr_args.*; import gplx.xowa.htmls.core.wkrs.imgs.atrs.*; import gplx.xowa.htmls.core.wkrs.lnkis.*; import gplx.xowa.htmls.core.wkrs.lnkis.anchs.*;
-import gplx.xowa.wikis.nss.*; import gplx.xowa.wikis.ttls.*; import gplx.xowa.xtns.pagebanners.*;
-import gplx.xowa.files.*; import gplx.xowa.files.repos.*; import gplx.xowa.files.imgs.*;
+package gplx.xowa.htmls.core.wkrs.imgs; import gplx.*;
+import gplx.core.brys.Bry_rdr;
+import gplx.core.brys.Int_flag_bldr;
+import gplx.core.encoders.Gfo_hzip_int_;
+import gplx.core.primitives.Bry_obj_ref;
+import gplx.core.threads.poolables.Gfo_poolable_itm;
+import gplx.core.threads.poolables.Gfo_poolable_mgr;
+import gplx.langs.htmls.encoders.Gfo_url_encoder_;
+import gplx.xowa.Xoa_ttl;
+import gplx.xowa.files.Xof_ext;
+import gplx.xowa.files.Xof_ext_;
+import gplx.xowa.files.Xof_file_wkr_;
+import gplx.xowa.files.Xof_url_bldr;
+import gplx.xowa.files.imgs.Xof_img_mode_;
+import gplx.xowa.files.repos.Xof_repo_tid_;
+import gplx.xowa.htmls.Xoh_page;
+import gplx.xowa.htmls.core.hzips.Xoh_data_itm;
+import gplx.xowa.htmls.core.hzips.Xoh_hzip_dict_;
+import gplx.xowa.htmls.core.hzips.Xoh_hzip_wkr;
+import gplx.xowa.htmls.core.wkrs.Xoh_hdoc_ctx;
+import gplx.xowa.htmls.core.wkrs.Xoh_hdoc_wkr;
+import gplx.xowa.htmls.core.wkrs.Xoh_hzip_bfr;
+import gplx.xowa.htmls.core.wkrs.imgs.atrs.Xoh_img_cls_data;
+import gplx.xowa.htmls.core.wkrs.imgs.atrs.Xoh_img_src_data;
+import gplx.xowa.htmls.core.wkrs.imgs.atrs.Xoh_img_xoimg_data;
+import gplx.xowa.htmls.core.wkrs.imgs.atrs.Xoh_img_xoimg_hzip;
+import gplx.xowa.htmls.core.wkrs.lnkis.Xoh_lnki_dict_;
+import gplx.xowa.htmls.core.wkrs.lnkis.anchs.Xoh_anch_href_data;
+import gplx.xowa.htmls.hrefs.Xoh_href_;
+import gplx.xowa.wikis.nss.Xow_ns;
+import gplx.xowa.wikis.nss.Xow_ns_;
+import gplx.xowa.wikis.nss.Xow_ns_canonical_;
+import gplx.xowa.xtns.pagebanners.Pgbnr_itm;
 public class Xoh_img_hzip implements Xoh_hzip_wkr, Gfo_poolable_itm {
 	private final    Bry_bfr tmp_bfr = Bry_bfr_.New_w_size(32);
 	private final    Xoh_img_xoimg_hzip xoimg = new Xoh_img_xoimg_hzip();

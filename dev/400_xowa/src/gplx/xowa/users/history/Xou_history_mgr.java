@@ -13,8 +13,11 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.users.history; import gplx.*; import gplx.xowa.*; import gplx.xowa.users.*;
-import gplx.core.primitives.*; import gplx.core.net.*; import gplx.core.net.qargs.*; import gplx.xowa.htmls.hrefs.*; 
+package gplx.xowa.users.history; import gplx.*;
+import gplx.core.net.qargs.Gfo_qarg_mgr_old;
+import gplx.core.primitives.Int_obj_ref;
+import gplx.xowa.*;
+import gplx.xowa.htmls.hrefs.Xoh_href_;
 public class Xou_history_mgr implements Gfo_invk {
 	private final    Xou_history_html html_mgr = new Xou_history_html(); private Xou_history_sorter sorter = new Xou_history_sorter().Sort_fld_(Xou_history_itm.Fld_view_end).Ascending_(false);
 	private final    Io_url history_fil;
@@ -70,9 +73,8 @@ public class Xou_history_mgr implements Gfo_invk {
 			itm = new Xou_history_itm(url.Wiki_bry(), To_full_db_w_qargs(url, ttl));
 			itms.Add(key, itm);
 		}
-		//if (log_all)
-		//	Io_mgr.Instance.AppendFilStr(history_fil.GenNewNameAndExt("log_all.csv"), String_.Format("{0}|{1}|{2}\n", Datetime_now.Get().XtoStr_fmt_iso_8561_w_tz(), itm.Wiki(), itm.Page()));
-		Io_mgr.Instance.AppendFilStr(history_fil.GenNewNameAndExt("log_all.csv"), String_.Format("{0}|{1}|{2}\n", Datetime_now.Get().XtoStr_fmt_iso_8561_w_tz(), itm.Wiki(), itm.Page()));
+		if (log_all)
+			Io_mgr.Instance.AppendFilStr(history_fil.GenNewNameAndExt("log_all.csv"), String_.Format("{0}|{1}|{2}\n", Datetime_now.Get().XtoStr_fmt_iso_8561_w_tz(), itm.Wiki(), itm.Page()));
 		itm.Tally();
 	}
 	private byte[] To_full_db_w_qargs(Xoa_url url, Xoa_ttl ttl) {

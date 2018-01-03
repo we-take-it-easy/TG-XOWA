@@ -13,12 +13,81 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.guis.views; import gplx.*; import gplx.xowa.*; import gplx.xowa.guis.*;
-import gplx.gfui.*; import gplx.gfui.draws.*; import gplx.gfui.kits.core.*; import gplx.gfui.imgs.*; import gplx.gfui.controls.windows.*; import gplx.gfui.controls.elems.*; import gplx.gfui.controls.standards.*;
-import gplx.xowa.guis.bnds.*; import gplx.xowa.guis.cmds.*;
-import gplx.xowa.guis.langs.*;
+package gplx.xowa.guis.views;
+
+import gplx.Keyval_;
+import gplx.String_;
+import gplx.gfui.controls.elems.GfuiElem;
+import gplx.gfui.controls.standards.GfuiBtn;
+import gplx.gfui.controls.standards.GfuiComboBox;
+import gplx.gfui.controls.standards.GfuiTextBox;
+import gplx.gfui.controls.standards.Gfui_grp;
+import gplx.gfui.controls.windows.GfuiWin;
+import gplx.gfui.draws.FontAdp;
+import gplx.gfui.imgs.IconAdp;
+import gplx.gfui.kits.core.Gfui_kit;
+import gplx.xowa.Xoae_app;
+import gplx.xowa.guis.langs.Xol_font_info;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.*;
+
 public class Xog_win_itm_ {
+
+	public static void PopupLoginForm() {
+		Shell shell = Display.getDefault().getActiveShell();
+		InputDialog input = new InputDialog(shell,
+		"User Registration", "Please input your name here:",
+		"",null);
+		if(input.open()== Window.OK)
+		{
+			System.out.println(input.getValue());
+		}
+
+		Shell popupshell = new Shell(SWT.ON_TOP | SWT.Close);
+		popupshell.setText("Session Control");
+		//Text text = new Text(popupshell, SWT.MULTI | SWT.WRAP);
+		//text.setBounds(10, 10, 180, 40);
+		//text.setBackground(popupshell.getBackground());
+		//text.setText("Session Control:");
+
+		Button buttonStart = new Button(popupshell, SWT.MULTI | SWT.WRAP);
+		buttonStart.setBounds(10, 5, 80, 30);
+		buttonStart.setData("Begin", null);
+		buttonStart.setBackground(popupshell.getBackground());
+		buttonStart.setText("Begin");
+		buttonStart.addListener(SWT.Selection, event -> System.out.println("start clicked..."));
+
+		Button buttonEnd = new Button(popupshell, SWT.MULTI | SWT.WRAP);
+		buttonEnd.setBounds(100, 5, 80, 30);
+		buttonEnd.setData("Finish", null);
+		buttonEnd.setBackground(popupshell.getBackground());
+		buttonEnd.setText("Finish");
+		buttonEnd.addListener(SWT.Selection, event -> System.out.println("end clicked..."));
+
+		Button buttonGiveUp = new Button(popupshell, SWT.MULTI | SWT.WRAP);
+		buttonGiveUp.setBounds(190, 5, 80, 30);
+		buttonGiveUp.setData("Give Up", null);
+		buttonGiveUp.setBackground(popupshell.getBackground());
+		buttonGiveUp.setText("Give Up");
+		buttonGiveUp.addListener(SWT.Selection, event -> {
+			System.out.println("give up clicked...");
+		});
+
+		popupshell.setSize(286, 48);
+
+		Rectangle rectangle = Display.getCurrent().getPrimaryMonitor().getClientArea();
+		System.out.println(rectangle.width + ", " + rectangle.height);
+
+		popupshell.setLocation((rectangle.width - 286) / 2, 0);
+		popupshell.setMenuBar(new Menu(popupshell, SWT.BAR));
+		popupshell.open();
+	}
+
 	public static void Show_win(Xog_win_itm win) {
+		PopupLoginForm();
 		Xoae_app app = win.App(); GfuiWin win_box = win.Win_box();			
 		win_box.Focus_able_(false);
 		app.Gui_mgr().Nightmode_mgr().Enabled_by_cfg();

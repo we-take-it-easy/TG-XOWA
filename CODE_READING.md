@@ -1,0 +1,8 @@
+页面上按钮的回调函数绑定在gplx.xowa.guis.bnds.Xog_bnd_mgr.java的Add_system_bnds方法中完成。
+
+gplx.xowa.guis.views.Xog_win_itm_中的Show_win方法为打开xowa主窗体时调用的方法。
+
+gplx.xowa.htmls.modules.popups.Xow_popup_mgr中的Show_init方法在打开一个popup页面时调用
+，可以得到一个popup页面的html内容和URL
+
+gplx.xowa.guis.views.Load_page_wkr的构造方法在一个页面在tab中打开时被调用，可以拿到一个page的url等信息

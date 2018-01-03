@@ -13,7 +13,9 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.htmls.modules.popups; import gplx.*; import gplx.xowa.*; import gplx.xowa.htmls.*; import gplx.xowa.htmls.modules.*;
+package gplx.xowa.htmls.modules.popups; import gplx.Cancelable;
+import gplx.Int_;
+import gplx.xowa.Xoa_ttl;
 public class Xow_popup_itm implements Cancelable {
 	public Xow_popup_itm(int id, byte[] page_href, byte[] tooltip, int init_words_needed) {
 		this.popup_id = gplx.xowa.apps.Xoa_thread_.Key_page_popup + Int_.To_str(id);

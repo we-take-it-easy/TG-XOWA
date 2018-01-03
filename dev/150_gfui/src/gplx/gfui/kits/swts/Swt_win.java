@@ -13,28 +13,20 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.gfui.kits.swts; import gplx.*; import gplx.gfui.*; import gplx.gfui.kits.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
-import gplx.Bool_;
-import gplx.Gfo_invk_cmd;
-import gplx.GfoMsg;
-import gplx.GfsCtx;
-import gplx.Io_url_;
-import gplx.gfui.controls.gxws.GxwCbkHost;
-import gplx.gfui.controls.gxws.GxwCbkHost_;
-import gplx.gfui.controls.gxws.GxwCore_base;
-import gplx.gfui.controls.gxws.GxwElem;
-import gplx.gfui.controls.gxws.GxwWin;
+package gplx.gfui.kits.swts; import gplx.*;
+import gplx.gfui.controls.gxws.*;
 import gplx.gfui.imgs.IconAdp;
-import gplx.gfui.ipts.*;
+import gplx.gfui.ipts.IptKey;
+import gplx.gfui.ipts.IptMouseBtn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 public class Swt_win implements GxwWin, Swt_control {
 	private Swt_lnr_resize resize_lnr; private Swt_lnr_show show_lnr;	// use ptr to dispose later
 	void ctor(boolean window_is_dialog, Shell shell, Display display) {
