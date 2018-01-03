@@ -36,7 +36,8 @@ public class Load_page_wkr implements Gfo_thread_wkr {
 
 			// wait_for_popups; free mem check;
 			this.page = wiki.Page_mgr().Load_page(url, ttl, tab);
-			System.out.println(new String(page.Html_data().));
+			// try to print html of the page in a tab
+			//System.out.println(new String(page.Html_data().));
 
 			// launch thread to show page
 			Gfo_invk_.Invk_by_val(tab.Cmd_sync(), Xog_tab_itm.Invk_show_url_loaded_swt, this);
