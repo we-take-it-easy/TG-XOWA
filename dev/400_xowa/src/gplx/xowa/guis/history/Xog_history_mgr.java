@@ -13,7 +13,11 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.guis.history; import gplx.*; import gplx.xowa.*; import gplx.xowa.guis.*;
+package gplx.xowa.guis.history; import gplx.*;
+import gplx.xowa.Xoa_ttl;
+import gplx.xowa.Xoa_url_;
+import gplx.xowa.Xoae_page;
+import gplx.xowa.Xowe_wiki;
 public class Xog_history_mgr {
 	private final    Ordered_hash hash = Ordered_hash_.New_bry(); private final    Xog_history_stack stack = new Xog_history_stack();
 	public int Count() {return hash.Count();}
@@ -27,6 +31,10 @@ public class Xog_history_mgr {
 		byte[] anch_key = itm.Anch();
 		rv.Url().Anch_bry_(anch_key); // must override anchor as it may be different for cached page
 		rv.Html_data().Bmk_pos_(itm.Bmk_pos());
+		if (fwd == false)
+		{
+			System.out.println("back:" + rv.Url().To_str());
+		}
 		return rv;
 	}
 	public void Add(Xoae_page page) {
