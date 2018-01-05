@@ -6,3 +6,5 @@ gplx.xowa.htmls.modules.popups.Xow_popup_mgr中的Show_init方法在打开一个
 ，可以得到一个popup页面的html内容和URL
 
 gplx.xowa.guis.views.Load_page_wkr的构造方法在一个页面在tab中打开时被调用，可以拿到一个page的url等信息
+
+gplx.xowa.guis.history.Xog_history_stack和Xog_history_mgr中有backward对应的函数，可以得到backward页面的信息

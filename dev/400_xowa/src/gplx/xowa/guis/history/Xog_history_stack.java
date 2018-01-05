@@ -13,7 +13,10 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.guis.history; import gplx.*; import gplx.xowa.*; import gplx.xowa.guis.*;
+package gplx.xowa.guis.history; import gplx.Bry_bfr;
+import gplx.Bry_split_;
+import gplx.List_adp;
+import gplx.List_adp_;
 public class Xog_history_stack {
 	private final    List_adp list = List_adp_.New();
 	public int Len() {return list.Count();}
@@ -29,6 +32,7 @@ public class Xog_history_stack {
 		cur_pos = list.Count() - 1;
 	}
 	public Xog_history_itm Go_bwd() {
+		System.out.println("back...");
 		if (list.Count() == 0) return Xog_history_itm.Null;
 		if (cur_pos == 0) return Xog_history_itm.Null;
 		--cur_pos;
