@@ -51,9 +51,9 @@ public class Xow_popup_mgr implements Gfo_invk, Gfo_evt_itm {
 		Xog_tab_itm tab = cur_page.Tab_data().Tab();
 		if (tab != null && tab.Tab_is_loading()) return "";	// NOTE: tab is null when previewing
 		Xow_popup_itm itm = new Xow_popup_itm(id, href, tooltip, show_init_word_count);
-		System.out.println("show init..." + new String(href));
+		System.out.println("popup page: " + new String(href));
 		String rv = String_.new_u8(Get_popup_html(Cur_wiki(), cur_page, itm));
-		//System.out.println(rv);
+		System.out.println("get html content of : " + new String(href));
 		return tab != null && tab.Tab_is_loading() ? "" : rv;
 	}
 	public void Show_more(String popup_id) {
