@@ -13,12 +13,22 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.guis.views; import gplx.*; import gplx.xowa.*; import gplx.xowa.guis.*;
-import gplx.core.primitives.*; import gplx.core.btries.*;
-import gplx.gfui.*; import gplx.gfui.kits.core.*; import gplx.gfui.controls.elems.*; import gplx.gfui.controls.standards.*;
-import gplx.xowa.guis.menus.*; import gplx.xowa.guis.menus.dom.*; import gplx.xowa.guis.cbks.js.*;
-import gplx.langs.htmls.*; import gplx.xowa.htmls.hrefs.*; import gplx.xowa.htmls.js.*; import gplx.xowa.htmls.heads.*; import gplx.xowa.wikis.pages.*;
-import gplx.xowa.htmls.*;
+package gplx.xowa.guis.views; import gplx.*;
+import gplx.core.primitives.String_obj_ref;
+import gplx.gfui.controls.elems.GfuiElemKeys;
+import gplx.gfui.controls.standards.Gfui_html;
+import gplx.gfui.kits.core.Gfui_kit;
+import gplx.xowa.Xoae_app;
+import gplx.xowa.Xoae_page;
+import gplx.xowa.guis.Xoa_gui_mgr;
+import gplx.xowa.guis.cbks.js.Xog_js_wkr;
+import gplx.xowa.guis.menus.Xog_popup_mnu_mgr;
+import gplx.xowa.guis.menus.dom.Xog_mnu_grp;
+import gplx.xowa.htmls.Xoh_page_html_source;
+import gplx.xowa.htmls.heads.Xoh_head_mgr;
+import gplx.xowa.htmls.hrefs.Xoh_href_gui_utl;
+import gplx.xowa.htmls.js.Xoh_js_cbk;
+import gplx.xowa.wikis.pages.Xopg_page_;
 public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page_html_source {
 	private Xoae_app app; private final    Object thread_lock = new Object();
 	private final    String_obj_ref scroll_top = String_obj_ref.null_(), node_path = String_obj_ref.null_();
@@ -65,6 +75,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 	public void Show(Xoae_page page) {
 		byte view_mode = owner_tab.View_mode();			
 		byte[] html_src = page.Wikie().Html_mgr().Page_wtr_mgr().Gen(page, this, view_mode);	// NOTE: must use wiki of page, not of owner tab; DATE:2015-03-05
+		System.out.println("get html content of :" + page.Url().To_str());
 		Html_src_(page, html_src);
 		if (view_mode == Xopg_page_.Tid_read){						// used only for Xosrh test; DATE:2014-01-29
 			html_box.Html_js_eval_proc_as_str(Xog_js_procs.Win__focus_body);	// NOTE: only focus if read so up / down will scroll box; edit / html should focus edit-box; DATE:2014-06-05
