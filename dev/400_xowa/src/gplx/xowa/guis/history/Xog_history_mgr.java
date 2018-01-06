@@ -37,6 +37,32 @@ public class Xog_history_mgr {
 		}
 		return rv;
 	}
+
+	/*
+	added by hank @ 2018.1.6
+	 */
+	public Xoae_page Prev_page(Xowe_wiki wiki)
+	{
+		if (stack != null && stack.Len() > 0)
+		{
+			int lastPos = stack.Cur_pos()-1;
+			if (lastPos >= 0)
+			{
+				Xog_history_itm item = stack.Get_at(lastPos);
+				if (item == Xog_history_itm.Null) return Xoae_page.Empty;
+				else
+				{
+					return Get_or_fetch(wiki, item);
+				}
+			}
+			else return null;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 	public void Add(Xoae_page page) {
 		Xog_history_itm new_itm = Xog_history_mgr.new_(page);
 		stack.Add(new_itm);

@@ -53,7 +53,9 @@ public class Xow_popup_mgr implements Gfo_invk, Gfo_evt_itm {
 		Xow_popup_itm itm = new Xow_popup_itm(id, href, tooltip, show_init_word_count);
 		System.out.println("popup page: " + new String(href));
 		String rv = String_.new_u8(Get_popup_html(Cur_wiki(), cur_page, itm));
-		System.out.println("get html content of : " + new String(href));
+		System.out.println("get html content of popup page: " + new String(href));
+		System.out.println("popup from page: " + app.Gui_mgr().Browser_win().Active_page().Url().To_str());
+
 		return tab != null && tab.Tab_is_loading() ? "" : rv;
 	}
 	public void Show_more(String popup_id) {
@@ -73,7 +75,6 @@ public class Xow_popup_mgr implements Gfo_invk, Gfo_evt_itm {
 		synchronized (thread_lock) {
 			if (async_itm != null) async_itm.Cancel();
 			async_itm = new Xow_popup_itm(++async_id_next, href, Bry_.Empty, show_init_word_count);
-			System.out.println("get async bgn: " + href);
 			String id_str = async_itm.Popup_id();
 			Thread_adp_.Start_by_key(id_str, this, Invk_show_popup_async);
 			return id_str;
@@ -147,10 +148,8 @@ public class Xow_popup_mgr implements Gfo_invk, Gfo_evt_itm {
 	public void Show_popup_html(String cbk, byte[] mode, Xow_popup_itm popup_itm) {
 		Xog_tab_itm cur_tab = app.Gui_mgr().Browser_win().Active_tab();
 		cur_tab.Html_box().Html_js_eval_script(Xow_popup_mgr_.Bld_js_cmd(js_wtr, cbk, mode, popup_itm.Page_href(), popup_itm.Popup_html()));
-		System.out.println(popup_itm.Page_ttl() + ",,,," + popup_itm.Popup_html());
 	}
 	private void Show_popup_async() {
-		System.out.println("show popup async");
 		try {
 			synchronized (thread_lock) {
 				Xoae_page cur_page = app.Gui_mgr().Browser_win().Active_page();
