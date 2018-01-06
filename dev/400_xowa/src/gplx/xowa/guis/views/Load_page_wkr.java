@@ -31,6 +31,7 @@ public class Load_page_wkr implements Gfo_thread_wkr {
 	public Exception		Exec_err()			{return exec_err;}		private Exception exec_err;
 	public void Thread__exec() {
 		System.out.println("load page: " + this.url.To_str());
+
 		try {
 			Running_(true);
 
