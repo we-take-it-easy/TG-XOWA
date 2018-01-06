@@ -13,14 +13,23 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.guis.views; import gplx.*; import gplx.xowa.*; import gplx.xowa.guis.*;
-import gplx.core.threads.*; import gplx.core.envs.*;
-import gplx.gfui.*; import gplx.gfui.ipts.*; import gplx.gfui.kits.core.*; import gplx.gfui.controls.elems.*; import gplx.gfui.controls.standards.*;
-import gplx.xowa.guis.history.*; import gplx.xowa.guis.bnds.*;
-import gplx.xowa.files.*; import gplx.xowa.files.fsdb.*;
-import gplx.xowa.langs.vnts.*;
-import gplx.xowa.parsers.*; import gplx.xowa.wikis.pages.lnkis.*;
-import gplx.xowa.wikis.pages.*; import gplx.xowa.wikis.pages.skins.*;
+package gplx.xowa.guis.views; import gplx.*;
+import gplx.core.envs.Env_;
+import gplx.core.threads.Gfo_thread_wkr;
+import gplx.gfui.controls.elems.GfuiElem;
+import gplx.gfui.controls.elems.GfuiElemKeys;
+import gplx.gfui.controls.standards.Gfui_html;
+import gplx.gfui.controls.standards.Gfui_tab_itm;
+import gplx.gfui.controls.standards.Gfui_tab_itm_data;
+import gplx.gfui.ipts.*;
+import gplx.gfui.kits.core.Gfui_kit;
+import gplx.xowa.*;
+import gplx.xowa.files.Xof_file_wkr;
+import gplx.xowa.files.Xog_redlink_thread;
+import gplx.xowa.guis.Xoa_gui_mgr;
+import gplx.xowa.guis.bnds.Xog_bnd_box_;
+import gplx.xowa.guis.history.Xog_history_mgr;
+import gplx.xowa.wikis.pages.Xopg_page_;
 public class Xog_tab_itm implements Gfo_invk {
 	private Xog_win_itm win;
 	public Xog_tab_itm(Xog_tab_mgr tab_mgr, Gfui_tab_itm_data tab_data, Xowe_wiki wiki, Xoae_page page) {
@@ -108,7 +117,10 @@ public class Xog_tab_itm implements Gfo_invk {
 		tab_name = Xog_tab_itm_.Tab_name_max(tab_name, tab_mgr.Btns__max_chars());
 		tab_box.Tab_name_(tab_name);
 	}
-	public Xog_history_mgr		History_mgr() {return history_mgr;} private Xog_history_mgr history_mgr = new Xog_history_mgr();
+	public Xog_history_mgr		History_mgr() {
+		Xoae_page lastPage = history_mgr.Prev_page(wiki);
+		System.out.println("previous page: " + (lastPage != null ? lastPage.Url().To_str() : "none"));
+		return history_mgr;} private Xog_history_mgr history_mgr = new Xog_history_mgr();
 	public byte					View_mode() {return view_mode;} public Xog_tab_itm View_mode_(byte v) {view_mode = v; return this;} private byte view_mode = Xopg_page_.Tid_read;
 	public void Pin_toggle() {}
 	public void Show_url_bgn(Xoa_url url) {

@@ -3,11 +3,13 @@
 gplx.xowa.guis.views.Xog_win_itm_中的Show_win方法为打开xowa主窗体时调用的方法。
 
 gplx.xowa.htmls.modules.popups.Xow_popup_mgr中的Show_init方法在打开一个popup页面时调用
-，可以得到一个popup页面的html内容和URL
+，可以得到一个popup页面的html内容、URL以及所在tab page的信息
 
 gplx.xowa.guis.views.Load_page_wkr的构造方法在一个页面在tab中打开时被调用，可以拿到一个page的url等信息
 
 gplx.xowa.guis.views.Xog_html_itm的Show方法可以拿到一个tab中page的html和url
 
 gplx.xowa.guis.history.Xog_history_stack和Xog_history_mgr中有backward对应的函数，可以得到backward页面的信息
+
+gplx.xowa.guis.views.Xog_tab_itm的History_mgr在每次load也一个页面的时候都会被调用，在其中可以通过stack成员来获得上一个页面的url（我在stack里面加了一个Prev_page方法）
 
