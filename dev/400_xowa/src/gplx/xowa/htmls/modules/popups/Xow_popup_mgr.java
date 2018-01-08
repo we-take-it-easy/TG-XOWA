@@ -49,6 +49,16 @@ public class Xow_popup_mgr implements Gfo_invk, Gfo_evt_itm {
 	public String Show_init(int id, byte[] href, byte[] tooltip) {
 		Xoae_page cur_page = Cur_page();
 		Xog_tab_itm tab = cur_page.Tab_data().Tab();
+		int popup_history_len = cur_page.Popup_mgr().Itms().Len();
+		if (popup_history_len > 0)
+		{
+			Xow_popup_itm prev_popup_itm = (Xow_popup_itm)cur_page.Popup_mgr().Itms().Get_at(popup_history_len-1);
+			System.out.println("previous popup page: " + new String(prev_popup_itm.Page_href()));
+		}
+		else
+		{
+			System.out.println("previous popup page: none");
+		}
 		if (tab != null && tab.Tab_is_loading()) return "";	// NOTE: tab is null when previewing
 		Xow_popup_itm itm = new Xow_popup_itm(id, href, tooltip, show_init_word_count);
 		System.out.println("popup page: " + new String(href));

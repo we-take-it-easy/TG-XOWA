@@ -45,14 +45,14 @@ public class Xog_history_mgr {
 	{
 		if (stack != null && stack.Len() > 0)
 		{
-			int lastPos = stack.Cur_pos()-1;
-			if (lastPos >= 0)
+			int last_pos = stack.Cur_pos()-1;
+			if (last_pos >= 0)
 			{
-				Xog_history_itm item = stack.Get_at(lastPos);
-				if (item == Xog_history_itm.Null) return Xoae_page.Empty;
+				Xog_history_itm itm = stack.Get_at(last_pos);
+				if (itm == Xog_history_itm.Null) return Xoae_page.Empty;
 				else
 				{
-					return Get_or_fetch(wiki, item);
+					return Get_or_fetch(wiki, itm);
 				}
 			}
 			else return null;
