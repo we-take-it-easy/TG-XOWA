@@ -75,7 +75,11 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 	public void Show(Xoae_page page) {
 		byte view_mode = owner_tab.View_mode();			
 		byte[] html_src = page.Wikie().Html_mgr().Page_wtr_mgr().Gen(page, this, view_mode);	// NOTE: must use wiki of page, not of owner tab; DATE:2015-03-05
-		System.out.println("get html content of :" + page.Url().To_str());
+		System.out.println();
+		System.out.println("Xog_html_itm.Show()");
+		System.out.println("current page: " + page.Url().To_str());
+		// System.out.println("get html content of: " + new String(html_src));
+		System.out.println("get html content of: " + page.Url().To_str());
 		Html_src_(page, html_src);
 		if (view_mode == Xopg_page_.Tid_read){						// used only for Xosrh test; DATE:2014-01-29
 			html_box.Html_js_eval_proc_as_str(Xog_js_procs.Win__focus_body);	// NOTE: only focus if read so up / down will scroll box; edit / html should focus edit-box; DATE:2014-06-05

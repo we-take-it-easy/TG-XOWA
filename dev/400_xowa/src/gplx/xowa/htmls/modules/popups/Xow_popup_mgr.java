@@ -50,6 +50,8 @@ public class Xow_popup_mgr implements Gfo_invk, Gfo_evt_itm {
 		Xoae_page cur_page = Cur_page();
 		Xog_tab_itm tab = cur_page.Tab_data().Tab();
 		int popup_history_len = cur_page.Popup_mgr().Itms().Len();
+		System.out.println();
+		System.out.println("Xow_popup_mgr.Show_init()");
 		if (popup_history_len > 0)
 		{
 			Xow_popup_itm prev_popup_itm = (Xow_popup_itm)cur_page.Popup_mgr().Itms().Get_at(popup_history_len-1);
