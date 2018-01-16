@@ -118,7 +118,11 @@ public class Xog_tab_itm implements Gfo_invk {
 		tab_box.Tab_name_(tab_name);
 	}
 	public Xog_history_mgr		History_mgr() {
+		Xoae_page currPage = history_mgr.Cur_page(wiki);
 		Xoae_page lastPage = history_mgr.Prev_page(wiki);
+		System.out.println();
+		System.out.println("Xog_tab_itm.History_mgr()");
+		System.out.println("current page: " + (currPage != null ? currPage.Url().To_str() : "none"));
 		System.out.println("previous page: " + (lastPage != null ? lastPage.Url().To_str() : "none"));
 		return history_mgr;} private Xog_history_mgr history_mgr = new Xog_history_mgr();
 	public byte					View_mode() {return view_mode;} public Xog_tab_itm View_mode_(byte v) {view_mode = v; return this;} private byte view_mode = Xopg_page_.Tid_read;
