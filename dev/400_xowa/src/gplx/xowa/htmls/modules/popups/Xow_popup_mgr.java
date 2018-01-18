@@ -13,7 +13,12 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.htmls.modules.popups; import gplx.*;
+package gplx.xowa.htmls.modules.popups; import cn.edu.ruc.xowa.log.action.Action;
+import cn.edu.ruc.xowa.log.action.PopupAction;
+import cn.edu.ruc.xowa.log.page.Page;
+import cn.edu.ruc.xowa.log.page.Url;
+import cn.edu.ruc.xowa.log.page.UrlType;
+import gplx.*;
 import gplx.core.js.Js_wtr;
 import gplx.core.primitives.Int_obj_ref;
 import gplx.core.threads.Thread_adp_;
@@ -49,24 +54,35 @@ public class Xow_popup_mgr implements Gfo_invk, Gfo_evt_itm {
 	public String Show_init(int id, byte[] href, byte[] tooltip) {
 		Xoae_page cur_page = Cur_page();
 		Xog_tab_itm tab = cur_page.Tab_data().Tab();
+
 		int popup_history_len = cur_page.Popup_mgr().Itms().Len();
-		System.out.println();
-		System.out.println("Xow_popup_mgr.Show_init()");
+		//System.out.println();
+		//System.out.println("Xow_popup_mgr.Show_init()");
+		//System.out.println("popup page: " + new String(href));
+		Page popupPage = new Page(new Url(new String(href)));
 		if (popup_history_len > 0)
 		{
 			Xow_popup_itm prev_popup_itm = (Xow_popup_itm)cur_page.Popup_mgr().Itms().Get_at(popup_history_len-1);
-			System.out.println("previous popup page: " + new String(prev_popup_itm.Page_href()));
+			//System.out.println("previous popup page: " + new String(prev_popup_itm.Page_href()));
+			popupPage.setPrevious(new Url(new String(prev_popup_itm.Page_href())));
 		}
 		else
 		{
-			System.out.println("previous popup page: none");
+			//System.out.println("previous popup page: none");
+			popupPage.setPrevious(new Url(UrlType.NONE.name()));
 		}
+
 		if (tab != null && tab.Tab_is_loading()) return "";	// NOTE: tab is null when previewing
 		Xow_popup_itm itm = new Xow_popup_itm(id, href, tooltip, show_init_word_count);
-		System.out.println("popup page: " + new String(href));
+
 		String rv = String_.new_u8(Get_popup_html(Cur_wiki(), cur_page, itm));
-		System.out.println("get html content of popup page: " + new String(href));
-		System.out.println("popup from page: " + app.Gui_mgr().Browser_win().Active_page().Url().To_str());
+		//System.out.println("get html content of popup page: " + new String(href));
+		popupPage.setHtml(rv);
+		//System.out.println("popup from page: " + app.Gui_mgr().Browser_win().Active_page().Url().To_str());
+		popupPage.setRoot(new Url(app.Gui_mgr().Browser_win().Active_page().Url().To_str()));
+
+		Action popupAction = new PopupAction(popupPage);
+		popupAction.perform();
 
 		return tab != null && tab.Tab_is_loading() ? "" : rv;
 	}
