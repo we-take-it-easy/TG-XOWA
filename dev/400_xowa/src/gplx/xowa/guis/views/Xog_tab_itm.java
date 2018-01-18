@@ -13,7 +13,11 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.guis.views; import gplx.*;
+package gplx.xowa.guis.views; import cn.edu.ruc.xowa.log.domain.Page;
+import cn.edu.ruc.xowa.log.domain.PageCache;
+import cn.edu.ruc.xowa.log.domain.PageType;
+import cn.edu.ruc.xowa.log.domain.Url;
+import gplx.*;
 import gplx.core.envs.Env_;
 import gplx.core.threads.Gfo_thread_wkr;
 import gplx.gfui.controls.elems.GfuiElem;
@@ -124,6 +128,9 @@ public class Xog_tab_itm implements Gfo_invk {
 		System.out.println("Xog_tab_itm.History_mgr()");
 		System.out.println("current page: " + (currPage != null ? currPage.Url().To_str() : "none"));
 		System.out.println("previous page: " + (lastPage != null ? lastPage.Url().To_str() : "none"));
+		Url url1 = new Url(currPage.Url().To_str());
+		Page page1 = PageCache.getInstance().getPage(url1, PageType.TAB_PAGE);
+		page1.setPrevious(new Url(lastPage.Url().To_str()));
 		return history_mgr;} private Xog_history_mgr history_mgr = new Xog_history_mgr();
 	public byte					View_mode() {return view_mode;} public Xog_tab_itm View_mode_(byte v) {view_mode = v; return this;} private byte view_mode = Xopg_page_.Tid_read;
 	public void Pin_toggle() {}

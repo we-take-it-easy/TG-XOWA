@@ -13,7 +13,10 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.guis.views; import gplx.*;
+package gplx.xowa.guis.views; import cn.edu.ruc.xowa.log.domain.Page;
+import cn.edu.ruc.xowa.log.domain.PageType;
+import cn.edu.ruc.xowa.log.domain.Url;
+import gplx.*;
 import gplx.core.primitives.String_obj_ref;
 import gplx.gfui.controls.elems.GfuiElemKeys;
 import gplx.gfui.controls.standards.Gfui_html;
@@ -80,6 +83,8 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 		System.out.println("current page: " + page.Url().To_str());
 		// System.out.println("get html content of: " + new String(html_src));
 		System.out.println("get html content of: " + page.Url().To_str());
+		Page page1 = new Page(new Url(page.Url().To_str()), PageType.TAB_PAGE);
+		page1.setHtml(new String(html_src));
 		Html_src_(page, html_src);
 		if (view_mode == Xopg_page_.Tid_read){						// used only for Xosrh test; DATE:2014-01-29
 			html_box.Html_js_eval_proc_as_str(Xog_js_procs.Win__focus_body);	// NOTE: only focus if read so up / down will scroll box; edit / html should focus edit-box; DATE:2014-06-05
