@@ -16,9 +16,11 @@ public class GraphBuilder
         return ourInstance;
     }
 
-    List<GraphNode> rootNodes = null;
-    Map<String, GraphNode> pointerNodes = null;
-    Map<String, GraphNode> allNodes = null;
+    private String userName = null;
+    private String sessionId = null;
+    private List<GraphNode> rootNodes = null;
+    private Map<String, GraphNode> pointerNodes = null;
+    private Map<String, GraphNode> allNodes = null;
 
     private GraphBuilder()
     {
@@ -27,18 +29,57 @@ public class GraphBuilder
         this.allNodes = new HashMap<>();
     }
 
-    public void goTo (Page from, Page to)
+    public void setUserName (String userName)
     {
+        this.userName = userName;
+        System.out.println("user login: " + userName);
+    }
 
+    public void start (String sessionId)
+    {
+        this.sessionId = sessionId;
+        System.out.println("start session: " + sessionId);
+    }
+
+    public void end ()
+    {
+        System.out.println("end session...");
+    }
+
+    public void clear ()
+    {
+        System.out.println("give up session, clear...");
+    }
+
+    public void goTo (Page page)
+    {
+        System.out.println("go to:");
+        System.out.println("url:  " + page.getUrl());
+        System.out.println("prev: " + page.getPrevious());
+        System.out.println("root: " + page.getRoot());
+        System.out.println("#link:" + page.getLinks().size());
+    }
+
+    public void popupTo (Page page)
+    {
+        System.out.println("popup to:");
+        System.out.println("url:  " + page.getUrl());
+        System.out.println("prev: " + page.getPrevious());
+        System.out.println("root: " + page.getRoot());
+        System.out.println("#link:" + page.getLinks().size());
     }
 
     public void goBackward (Page from, Page to)
     {
-
+        System.out.println("go backward:");
+        System.out.println("from page " + from.getUrl());
+        System.out.println("to page " + to.getUrl());
     }
 
     public void goForward (Page from, Page to)
     {
-
+        System.out.println("go forward:");
+        System.out.println("from page " + from.getUrl());
+        System.out.println("to page " + to.getUrl());
     }
 }

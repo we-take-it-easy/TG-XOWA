@@ -1,5 +1,6 @@
 package cn.edu.ruc.xowa.log.action;
 
+import cn.edu.ruc.xowa.log.graph.GraphBuilder;
 import cn.edu.ruc.xowa.log.page.Page;
 
 /**
@@ -19,8 +20,6 @@ public class BackwardAction implements Action
     @Override
     public void perform()
     {
-        System.out.println("backward:");
-        System.out.println("from page " + fromPage.getUrl());
-        System.out.println("go backward to page " + toPage.getUrl());
+        GraphBuilder.getInstance().goBackward(fromPage, toPage);
     }
 }
