@@ -1,4 +1,4 @@
-package cn.edu.ruc.xowa.log.domain;
+package cn.edu.ruc.xowa.log.page;
 
 public enum UrlType
 {
@@ -10,4 +10,6 @@ public enum UrlType
     SPACIAL_PAGE_URL,
     // 未知类型的URL
     UNKNOWN_TYPE_URL,
+    // 空的url，即不存在该url，例如一个页面没有previous page的时候，它的previous url即为NONE
+    NONE
 }

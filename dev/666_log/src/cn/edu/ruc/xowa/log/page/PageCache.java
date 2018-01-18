@@ -1,4 +1,4 @@
-package cn.edu.ruc.xowa.log.domain;
+package cn.edu.ruc.xowa.log.page;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,20 +24,15 @@ public class PageCache
         this.cache.put(url, page);
     }
 
-    public Page getPage (Url url, PageType pageType)
+    public Page getPage (Url url)
     {
-        Page page = this.cache.get(url);
-        if (page != null && page.getType() == pageType)
-        {
-            return page;
-        }
-        return null;
+        return this.cache.get(url);
     }
 
-    public void evictPage (Url url, PageType pageType)
+    public void evictPage (Url url)
     {
         Page page = this.cache.get(url);
-        if (page != null && page.getType() == pageType)
+        if (page != null)
         {
             this.cache.remove(url);
         }

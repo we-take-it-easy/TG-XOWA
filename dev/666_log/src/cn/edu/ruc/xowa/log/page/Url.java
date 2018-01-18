@@ -1,18 +1,28 @@
-package cn.edu.ruc.xowa.log.domain;
+package cn.edu.ruc.xowa.log.page;
 
 public class Url
 {
     // url中的最后一段，即搜索关键词或者实体名称
     private String keyWord = "";
     // url的类型
-    private UrlType type = UrlType.UNKNOWN_TYPE_URL;
+    private UrlType type = UrlType.NONE;
     // 完整、原始的的url
     private String full = "";
+
+    /**
+     * 新建一个空的url
+     */
+    public Url () {}
 
     public Url(String full)
     {
         this.full = full;
-        if (full.contains("wiki/Special:Search") || full.contains("wiki/Special:XowaSearch"))
+        if (full == null || full.isEmpty() || full.equalsIgnoreCase(UrlType.NONE.name()))
+        {
+            this.type = UrlType.NONE;
+            this.full = "";
+        }
+        else if (full.contains("wiki/Special:Search") || full.contains("wiki/Special:XowaSearch"))
         {
             this.type = UrlType.SEARCH_LIST_URL;
             String[] splits = full.split("search=");
@@ -79,5 +89,15 @@ public class Url
             return this.full.equalsIgnoreCase((String)o);
         }
         return false;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Url{" +
+                "keyWord='" + keyWord + '\'' +
+                ", type=" + type +
+                ", full='" + full + '\'' +
+                '}';
     }
 }

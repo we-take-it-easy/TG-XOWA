@@ -1,4 +1,4 @@
-package cn.edu.ruc.xowa.log.domain;
+package cn.edu.ruc.xowa.log.page;
 
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
@@ -18,15 +18,13 @@ public class Page
 {
     private Url url;
     private Url previous;
-    private Url from;
-    private PageType type;
+    private Url root;
     private Set<Url> links;
     private String html;
 
-    public Page(Url url, PageType type)
+    public Page(Url url)
     {
         this.url = url;
-        this.type = type;
         this.links = new HashSet<>();
     }
 
@@ -45,24 +43,14 @@ public class Page
         this.previous = previous;
     }
 
-    public Url getFrom()
+    public Url getRoot()
     {
-        return from;
+        return root;
     }
 
-    public void setFrom(Url from)
+    public void setRoot(Url root)
     {
-        this.from = from;
-    }
-
-    public PageType getType()
-    {
-        return type;
-    }
-
-    public void setType(PageType type)
-    {
-        this.type = type;
+        this.root = root;
     }
 
     public Set<Url> getLinks()
