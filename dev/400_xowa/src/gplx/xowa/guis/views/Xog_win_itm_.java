@@ -15,6 +15,7 @@ Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
 package gplx.xowa.guis.views;
 
+import cn.edu.ruc.xowa.log.action.*;
 import gplx.Keyval_;
 import gplx.String_;
 import gplx.gfui.controls.elems.GfuiElem;
@@ -32,7 +33,12 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Shell;
+
+import java.util.UUID;
 
 public class Xog_win_itm_ {
 
@@ -43,7 +49,10 @@ public class Xog_win_itm_ {
 		"",null);
 		if(input.open()== Window.OK)
 		{
-			System.out.println(input.getValue());
+			String userName = input.getValue();
+			Action loginAction = new LoginAction(userName);
+			loginAction.perform();
+			//System.out.println(input.getValue());
 		}
 
 		Shell popupshell = new Shell(SWT.ON_TOP | SWT.Close);
@@ -58,28 +67,53 @@ public class Xog_win_itm_ {
 		buttonStart.setData("Begin", null);
 		buttonStart.setBackground(popupshell.getBackground());
 		buttonStart.setText("Begin");
-		buttonStart.addListener(SWT.Selection, event -> System.out.println("start clicked..."));
 
 		Button buttonEnd = new Button(popupshell, SWT.MULTI | SWT.WRAP);
 		buttonEnd.setBounds(100, 5, 80, 30);
 		buttonEnd.setData("Finish", null);
 		buttonEnd.setBackground(popupshell.getBackground());
 		buttonEnd.setText("Finish");
-		buttonEnd.addListener(SWT.Selection, event -> System.out.println("end clicked..."));
+		buttonEnd.setEnabled(false);
 
 		Button buttonGiveUp = new Button(popupshell, SWT.MULTI | SWT.WRAP);
 		buttonGiveUp.setBounds(190, 5, 80, 30);
 		buttonGiveUp.setData("Give Up", null);
 		buttonGiveUp.setBackground(popupshell.getBackground());
 		buttonGiveUp.setText("Give Up");
+		buttonGiveUp.setEnabled(false);
+
+		buttonStart.addListener(SWT.Selection, event -> {
+			//System.out.println("start clicked...");
+			UUID uuid = UUID.randomUUID();
+			Action startAction = new StartSessionAction(uuid.toString());
+			startAction.perform();
+			buttonStart.setEnabled(false);
+			buttonEnd.setEnabled(true);
+			buttonGiveUp.setEnabled(true);
+		});
+
+		buttonEnd.addListener(SWT.Selection, event -> {
+			//System.out.println("finish clicked...");
+			Action endAction = new EndSessionAction();
+			endAction.perform();
+			buttonStart.setEnabled(true);
+			buttonEnd.setEnabled(false);
+			buttonGiveUp.setEnabled(false);
+		});
+
 		buttonGiveUp.addListener(SWT.Selection, event -> {
-			System.out.println("give up clicked...");
+			//System.out.println("give up clicked...");
+			Action giveupAction = new GiveupSessionAction();
+			giveupAction.perform();
+			buttonStart.setEnabled(true);
+			buttonEnd.setEnabled(false);
+			buttonGiveUp.setEnabled(false);
 		});
 
 		popupshell.setSize(286, 48);
 
 		Rectangle rectangle = Display.getCurrent().getPrimaryMonitor().getClientArea();
-		System.out.println(rectangle.width + ", " + rectangle.height);
+		//System.out.println(rectangle.width + ", " + rectangle.height);
 
 		popupshell.setLocation((rectangle.width - 286) / 2, 0);
 		popupshell.setMenuBar(new Menu(popupshell, SWT.BAR));
