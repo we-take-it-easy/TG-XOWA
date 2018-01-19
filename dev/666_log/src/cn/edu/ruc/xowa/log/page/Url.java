@@ -29,11 +29,19 @@ public class Url
             if (splits.length == 2)
             {
                 this.keyWord = splits[1].split("&")[0];
+                if (full.contains("wiki/Special:XowaSearch"))
+                {
+                    this.full = full.split(":XowaSearch")[0] + ":Search/" + this.keyWord;
+                }
+                else
+                {
+                    this.full = full.split(":Search")[0] + ":Search/" + this.keyWord;
+                }
             }
         }
         else if (full.contains("wiki/Special:"))
         {
-            this.type = UrlType.SPACIAL_PAGE_URL;
+            this.type = UrlType.OTHER_SPACIAL_URL;
             String[] splits = full.split("wiki/Special:");
             if (splits.length == 2)
             {
