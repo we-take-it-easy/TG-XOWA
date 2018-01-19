@@ -13,7 +13,10 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.guis.views; import gplx.Gfo_invk_;
+package gplx.xowa.guis.views; import cn.edu.ruc.xowa.log.page.Page;
+import cn.edu.ruc.xowa.log.page.PageCache;
+import cn.edu.ruc.xowa.log.page.Url;
+import gplx.Gfo_invk_;
 import gplx.core.threads.Gfo_thread_wkr;
 import gplx.xowa.Xoa_ttl;
 import gplx.xowa.Xoa_url;
@@ -31,9 +34,13 @@ public class Load_page_wkr implements Gfo_thread_wkr {
 	public Exception		Exec_err()			{return exec_err;}		private Exception exec_err;
 	public void Thread__exec() {
 
-		System.out.println();
-		System.out.println("Load_page_wkr.Thread__exec()");
-		System.out.println("load page: " + this.url.To_str());
+		//System.out.println();
+		//System.out.println("Load_page_wkr.Thread__exec()");
+		//System.out.println("load page: " + this.url.To_str());
+		// create the tap page here
+		Url url1 = new Url(this.url.To_str());
+		Page page1 = new Page(url1);
+		PageCache.getInstance().putPage(url1, page1);
 
 		try {
 			Running_(true);
