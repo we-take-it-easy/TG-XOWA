@@ -52,9 +52,9 @@ public class Url
         {
             this.type = UrlType.NORMAL_PAGE_URL;
             String[] splits = full.split("wiki/");
-            if (splits.length == 2)
+            if (splits.length >= 2)
             {
-                this.keyWord = splits[1];
+                this.keyWord = splits[splits.length-1];
             }
         }
         else
