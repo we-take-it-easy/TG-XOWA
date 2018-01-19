@@ -127,8 +127,22 @@ public class Xog_tab_itm implements Gfo_invk {
 		//System.out.println("current page: " + (currPage != null ? currPage.Url().To_str() : "none"));
 		//System.out.println("previous page: " + (lastPage != null ? lastPage.Url().To_str() : "none"));
 		// set the root and previous url here
+		if (currPage == null)
+		{
+			System.err.println("Xog_tab_itm.History_mgr(): current page is null");
+		}
+		if (rootPage == null)
+		{
+			System.err.println("Xog_tab_itm.History_mgr(): root page is null");
+		}
+
 		Url url1 = new Url(currPage.Url().To_str());
 		Page page1 = PageCache.getInstance().getPage(url1);
+
+		if (page1 == null)
+		{
+			System.err.println("Xog_tab_itm.History_mgr(): page is null");
+		}
 		page1.setRoot(new Url(rootPage.Url().To_str()));
 		if (lastPage != null)
 		{
@@ -138,6 +152,7 @@ public class Xog_tab_itm implements Gfo_invk {
 		{
 			page1.setPrevious(new Url(UrlType.NONE.name()));
 		}
+
 
 		return history_mgr;} private Xog_history_mgr history_mgr = new Xog_history_mgr();
 	public byte					View_mode() {return view_mode;} public Xog_tab_itm View_mode_(byte v) {view_mode = v; return this;} private byte view_mode = Xopg_page_.Tid_read;

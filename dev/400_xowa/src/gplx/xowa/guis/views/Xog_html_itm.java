@@ -18,6 +18,7 @@ import cn.edu.ruc.xowa.log.action.LoadPageAction;
 import cn.edu.ruc.xowa.log.page.Page;
 import cn.edu.ruc.xowa.log.page.PageCache;
 import cn.edu.ruc.xowa.log.page.Url;
+import cn.edu.ruc.xowa.log.page.UrlType;
 import gplx.*;
 import gplx.core.primitives.String_obj_ref;
 import gplx.gfui.controls.elems.GfuiElemKeys;
@@ -88,9 +89,21 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 		// set the html and links for the page here.
 		Url url1 = new Url(page.Url().To_str());
 		Page page1 = PageCache.getInstance().getPage(url1);
+		if (page1 == null)
+		{
+			System.err.println("Xog_html_itm.Show(): page is null");
+		}
 		page1.setHtml(new String(html_src));
-		Action loadPageAction = new LoadPageAction(page1);
-		loadPageAction.perform();
+		UrlType urlType = page1.getUrl().getType();
+		if (urlType != UrlType.NONE)
+		{
+			Action loadPageAction = new LoadPageAction(page1);
+			loadPageAction.perform();
+		}
+		else
+		{
+			System.err.println("Xog_html_itm.Show(): page url is none");
+		}
 		// do not evict page, this loaded page may be used by the backward and forward actions.
 		//PageCache.getInstance().evictPage(url1);
 
