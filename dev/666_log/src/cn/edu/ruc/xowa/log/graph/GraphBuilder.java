@@ -66,7 +66,6 @@ public class GraphBuilder
         {
             pageNode.setName(page.getUrl().getKeyWord());
             pageNode.setLinks(page.getLinks());
-            System.out.println("pageNode: "+ pageNode.getName());
             //if pointerNode 为空
             if(pointerNode.getName() == null)
             {
@@ -76,15 +75,14 @@ public class GraphBuilder
                 rootNode.setLinks(page.getLinks());
                 System.out.println("rootNode: "+ rootNode.getName());
 
-                pointerNode.setName(page.getUrl().getKeyWord());
-                pointerNode.setLinks(page.getLinks());
-                System.out.println("pointerNode: "+ pointerNode.getName());
-
+                //pointerNode.setName(page.getUrl().getKeyWord());
+                //pointerNode.setLinks(page.getLinks());
+                pointerNode = new GraphNode(page.getUrl().getKeyWord(), page.getLinks());
+                System.out.println("pointNode: "+pointerNode.getName());
                 allNodes.put(pageNode.getName(),pageNode);
             }else
             {
                 System.out.println("case2");
-                System.out.println("pointerNode: "+pointerNode.getName());
                 //rootNode
                 if(rootNode.getName() != null)
                 {
@@ -96,21 +94,22 @@ public class GraphBuilder
                         if(allNodes.containsKey(page.getUrl().getKeyWord()))
                         {
                             System.out.println("case2-1-1-1");
-                            pointerNode = allNodes.get(pageNode.getName());
+                            pointerNode = allNodes.get(page.getUrl().getKeyWord());
+                            System.out.println("current pointerNode: "+ pointerNode.getName() +":C:"+pointerNode.getChildren().keySet()+":P:"+pointerNode.getParents().keySet());
                         }else
                         {
                             System.out.println("case2-1-1-2");
-                            System.out.println("current pageNode: "+pageNode.getName());
-                            System.out.println("current pointerNode: "+pointerNode.getName());
-                            pointerNode.addChildren(pageNode);
-                            System.out.println("pointerNode: "+pointerNode.getName()+" children: "+ pointerNode.getChildren().keySet());
+                            //GraphNode tmpNode = pageNode;
                             pageNode.addParents(pointerNode);
-                            System.out.println("pageNode: "+ pageNode.getName()+" parents: " + pageNode.getParents().keySet());
+                            pointerNode.addChildren(pageNode);
 
+                            System.out.println("current pageNode: "+pageNode.getName()+":C:"+pageNode.getChildren().keySet()+":P:"+pageNode.getParents().keySet());
+                            System.out.println("current pointerNode: "+pointerNode.getName()+":C:"+pointerNode.getChildren().keySet()+":P:"+pointerNode.getParents().keySet());
                             allNodes.put(pageNode.getName(),pageNode);
-                            pageNode = pointerNode;
-                            pointerNode = allNodes.get(pageNode.getName());
-                            System.out.println("the new pointerNode: "+pointerNode.getName());
+
+                            GraphNode tmpNode = pointerNode;
+                            pointerNode = pageNode;
+                            pageNode = tmpNode;
                         }
 
                     }
@@ -159,8 +158,14 @@ public class GraphBuilder
             }
 
             //pointerNode.put(page.getUrl().getKeyWord(), );
-            System.out.println("allNodes: "+allNodes.keySet());
+            System.out.println("allNodes: "+ allNodes.keySet());
+            for (String itm : allNodes.keySet()){
+                System.out.println("itm name: "+itm+" value: "+ allNodes.get(itm).getName());
+                //System.out.println("children: "+allNodes.get(itm).getChildren());
+                //System.out.println("parents: "+allNodes.get(itm).getParents());
+            }
             System.out.println("-----------------------------------------");
+            pageNode.reset();
         }catch (RuntimeException e){
             e.printStackTrace();
         }
