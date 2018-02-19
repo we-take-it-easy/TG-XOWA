@@ -16,14 +16,14 @@ public class GraphBuilder
 
     private String userName = null;
     private String sessionId = null;
-    private GraphNode pageNode;
+    //private GraphNode pageNode;
     private GraphNode pointerNode;
     private GraphNode rootNode;
     private Map<String, GraphNode> allNodes;
 
     private GraphBuilder()
     {
-        this.pageNode = new GraphNode();
+        //this.pageNode = new GraphNode();
         this.pointerNode = new GraphNode();
         this.rootNode = new GraphNode();
         this.allNodes = new HashMap<>();
@@ -43,7 +43,7 @@ public class GraphBuilder
 
     public void end ()
     {
-        this.pageNode = null;
+        //this.pageNode = null;
         this.pointerNode = null;
         this.rootNode = null;
         this.allNodes = null;
@@ -52,7 +52,7 @@ public class GraphBuilder
 
     public void clear ()
     {
-        this.pageNode = null;
+        //this.pageNode = null;
         this.pointerNode = null;
         this.rootNode = null;
         this.allNodes = null;
@@ -64,8 +64,8 @@ public class GraphBuilder
         //System.out.println("page: "+page.getUrl().getKeyWord()+" "+page.getUrl());
         try
         {
-            pageNode.setName(page.getUrl().getKeyWord());
-            pageNode.setLinks(page.getLinks());
+            GraphNode pageNode = new GraphNode(page.getUrl().getKeyWord(), page.getLinks());
+
             //if pointerNode 为空
             if(pointerNode.getName() == null)
             {
@@ -75,8 +75,6 @@ public class GraphBuilder
                 rootNode.setLinks(page.getLinks());
                 System.out.println("rootNode: "+ rootNode.getName());
 
-                //pointerNode.setName(page.getUrl().getKeyWord());
-                //pointerNode.setLinks(page.getLinks());
                 pointerNode = new GraphNode(page.getUrl().getKeyWord(), page.getLinks());
                 System.out.println("pointNode: "+pointerNode.getName());
                 allNodes.put(pageNode.getName(),pageNode);
@@ -99,17 +97,14 @@ public class GraphBuilder
                         }else
                         {
                             System.out.println("case2-1-1-2");
-                            //GraphNode tmpNode = pageNode;
                             pageNode.addParents(pointerNode);
                             pointerNode.addChildren(pageNode);
 
                             System.out.println("current pageNode: "+pageNode.getName()+":C:"+pageNode.getChildren().keySet()+":P:"+pageNode.getParents().keySet());
                             System.out.println("current pointerNode: "+pointerNode.getName()+":C:"+pointerNode.getChildren().keySet()+":P:"+pointerNode.getParents().keySet());
-                            allNodes.put(pageNode.getName(),pageNode);
 
-                            GraphNode tmpNode = pointerNode;
+                            allNodes.put(pageNode.getName(), pageNode);
                             pointerNode = pageNode;
-                            pageNode = tmpNode;
                         }
 
                     }
@@ -165,7 +160,6 @@ public class GraphBuilder
                 //System.out.println("parents: "+allNodes.get(itm).getParents());
             }
             System.out.println("-----------------------------------------");
-            pageNode.reset();
         }catch (RuntimeException e){
             e.printStackTrace();
         }
