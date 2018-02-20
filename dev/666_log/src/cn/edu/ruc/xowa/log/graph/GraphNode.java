@@ -11,6 +11,7 @@ public class GraphNode
 {
     private String name;
     private Set<Url> links;
+    private Set<String> linkNames;
     private Map<String, GraphNode> parents;
     private Map<String, GraphNode> children;
     protected GraphNode(){}
@@ -33,7 +34,7 @@ public class GraphNode
 
     public void addParents(GraphNode parent)
     {
-        System.out.println("PARENTS: "+parent.getName());
+        //System.out.println("PARENTS: "+parent.getName());
         if(!this.getParents().containsKey(parent.getName()))
         {
             this.parents.put(parent.getName(), parent);
@@ -42,7 +43,7 @@ public class GraphNode
 
     public void addChildren(GraphNode child)
     {
-        System.out.println("CHILD: "+child.getName());
+        //System.out.println("CHILD: "+child.getName());
         if (!this.getChildren().containsKey(child.getName()))
         {
             this.children.put(child.getName(),child);
@@ -58,6 +59,13 @@ public class GraphNode
     {
         return links;
     }
+
+    /*public Set<String> getLinkNames(){
+        for(Url link: this.links){
+            this.linkNames.add(link.getKeyWord());
+        }
+        return linkNames;
+    }*/
 
     public Map<String, GraphNode> getParents()
     {
