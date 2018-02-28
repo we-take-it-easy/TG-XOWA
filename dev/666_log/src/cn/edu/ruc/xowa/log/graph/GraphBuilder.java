@@ -229,7 +229,8 @@ public class GraphBuilder
                             System.out.println("loaded page: "+ page.getUrl() + " root: "+page.getRoot());
                             boolean flag2 = false;
                             GraphNode tmpNode = new GraphNode();
-                            for (GraphNode node:allNodes.values()){
+                            for (GraphNode node:allNodes.values())
+                            {
                                 Set<Url> links = node.getLinks();
                                 for (Url link: links)
                                 {
@@ -285,11 +286,50 @@ public class GraphBuilder
 
     public void popupTo (Page page)
     {
-        //System.out.println("popup to:");
-        //System.out.println("url:  " + page.getUrl());
-        //System.out.println("prev: " + page.getPrevious());
-        //System.out.println("root: " + page.getRoot());
-        //System.out.println("#link:" + page.getLinks().size());
+        GraphNode pageNode = new GraphNode(page.getUrl().getKeyWord(), page.getLinks());
+        //System.out.println("url: " + page.getUrl()+"root: "+page.getRoot());
+        //System.out.println("current pointerNode: "+pointerNode.getName()+" :C: "+pointerNode.getChildren().keySet()+" :P: "+pointerNode.getParents().keySet());
+        //System.out.println("current pageNode: "+pageNode.getName()+" :C: "+pageNode.getChildren().keySet()+" :P: "+pageNode.getParents().keySet());
+        boolean flag = false;
+        for (Url url : pointerNode.getLinks()){
+            if (url.getKeyWord().equals(pageNode.getName())){
+                flag = true;
+            }
+        }
+        if (flag){
+            System.out.println("case1");
+            pointerNode.addChildren(pageNode);
+            pageNode.addParents(pointerNode);
+            allNodes.put(pageNode.getName(), pageNode);
+            System.out.println("current pointerNode: "+pointerNode.getName()+" :C: "+pointerNode.getChildren().keySet()+" :P: "+pointerNode.getParents().keySet());
+            System.out.println("current pageNode: "+pageNode.getName()+" :C: "+pageNode.getChildren().keySet()+" :P: "+pageNode.getParents().keySet());
+
+        }else {
+            System.out.println("case2");
+            boolean flag1 = false;
+            GraphNode tmpNode = new GraphNode();
+            for (GraphNode node:allNodes.values())
+            {
+                Set<Url> links = node.getLinks();
+                for (Url link: links)
+                {
+                    if(link.getKeyWord().equals(pageNode.getName()))
+                    {
+                        flag1 = true;
+                        tmpNode = node;
+                    }
+                }
+            }
+            if (flag1){
+                System.out.println("case2-1");
+                pointerNode = tmpNode;
+                pointerNode.addChildren(pageNode);
+                pageNode.addParents(pointerNode);
+                allNodes.put(pageNode.getName(), pageNode);
+                System.out.println("current pointerNode: "+pointerNode.getName()+" :C: "+pointerNode.getChildren().keySet()+" :P: "+pointerNode.getParents().keySet());
+                System.out.println("current pageNode: "+pageNode.getName()+" :C: "+pageNode.getChildren().keySet()+" :P: "+pageNode.getParents().keySet());
+            }
+        }
     }
 
     public void goBackward (Page from, Page to)
