@@ -61,6 +61,8 @@ public class GraphBuilder
 
     public void goTo (Page page)
     {
+        System.out.println("page: " + page.getUrl().getKeyWord());
+        /*
         //System.out.println("page: "+page.getUrl().getKeyWord()+" "+page.getUrl());
         try
         {
@@ -174,6 +176,7 @@ public class GraphBuilder
         //System.out.println("prev: " + page.getPrevious());
         //System.out.println("root: " + page.getRoot());
         //System.out.println("#link:" + page.getLinks().size());
+        */
     }
 
     public void popupTo (Page page)
