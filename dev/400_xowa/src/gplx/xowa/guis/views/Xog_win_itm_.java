@@ -115,7 +115,7 @@ public class Xog_win_itm_ {
 		Rectangle rectangle = Display.getCurrent().getPrimaryMonitor().getClientArea();
 		//System.out.println(rectangle.width + ", " + rectangle.height);
 
-		popupshell.setLocation((rectangle.width - 286) / 2, 0);
+		popupshell.setLocation((rectangle.width - 286) / 2 + 300, 0);
 		popupshell.setMenuBar(new Menu(popupshell, SWT.BAR));
 		popupshell.open();
 	}

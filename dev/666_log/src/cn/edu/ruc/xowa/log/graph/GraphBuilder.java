@@ -1,9 +1,14 @@
 package cn.edu.ruc.xowa.log.graph;
 
+import cn.edu.ruc.xowa.log.database.DBAccess;
 import cn.edu.ruc.xowa.log.page.Page;
+import cn.edu.ruc.xowa.log.page.Url;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
 
 public class GraphBuilder
 {
@@ -16,17 +21,21 @@ public class GraphBuilder
 
     private String userName = null;
     private String sessionId = null;
-    private GraphNode pageNode;
     private GraphNode pointerNode;
     private GraphNode rootNode;
     private Map<String, GraphNode> allNodes;
+    private Boolean searchOrNot;
+
+    private DBAccess dbAccess;
 
     private GraphBuilder()
     {
-        this.pageNode = new GraphNode();
+        //this.pageNode = new GraphNode();
         this.pointerNode = new GraphNode();
         this.rootNode = new GraphNode();
         this.allNodes = new HashMap<>();
+        this.searchOrNot = false;
+        this.dbAccess = new DBAccess();
     }
 
     public void setUserName (String userName)
@@ -43,7 +52,29 @@ public class GraphBuilder
 
     public void end ()
     {
-        this.pageNode = null;
+        System.out.println("root node: "+rootNode+" :C: "+rootNode.getName());
+        System.out.println("allNodes: ");
+        for (GraphNode itm : allNodes.values())
+        {
+            System.out.println(itm.getName()+" :C: "+itm.getChildren().keySet()+" :P: "+itm.getParents().keySet());
+            for (GraphNode child: itm.getChildren().values())
+            {
+                System.out.println("Child: "+child.getName());
+            }
+            for (GraphNode parent: itm.getParents().values())
+            {
+                System.out.println("Parent: "+parent.getName());
+            }
+        }
+        //System.out.println(sessionId);
+        try
+        {
+            this.dbAccess.insertSessionAllnodes(this.sessionId, this.allNodes);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        //this.pageNode = null;
         this.pointerNode = null;
         this.rootNode = null;
         this.allNodes = null;
@@ -52,7 +83,7 @@ public class GraphBuilder
 
     public void clear ()
     {
-        this.pageNode = null;
+        //this.pageNode = null;
         this.pointerNode = null;
         this.rootNode = null;
         this.allNodes = null;
@@ -61,27 +92,24 @@ public class GraphBuilder
 
     public void goTo (Page page)
     {
-        System.out.println("page: " + page.getUrl().getKeyWord());
-        /*
         //System.out.println("page: "+page.getUrl().getKeyWord()+" "+page.getUrl());
         try
         {
-            pageNode.setName(page.getUrl().getKeyWord());
-            pageNode.setLinks(page.getLinks());
+            GraphNode pageNode = new GraphNode(page.getUrl().getKeyWord(), page.getLinks());
+
             //if pointerNode 为空
             if(pointerNode.getName() == null)
             {
                 System.out.println("case1");
 
-                rootNode.setName(page.getUrl().getKeyWord());
-                rootNode.setLinks(page.getLinks());
-                System.out.println("rootNode: "+ rootNode.getName());
+                rootNode = new GraphNode(page.getUrl().getKeyWord(), page.getLinks());
+                System.out.println("rootNode: "+ rootNode.getName()+" :C: "+rootNode.getChildren()+" :P: "+rootNode.getParents());
 
-                //pointerNode.setName(page.getUrl().getKeyWord());
-                //pointerNode.setLinks(page.getLinks());
                 pointerNode = new GraphNode(page.getUrl().getKeyWord(), page.getLinks());
-                System.out.println("pointNode: "+pointerNode.getName());
-                allNodes.put(pageNode.getName(),pageNode);
+                System.out.println("current pageNode: "+pageNode.getName()+":C:"+pageNode.getChildren().keySet()+":P:"+pageNode.getParents().keySet());
+                System.out.println("current pointerNode: "+ pointerNode.getName() +":C:"+pointerNode.getChildren().keySet()+":P:"+pointerNode.getParents().keySet());
+
+                allNodes.put(pointerNode.getName(),pointerNode);
             }else
             {
                 System.out.println("case2");
@@ -97,21 +125,88 @@ public class GraphBuilder
                         {
                             System.out.println("case2-1-1-1");
                             pointerNode = allNodes.get(page.getUrl().getKeyWord());
+                            System.out.println("current pageNode: "+pageNode.getName()+":C:"+pageNode.getChildren().keySet()+":P:"+pageNode.getParents().keySet());
                             System.out.println("current pointerNode: "+ pointerNode.getName() +":C:"+pointerNode.getChildren().keySet()+":P:"+pointerNode.getParents().keySet());
                         }else
                         {
+                            //pageNode不存在于allNodes中
                             System.out.println("case2-1-1-2");
-                            //GraphNode tmpNode = pageNode;
-                            pageNode.addParents(pointerNode);
-                            pointerNode.addChildren(pageNode);
+                            boolean flag = false;
+                            for(Url url : pointerNode.getLinks())
+                            {
+                                if(url.getKeyWord().equals(page.getUrl().getKeyWord())){
+                                    System.out.println("current pointerNode has the url: "+url);
+                                    flag = true;
+                                    //System.out.println(flag);
+                                    break;
+                                }
+                            }
+                            if (flag){
+                                //pageNode存在于pointerNode页面的links中
+                                System.out.println("case2-1-1-2-1");
+                                pageNode.addParents(pointerNode);
+                                pointerNode.addChildren(pageNode);
 
-                            System.out.println("current pageNode: "+pageNode.getName()+":C:"+pageNode.getChildren().keySet()+":P:"+pageNode.getParents().keySet());
-                            System.out.println("current pointerNode: "+pointerNode.getName()+":C:"+pointerNode.getChildren().keySet()+":P:"+pointerNode.getParents().keySet());
-                            allNodes.put(pageNode.getName(),pageNode);
+                                System.out.println("current pageNode: "+pageNode.getName()+":C:"+pageNode.getChildren().keySet()+":P:"+pageNode.getParents().keySet());
+                                System.out.println("current pointerNode: "+pointerNode.getName()+":C:"+pointerNode.getChildren().keySet()+":P:"+pointerNode.getParents().keySet());
 
-                            GraphNode tmpNode = pointerNode;
-                            pointerNode = pageNode;
-                            pageNode = tmpNode;
+                                allNodes.put(pageNode.getName(), pageNode);
+                                pointerNode = pageNode;
+                            }
+                            else{
+                                //pageNode不存在于pointerNode页面的links中
+                                System.out.println("case2-1-1-2-2");
+                                boolean flag1 = false;
+                                GraphNode tmpNode = new GraphNode();
+                                for(GraphNode node: allNodes.values())
+                                {
+                                    Set<Url> links = node.getLinks();
+                                    for (Url link:links)
+                                    {
+                                        if (link.getKeyWord().equals(pageNode.getName()))
+                                        {
+                                            flag1 = true;
+                                            tmpNode = node;
+                                        }
+                                    }
+                                }
+                                if (flag1){
+                                    System.out.println("case2-1-1-2-2-1");
+                                    //pageNode不存在于pointerNode页面的links中，但pageNode存在于allNodes中某个node的links中
+                                    pointerNode = tmpNode;
+                                    pointerNode.addChildren(pageNode);
+                                    pageNode.addParents(pointerNode);
+                                    allNodes.put(pageNode.getName(), pageNode);
+
+                                    System.out.println("current pageNode: "+pageNode.getName()+":C:"+pageNode.getChildren().keySet()+":P:"+pageNode.getParents().keySet());
+                                    System.out.println("current pointerNode: "+pointerNode.getName()+" :C: "+pointerNode.getChildren().keySet()+" :P: "+pointerNode.getParents().keySet());
+
+                                }
+                                else
+                                {
+                                    //pageNode不存在于pointerNode页面的links中，且pageNode不存在于allNodes中某个node的links中
+                                    //说明pageNode是通过搜索得来的
+                                    System.out.println("case2-1-1-2-2-2");
+                                    if (searchOrNot)
+                                    {//从SEARCH_LIST_URL中load页面
+                                        System.out.println("case2-1-1-2-2-2-1");
+                                        pointerNode.addChildren(pageNode);
+                                        pageNode.addParents(pointerNode);
+                                        allNodes.put(pageNode.getName(),pageNode);
+                                        System.out.println("current pageNode: "+pageNode.getName()+":C:"+pageNode.getChildren().keySet()+":P:"+pageNode.getParents().keySet());
+                                        System.out.println("current pointerNode: "+pointerNode.getName()+" :C: "+pointerNode.getChildren().keySet()+" :P: "+pointerNode.getParents().keySet());
+
+                                    }else{
+                                        System.out.println("case2-1-1-2-2-2-2");
+                                        pointerNode.addChildren(pageNode);
+                                        pageNode.addParents(pointerNode);
+                                        allNodes.put(pageNode.getName(),pageNode);
+                                        System.out.println("current pageNode: "+pageNode.getName()+":C:"+pageNode.getChildren().keySet()+":P:"+pageNode.getParents().keySet());
+                                        System.out.println("current pointerNode: "+pointerNode.getName()+" :C: "+pointerNode.getChildren().keySet()+" :P: "+pointerNode.getParents().keySet());
+                                        pointerNode = pageNode;
+                                    }
+                                }
+                            }
                         }
 
                     }
@@ -120,34 +215,62 @@ public class GraphBuilder
                     {
                         //if page.url 在 pointerNode.links 中
                         System.out.println("case2-1-2");
-                        //System.out.println("pointerNode.getName(): "+pointerNode.getName());
-                        //System.out.println("pointerNode.getLinks(): "+pointerNode.getLinks());
-                        if(pointerNode.getLinks().contains(page.getUrl()))
+                        boolean flag = false;
+                        for(Url url : pointerNode.getLinks())
+                        {
+                            if(url.getKeyWord().equals(page.getUrl().getKeyWord())){
+                                System.out.println("current pointerNode has the url: "+url);
+                                flag = true;
+                                //System.out.println(flag);
+                                break;
+                            }
+                        }
+                        if(flag)
                         {
                             System.out.println("case2-1-2-1");
                             allNodes.put(pageNode.getName(), pageNode);
                             pointerNode.addChildren(pageNode);
                             pageNode.addParents(pointerNode);
-                            pointerNode = allNodes.get(pageNode.getName());
+                            //pointerNode = allNodes.get(pageNode.getName());
+                            System.out.println("current pageNode: "+pageNode.getName()+":C:"+pageNode.getChildren().keySet()+":P:"+pageNode.getParents().keySet());
+                            System.out.println("current pointerNode: "+pointerNode.getName()+" :C: "+pointerNode.getChildren().keySet()+" :P: "+pointerNode.getParents().keySet());
                         }
                         //多个tab时，从非pointerNode(此前load的node)中load新页面
                         else
                         {
-                            //if
                             System.out.println("case2-1-2-2");
-                            if(allNodes.containsKey(page.getRoot().getKeyWord()))
+                            System.out.println("multi-tab allNodes: "+allNodes.keySet());
+                            System.out.println("loaded page: "+ page.getUrl() + " root: "+page.getRoot());
+                            boolean flag2 = false;
+                            GraphNode tmpNode = new GraphNode();
+                            for (GraphNode node:allNodes.values())
+                            {
+                                Set<Url> links = node.getLinks();
+                                for (Url link: links)
+                                {
+                                    if(link.getKeyWord().equals(pageNode.getName()))
+                                    {
+                                        flag2 = true;
+                                        tmpNode = node;
+                                    }
+                                }
+                            }
+                            //if(allNodes.keySet().contains(page.getRoot().getKeyWord()))
+                            if(flag2)
                             {
                                 System.out.println("case2-1-2-2-1");
-                                allNodes.put(pageNode.getName(), pageNode);
-                                pointerNode = allNodes.get(page.getRoot().getKeyWord());
+                                //pointerNode = allNodes.get(page.getUrl().getKeyWord());
+                                pointerNode = tmpNode;
                                 pointerNode.addChildren(pageNode);
                                 pageNode.addParents(pointerNode);
+                                allNodes.put(pageNode.getName(), pageNode);
+                                //pointerNode = pageNode;
 
-                                pointerNode = allNodes.get(pageNode.getName());
+                                System.out.println("current pageNode: "+pageNode.getName()+":C:"+pageNode.getChildren().keySet()+":P:"+pageNode.getParents().keySet());
+                                System.out.println("current pointerNode: "+pointerNode.getName()+" :C: "+pointerNode.getChildren().keySet()+" :P: "+pointerNode.getParents().keySet());
                             }
                             else
                             {
-                                //......
                                 System.out.println("case2-1-2-2-2");
                             }
                         }
@@ -158,34 +281,69 @@ public class GraphBuilder
                     rootNode = pageNode;
                 }
             }
+            searchOrNot = false;
 
-            //pointerNode.put(page.getUrl().getKeyWord(), );
             System.out.println("allNodes: "+ allNodes.keySet());
-            for (String itm : allNodes.keySet()){
-                System.out.println("itm name: "+itm+" value: "+ allNodes.get(itm).getName());
-                //System.out.println("children: "+allNodes.get(itm).getChildren());
-                //System.out.println("parents: "+allNodes.get(itm).getParents());
-            }
             System.out.println("-----------------------------------------");
-            pageNode.reset();
         }catch (RuntimeException e){
             e.printStackTrace();
         }
-        //System.out.println("go to:");
-        //System.out.println("url:  " + page.getUrl());
-        //System.out.println("prev: " + page.getPrevious());
-        //System.out.println("root: " + page.getRoot());
-        //System.out.println("#link:" + page.getLinks().size());
-        */
+    }
+    public void searchTo(Page page)
+    {
+        //Set<Url> links = page.getLinks();
+        //GraphNode tmPointNode = pointerNode;
+        searchOrNot = true;
+        System.out.println(searchOrNot);
+        System.out.println("111111111111");
     }
 
     public void popupTo (Page page)
     {
-        //System.out.println("popup to:");
-        //System.out.println("url:  " + page.getUrl());
-        //System.out.println("prev: " + page.getPrevious());
-        //System.out.println("root: " + page.getRoot());
-        //System.out.println("#link:" + page.getLinks().size());
+        GraphNode pageNode = new GraphNode(page.getUrl().getKeyWord(), page.getLinks());
+        //System.out.println("url: " + page.getUrl()+"root: "+page.getRoot());
+        //System.out.println("current pointerNode: "+pointerNode.getName()+" :C: "+pointerNode.getChildren().keySet()+" :P: "+pointerNode.getParents().keySet());
+        //System.out.println("current pageNode: "+pageNode.getName()+" :C: "+pageNode.getChildren().keySet()+" :P: "+pageNode.getParents().keySet());
+        boolean flag = false;
+        for (Url url : pointerNode.getLinks()){
+            if (url.getKeyWord().equals(pageNode.getName())){
+                flag = true;
+            }
+        }
+        if (flag){
+            System.out.println("case1");
+            pointerNode.addChildren(pageNode);
+            pageNode.addParents(pointerNode);
+            allNodes.put(pageNode.getName(), pageNode);
+            System.out.println("current pointerNode: "+pointerNode.getName()+" :C: "+pointerNode.getChildren().keySet()+" :P: "+pointerNode.getParents().keySet());
+            System.out.println("current pageNode: "+pageNode.getName()+" :C: "+pageNode.getChildren().keySet()+" :P: "+pageNode.getParents().keySet());
+
+        }else {
+            System.out.println("case2");
+            boolean flag1 = false;
+            GraphNode tmpNode = new GraphNode();
+            for (GraphNode node:allNodes.values())
+            {
+                Set<Url> links = node.getLinks();
+                for (Url link: links)
+                {
+                    if(link.getKeyWord().equals(pageNode.getName()))
+                    {
+                        flag1 = true;
+                        tmpNode = node;
+                    }
+                }
+            }
+            if (flag1){
+                System.out.println("case2-1");
+                pointerNode = tmpNode;
+                pointerNode.addChildren(pageNode);
+                pageNode.addParents(pointerNode);
+                allNodes.put(pageNode.getName(), pageNode);
+                System.out.println("current pointerNode: "+pointerNode.getName()+" :C: "+pointerNode.getChildren().keySet()+" :P: "+pointerNode.getParents().keySet());
+                System.out.println("current pageNode: "+pageNode.getName()+" :C: "+pageNode.getChildren().keySet()+" :P: "+pageNode.getParents().keySet());
+            }
+        }
     }
 
     public void goBackward (Page from, Page to)
@@ -201,4 +359,5 @@ public class GraphBuilder
         System.out.println("from page " + from.getUrl());
         System.out.println("to page " + to.getUrl());
     }
+
 }

@@ -17,6 +17,14 @@ public class LoadPageAction implements Action
     @Override
     public void perform()
     {
-        GraphBuilder.getInstance().goTo(page);
+        System.out.println("page: "+page.getUrl());
+        if (page.getUrl().getType().toString().equals("NORMAL_PAGE_URL"))
+        {
+            GraphBuilder.getInstance().goTo(page);
+        }
+        else if(page.getUrl().getType().toString().equals("SEARCH_LIST_URL"))
+        {
+            GraphBuilder.getInstance().searchTo(page);
+        }
     }
 }
