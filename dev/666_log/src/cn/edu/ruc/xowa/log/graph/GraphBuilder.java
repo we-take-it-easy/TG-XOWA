@@ -1,11 +1,14 @@
 package cn.edu.ruc.xowa.log.graph;
 
+import cn.edu.ruc.xowa.log.database.DBAccess;
 import cn.edu.ruc.xowa.log.page.Page;
 import cn.edu.ruc.xowa.log.page.Url;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 
 public class GraphBuilder
 {
@@ -23,6 +26,8 @@ public class GraphBuilder
     private Map<String, GraphNode> allNodes;
     private Boolean searchOrNot;
 
+    private DBAccess dbAccess;
+
     private GraphBuilder()
     {
         //this.pageNode = new GraphNode();
@@ -30,6 +35,7 @@ public class GraphBuilder
         this.rootNode = new GraphNode();
         this.allNodes = new HashMap<>();
         this.searchOrNot = false;
+        this.dbAccess = new DBAccess();
     }
 
     public void setUserName (String userName)
@@ -59,6 +65,14 @@ public class GraphBuilder
             {
                 System.out.println("Parent: "+parent.getName());
             }
+        }
+        //System.out.println(sessionId);
+        try
+        {
+            this.dbAccess.insertSessionAllnodes(this.sessionId, this.allNodes);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
         }
         //this.pageNode = null;
         this.pointerNode = null;

@@ -15,3 +15,11 @@ gplx.xowa.guis.history.Xog_history_stack和Xog_history_mgr中有backward对应�
 gplx.xowa.guis.views.Xog_tab_itm的History_mgr在每次load也一个页面的时候都会被调用，在其中可以通过stack成员来获得上一个页面的url（我在stack里面加了一个Prev_page方法），
 但是这样依然无法判断一个新打开的tab中的第一个页面是从哪里打开的，所以还需要通过解析页面的html内容来构建这一关系。
 
+创建数据库xowa_log, 表名‘navigation_path’:
+CREATE SCHEMA `xowa_log` ;
+
+CREATE TABLE `navigation_path` (
+  `session_id` varchar(255) NOT NULL,
+  `path` blob,
+  PRIMARY KEY (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
