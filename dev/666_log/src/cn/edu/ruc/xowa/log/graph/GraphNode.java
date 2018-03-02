@@ -14,9 +14,9 @@ public class GraphNode
     private Set<String> linkNames;
     private Map<String, GraphNode> parents;
     private Map<String, GraphNode> children;
-    protected GraphNode(){}
+    public GraphNode(){}
 
-    protected GraphNode(String name, Set<Url> links){
+    public GraphNode(String name, Set<Url> links){
         this.name = name;
         this.links = links;
         this.parents = new HashMap<>();

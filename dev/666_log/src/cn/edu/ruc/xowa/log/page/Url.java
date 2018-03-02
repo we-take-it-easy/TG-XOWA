@@ -1,6 +1,8 @@
 package cn.edu.ruc.xowa.log.page;
 
-public class Url
+import java.io.Serializable;
+
+public class Url implements Serializable
 {
     // url中的最后一段，即搜索关键词或者实体名称
     private String keyWord = "";
