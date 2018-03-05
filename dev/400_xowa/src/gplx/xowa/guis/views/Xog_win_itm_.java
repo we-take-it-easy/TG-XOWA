@@ -32,15 +32,14 @@ import gplx.xowa.guis.langs.Xol_font_info;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.*;
 
 import java.util.UUID;
 
 public class Xog_win_itm_ {
+
+	private static UUID uuid;
 
 	public static void PopupLoginForm() {
 		Shell shell = Display.getDefault().getActiveShell();
@@ -55,12 +54,16 @@ public class Xog_win_itm_ {
 			//System.out.println(input.getValue());
 		}
 
-		Shell popupshell = new Shell(SWT.ON_TOP | SWT.Close);
+		Shell popupshell = new Shell();
+		//Shell popupshell = new Shell(SWT.ON_TOP | SWT.Close);
 		popupshell.setText("Session Control");
 		//Text text = new Text(popupshell, SWT.MULTI | SWT.WRAP);
 		//text.setBounds(10, 10, 180, 40);
 		//text.setBackground(popupshell.getBackground());
 		//text.setText("Session Control:");
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 4;
+		popupshell.setLayout(layout);
 
 		Button buttonStart = new Button(popupshell, SWT.MULTI | SWT.WRAP);
 		buttonStart.setBounds(10, 5, 80, 30);
@@ -82,9 +85,18 @@ public class Xog_win_itm_ {
 		buttonGiveUp.setText("Give Up");
 		buttonGiveUp.setEnabled(false);
 
+		/*
+		Button buttonDrawGraph = new Button(popupshell, SWT.MULTI | SWT.WRAP);
+		buttonDrawGraph.setBounds(280, 5, 80, 30);
+		buttonDrawGraph.setData("Review Navigation", null);
+		buttonDrawGraph.setBackground(popupshell.getBackground());
+		buttonDrawGraph.setText("Review");
+		buttonDrawGraph.setEnabled(false);*/
+
 		buttonStart.addListener(SWT.Selection, event -> {
 			//System.out.println("start clicked...");
-			UUID uuid = UUID.randomUUID();
+			//UUID uuid = UUID.randomUUID();
+			uuid = UUID.randomUUID();
 			Action startAction = new StartSessionAction(uuid.toString());
 			startAction.perform();
 			buttonStart.setEnabled(false);
@@ -99,6 +111,7 @@ public class Xog_win_itm_ {
 			buttonStart.setEnabled(true);
 			buttonEnd.setEnabled(false);
 			buttonGiveUp.setEnabled(false);
+			//buttonDrawGraph.setEnabled(true);
 		});
 
 		buttonGiveUp.addListener(SWT.Selection, event -> {
@@ -108,27 +121,37 @@ public class Xog_win_itm_ {
 			buttonStart.setEnabled(true);
 			buttonEnd.setEnabled(false);
 			buttonGiveUp.setEnabled(false);
+			//buttonDrawGraph.setEnabled(true);
 		});
 
-		popupshell.setSize(286, 48);
+		/*
+		buttonDrawGraph.addListener(SWT.Selection, event -> {
+			Canvas canvas = new Canvas(popupshell, SWT.NONE);
+			canvas.setSize(280, 280);
+			canvas.setLocation(6,20);
+			Action drawpathAction = new DrawpathAction(uuid.toString(), canvas);
+			drawpathAction.perform();
+			popupshell.setSize(286, 300);
+		});*/
+		popupshell.setSize(286, 80);
 
-		Rectangle rectangle = Display.getCurrent().getPrimaryMonitor().getClientArea();
-		//System.out.println(rectangle.width + ", " + rectangle.height);
-
-		popupshell.setLocation((rectangle.width - 286) / 2 + 300, 0);
+		//Rectangle rectangle = Display.getCurrent().getPrimaryMonitor().getClientArea();
+		//popupshell.setLocation((rectangle.width - 286) / 2 + 300, 0);
 		popupshell.setMenuBar(new Menu(popupshell, SWT.BAR));
 		popupshell.open();
 	}
 
 	public static void Show_win(Xog_win_itm win) {
 		PopupLoginForm();
-		Xoae_app app = win.App(); GfuiWin win_box = win.Win_box();			
+		Xoae_app app = win.App();
+		GfuiWin win_box = win.Win_box();
 		win_box.Focus_able_(false);
 		app.Gui_mgr().Nightmode_mgr().Enabled_by_cfg();
 		Xog_startup_win_.Startup(app, win_box);
 
 		win_box.Icon_(IconAdp.file_or_blank(app.Fsys_mgr().Bin_xowa_dir().GenSubFil_nest("file", "app.window", "app_icon.png")));
 	}
+
 	public static void Show_widget(boolean show, GfuiElem box, GfuiElem btn) {
 		int box_w, btn_w;
 		if (show) {

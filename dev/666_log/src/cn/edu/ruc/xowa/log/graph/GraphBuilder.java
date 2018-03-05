@@ -3,22 +3,25 @@ package cn.edu.ruc.xowa.log.graph;
 import cn.edu.ruc.xowa.log.database.DBAccess;
 import cn.edu.ruc.xowa.log.page.Page;
 import cn.edu.ruc.xowa.log.page.Url;
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 
+import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class GraphBuilder
 {
+    //graphBuild
     private static GraphBuilder ourInstance = new GraphBuilder();
 
     public static GraphBuilder getInstance()
     {
         return ourInstance;
     }
-
+    //properties
     private String userName = null;
     private String sessionId = null;
     private GraphNode pointerNode;
@@ -26,7 +29,12 @@ public class GraphBuilder
     private Map<String, GraphNode> allNodes;
     private Boolean searchOrNot;
 
+    //DB
     private DBAccess dbAccess;
+
+    //start solr
+    private static final String urlString = "http://localhost:8983/solr/wikipediaCollection";
+    private static SolrClient client = new HttpSolrClient(urlString);
 
     private GraphBuilder()
     {
@@ -34,6 +42,7 @@ public class GraphBuilder
         this.pointerNode = new GraphNode();
         this.rootNode = new GraphNode();
         this.allNodes = new HashMap<>();
+
         this.searchOrNot = false;
         this.dbAccess = new DBAccess();
     }
@@ -50,7 +59,7 @@ public class GraphBuilder
         System.out.println("start session: " + sessionId);
     }
 
-    public void end ()
+    public void end () throws IOException, SolrServerException
     {
         System.out.println("root node: "+rootNode+" :C: "+rootNode.getName());
         System.out.println("allNodes: ");
@@ -66,10 +75,10 @@ public class GraphBuilder
                 System.out.println("Parent: "+parent.getName());
             }
         }
-        //System.out.println(sessionId);
+        Map<String, GraphNodeWithProperties> allNodeWithProperties = getAllNodesWithProperties(allNodes);
         try
         {
-            this.dbAccess.insertSessionAllnodes(this.sessionId, this.allNodes);
+            this.dbAccess.insertSessionAllnodes(this.sessionId, this.allNodes, allNodeWithProperties);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -359,5 +368,61 @@ public class GraphBuilder
         System.out.println("from page " + from.getUrl());
         System.out.println("to page " + to.getUrl());
     }
+    /*
+    public void drawPath(String sessionId, Canvas canvas)
+    {
+        DBAccess dbAccess = new DBAccess();
+        DataVisualizing dataVisualizing = new DataVisualizing(canvas);
+        try
+        {
+            Map<String, GraphNode> allNodes = dbAccess.getSessionAllnodes(sessionId);
+            Set<String> graphNodes = allNodes.keySet();
+            for (String node: graphNodes){
+                dataVisualizing.drawNodes(node);
+                dataVisualizing.drawPaths(allNodes.get(node));
+            }
 
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }*/
+
+    public Double getGiniImpurity(Map<String, GraphNode> allNodes){
+        int numNodes, numEdges, numEdgeSingleNode;
+        double gini = 0.0;
+        Map<String, SerializableGraphNode> serializableAllNodes = new HashMap<>();
+
+        for (Map.Entry<String, GraphNode> entry : allNodes.entrySet())
+        {
+            serializableAllNodes.put(entry.getKey(), new SerializableGraphNode(entry.getValue()));
+        }
+        numEdges = 0;
+        List<Integer> listEdgeSingleNode = new ArrayList<>();
+        for(Map.Entry<String, SerializableGraphNode> entry: serializableAllNodes.entrySet())
+        {
+            numEdgeSingleNode = entry.getValue().getParentNames().size()+ entry.getValue().getChildNames().size();
+            listEdgeSingleNode.add(numEdgeSingleNode);
+            numEdges += entry.getValue().getChildNames().size();
+        }
+        double sum = 0.0;
+        for (Integer itm: listEdgeSingleNode)
+        {
+            sum += (itm/numEdges) * (itm/numEdges);
+        }
+         numNodes = allNodes.keySet().size();
+        gini = sum * numNodes;
+        return gini;
+    }
+
+    public Map<String, GraphNodeWithProperties> getAllNodesWithProperties(Map<String, GraphNode> allNodes) throws IOException, SolrServerException
+    {
+        Map<String, GraphNodeWithProperties> graphNodeWithProperties = new HashMap<>();
+        for (Map.Entry<String, GraphNode> entry : allNodes.entrySet())
+        {
+            graphNodeWithProperties.put(entry.getKey(), new GraphNodeWithProperties(entry.getValue()));
+        }
+
+        return  graphNodeWithProperties;
+    }
 }

@@ -24,6 +24,7 @@ public class Sql
             oos.writeObject(obj);
 
             byte[] employeeAsBytes = baos.toByteArray();
+            //System.out.println("employeeAsBytes: "+employeeAsBytes);
 
             stmt.setBinaryStream(parameterIndex, new ByteArrayInputStream(employeeAsBytes), employeeAsBytes.length);
 

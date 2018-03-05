@@ -3,7 +3,6 @@ package cn.edu.ruc.xowa.log.graph;
 import cn.edu.ruc.xowa.log.page.Url;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,7 +10,7 @@ public class GraphNode
 {
     private String name;
     private Set<Url> links;
-    private Set<String> linkNames;
+    //private Set<String> linkNames;
     private Map<String, GraphNode> parents;
     private Map<String, GraphNode> children;
     public GraphNode(){}
@@ -77,12 +76,12 @@ public class GraphNode
         return children;
     }
 
-    public void reset()
+    /*public void reset()
     {
         System.out.println("11111111111111");
         this.name = new String();
         this.links= new HashSet<>();
         this.children = new HashMap<>();
         this.parents = new HashMap<>();
-    }
+    }*/
 }
