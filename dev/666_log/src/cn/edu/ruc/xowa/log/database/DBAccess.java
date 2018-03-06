@@ -1,12 +1,8 @@
 package cn.edu.ruc.xowa.log.database;
 
 import cn.edu.ruc.xowa.log.graph.GraphNode;
-import cn.edu.ruc.xowa.log.graph.GraphNodeWithProperties;
-import cn.edu.ruc.xowa.log.graph.SeriGraphNodeWithProperties;
 import cn.edu.ruc.xowa.log.graph.SerializableGraphNode;
-import org.apache.solr.client.solrj.SolrServerException;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -63,7 +59,7 @@ public class DBAccess
         }
     }
 
-    public void insertSessionAllnodes(String sessionId, Map<String, GraphNode> allNodes, Map<String, GraphNodeWithProperties> allNodesWithProperties) throws SQLException
+    public void insertSessionAllnodes(String sessionId, Map<String, GraphNode> allNodes, double gini) throws SQLException
     {
         Map<String, SerializableGraphNode> serializableAllNodes = new HashMap<>();
 
@@ -72,16 +68,10 @@ public class DBAccess
             serializableAllNodes.put(entry.getKey(), new SerializableGraphNode(entry.getValue()));
         }
 
-        Map<String, SeriGraphNodeWithProperties> seriAllNodesWithProperties = new HashMap<>();
-        for (Map.Entry<String, GraphNodeWithProperties> entry : allNodesWithProperties.entrySet())
-        {
-            seriAllNodesWithProperties.put(entry.getKey(), new SeriGraphNodeWithProperties(entry.getValue()));
-        }
-
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.navigation_path(session_id, path)VALUES (?,?,?)");
+        pstmt = conn.prepareStatement("INSERT INTO xowa_log.navigation_path(session_id, path, gini)VALUES (?,?,?)");
             pstmt.setString(1,sessionId);
             Sql.setSerializedObject(pstmt, 2, serializableAllNodes);
-            Sql.setSerializedObject(pstmt, 3, seriAllNodesWithProperties);
+            pstmt.setDouble(3, gini);
             pstmt.executeUpdate();
             pstmt.close();
     }
@@ -126,43 +116,7 @@ public class DBAccess
          return allNodes;
     }
 
-    public Map<String, GraphNodeWithProperties> getSessionAllNodesWithProperties(String sessionId) throws SQLException, IOException, SolrServerException
-    {
-        Map<String, GraphNodeWithProperties> allNodes = new HashMap<>();
-        pstmt = conn.prepareStatement("SELECT * FROM xowa_log.navigation_path WHERE session_id = ?");
-        pstmt.setString(1, sessionId);
-        rs = pstmt.executeQuery();
-        if (rs.next())
-        {
-            Object object = Sql.getSerializedObject(rs, "path");
-            Map<String, SeriGraphNodeWithProperties> serializableAllNodes =  (Map<String, SeriGraphNodeWithProperties>) object;
-            for (Map.Entry<String, SeriGraphNodeWithProperties> entry : serializableAllNodes.entrySet())
-            {
-                GraphNodeWithProperties graphNode = new GraphNodeWithProperties(entry.getValue().getName(), entry.getValue().getDiversity(), entry.getValue().getNormality());
-                allNodes.put(entry.getKey(), graphNode);
-            }
 
-            for (Map.Entry<String, SeriGraphNodeWithProperties> entry : serializableAllNodes.entrySet())
-            {
-                List<String> parentNames = entry.getValue().getParentNames();
-                List<String> childNames = entry.getValue().getChildNames();
-                GraphNodeWithProperties node = allNodes.get(entry.getKey());
-                for (String parentName : parentNames)
-                {
-                    GraphNodeWithProperties parent = allNodes.get(parentName);
-                    node.addParents(parent);
-                }
-
-                for (String childName : childNames)
-                {
-                    GraphNodeWithProperties child = allNodes.get(childName);
-                    node.addChildren(child);
-                }
-            }
-        }
-        return null;
-    }
-    /*
     public static void main(String[] args)
     {
         // 简单测试一下反序列化
@@ -179,5 +133,5 @@ public class DBAccess
         {
             e.printStackTrace();
         }
-    }*/
+    }
 }

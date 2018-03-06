@@ -13,6 +13,10 @@ public class GraphNode
     //private Set<String> linkNames;
     private Map<String, GraphNode> parents;
     private Map<String, GraphNode> children;
+
+    private double diversity;
+    private double normality;
+
     public GraphNode(){}
 
     public GraphNode(String name, Set<Url> links){
@@ -47,6 +51,20 @@ public class GraphNode
         {
             this.children.put(child.getName(),child);
         }
+    }
+
+    public Double getDiversity() { return diversity; }
+
+    public Double getNormality() { return normality; }
+
+    public void setDiversity(double diversity)
+    {
+        this.diversity = diversity;
+    }
+
+    public void setNormality(double normality)
+    {
+        this.normality = normality;
     }
 
     public String getName()

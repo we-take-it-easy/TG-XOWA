@@ -4,8 +4,10 @@ import cn.edu.ruc.xowa.log.database.DBAccess;
 import cn.edu.ruc.xowa.log.page.Page;
 import cn.edu.ruc.xowa.log.page.Url;
 import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.response.QueryResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -34,7 +36,7 @@ public class GraphBuilder
 
     //start solr
     private static final String urlString = "http://localhost:8983/solr/wikipediaCollection";
-    private static SolrClient client = new HttpSolrClient(urlString);
+    private static SolrClient client = new HttpSolrClient (urlString);
 
     private GraphBuilder()
     {
@@ -59,27 +61,21 @@ public class GraphBuilder
         System.out.println("start session: " + sessionId);
     }
 
-    public void end () throws IOException, SolrServerException
+    public void end ()
     {
         System.out.println("root node: "+rootNode+" :C: "+rootNode.getName());
         System.out.println("allNodes: ");
-        for (GraphNode itm : allNodes.values())
-        {
-            System.out.println(itm.getName()+" :C: "+itm.getChildren().keySet()+" :P: "+itm.getParents().keySet());
-            for (GraphNode child: itm.getChildren().values())
-            {
-                System.out.println("Child: "+child.getName());
-            }
-            for (GraphNode parent: itm.getParents().values())
-            {
-                System.out.println("Parent: "+parent.getName());
-            }
-        }
-        Map<String, GraphNodeWithProperties> allNodeWithProperties = getAllNodesWithProperties(allNodes);
         try
         {
-            this.dbAccess.insertSessionAllnodes(this.sessionId, this.allNodes, allNodeWithProperties);
-        } catch (SQLException e)
+            for (GraphNode node : allNodes.values())
+            {
+                node.setDiversity(CalculateDiversity(node));
+                node.setNormality(CalculateNormality(node));
+                System.out.println(node.getName()+" :C: "+node.getChildren().keySet()+" :P: "+node.getParents().keySet() +" diversity: "+ node.getDiversity()+ " normality: "+ node.getNormality());
+            }
+            System.out.println("gini: "+ CalculateGiniImpurity(allNodes));
+            this.dbAccess.insertSessionAllnodes(this.sessionId, this.allNodes, CalculateGiniImpurity(allNodes));
+        } catch (SQLException | SolrServerException | IOException e)
         {
             e.printStackTrace();
         }
@@ -388,7 +384,7 @@ public class GraphBuilder
         }
     }*/
 
-    public Double getGiniImpurity(Map<String, GraphNode> allNodes){
+    public static double CalculateGiniImpurity(Map<String, GraphNode> allNodes){
         int numNodes, numEdges, numEdgeSingleNode;
         double gini = 0.0;
         Map<String, SerializableGraphNode> serializableAllNodes = new HashMap<>();
@@ -403,26 +399,78 @@ public class GraphBuilder
         {
             numEdgeSingleNode = entry.getValue().getParentNames().size()+ entry.getValue().getChildNames().size();
             listEdgeSingleNode.add(numEdgeSingleNode);
-            numEdges += entry.getValue().getChildNames().size();
+            numEdges = numEdges + entry.getValue().getChildNames().size();
         }
+        System.out.println("listEdgeSingleNode: "+ listEdgeSingleNode);
         double sum = 0.0;
         for (Integer itm: listEdgeSingleNode)
         {
-            sum += (itm/numEdges) * (itm/numEdges);
+            double f = ((double)itm/numEdges) * ((double)itm/numEdges);
+            sum += f;
         }
          numNodes = allNodes.keySet().size();
         gini = sum * numNodes;
         return gini;
     }
 
-    public Map<String, GraphNodeWithProperties> getAllNodesWithProperties(Map<String, GraphNode> allNodes) throws IOException, SolrServerException
+    public static double CalculateDiversity(GraphNode graphNode) throws IOException, SolrServerException
     {
-        Map<String, GraphNodeWithProperties> graphNodeWithProperties = new HashMap<>();
-        for (Map.Entry<String, GraphNode> entry : allNodes.entrySet())
+        double diver = 0.0;
+        List<String> nodesNameList= new ArrayList<>(graphNode.getChildren().keySet());
+        if (!nodesNameList.isEmpty())
         {
-            graphNodeWithProperties.put(entry.getKey(), new GraphNodeWithProperties(entry.getValue()));
-        }
+            SolrQuery query = new SolrQuery();
+            //double numFound;
+            double sum = 0.0;
+            int count = 0;
+            if (nodesNameList.size() == 1)
+            {
+                query.setQuery("REVISION_TEXT: "+"\""+ nodesNameList.get(0) +"\"");
+                QueryResponse resp = client.query(query);
+                sum = resp.getResults().getNumFound();
 
-        return  graphNodeWithProperties;
+                diver = sum;
+            }
+            else{
+                for(int i=0;i<nodesNameList.size();i++)
+                {
+                    for(int j=i+1;j<nodesNameList.size();j++)
+                    {
+                        query.setQuery("REVISION_TEXT: "+"\""+ nodesNameList.get(i) +"\""+" "+"&&"+" "+"REVISION_TEXT: "+"\""+nodesNameList.get(j)+"\"");
+                        QueryResponse resp = client.query(query);
+                        //numFound = resp.getResults().getNumFound();
+                        sum += resp.getResults().getNumFound();
+                        count ++;
+
+                        System.out.println("numFound: "+ resp.getResults().getNumFound());
+                    }
+                }
+                diver = sum/count;
+                //System.out.println("diversity: "+ diver);
+            }
+        }
+        return diver;
+    }
+
+    public static double CalculateNormality(GraphNode graphNode) throws IOException, SolrServerException
+    {
+        double normality;
+
+        double sum = 0.0;
+        List<String> nodesNameList= new ArrayList<>(graphNode.getChildren().keySet());
+        if (!nodesNameList.isEmpty())
+        {
+            SolrQuery query = new SolrQuery();
+            for (int i=0; i<nodesNameList.size(); i++){
+                query.setQuery("REVISION_TEXT: "+"\""+ nodesNameList.get(0) +"\"");
+                QueryResponse resp = client.query(query);
+                //numFound = resp.getResults().getNumFound();
+                sum += (double)resp.getResults().getNumFound();
+            }
+            normality = sum/nodesNameList.size();
+        }
+        else normality = 0.0;
+        //System.out.println("normality: "+ normality);
+        return normality;
     }
 }

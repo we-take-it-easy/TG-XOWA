@@ -12,13 +12,17 @@ public class SerializableGraphNode implements Serializable
     private List<Url> links;
     private List<String> parentNames;
     private List<String> childNames;
+    private Double diversity;
+    private Double normality;
 
     public SerializableGraphNode (GraphNode graphNode)
     {
         this.name = graphNode.getName();
         this.links = new ArrayList<>(graphNode.getLinks());
         this.parentNames = new ArrayList<>(graphNode.getParents().keySet());
-        this.childNames = new ArrayList<>(graphNode.getParents().keySet());
+        this.childNames = new ArrayList<>(graphNode.getChildren().keySet());
+        this.diversity = graphNode.getDiversity();
+        this.normality = graphNode.getNormality();
     }
 
     public String getName()
@@ -40,4 +44,7 @@ public class SerializableGraphNode implements Serializable
     {
         return childNames;
     }
+
+    public Double getDiversity() { return diversity; }
+    public Double getNormality() { return normality; }
 }
