@@ -32,15 +32,17 @@ import gplx.xowa.guis.langs.Xol_font_info;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.*;
 
 import java.util.UUID;
 
 public class Xog_win_itm_ {
+
+	private static UUID uuid;
 
 	public static void PopupLoginForm() {
 		Shell shell = Display.getDefault().getActiveShell();
@@ -55,12 +57,136 @@ public class Xog_win_itm_ {
 			//System.out.println(input.getValue());
 		}
 
-		Shell popupshell = new Shell(SWT.ON_TOP | SWT.Close);
+		Shell choiceshell = new Shell();
+		Text text = new Text(choiceshell, SWT.SINGLE | SWT.READ_ONLY);
+		text.setText("1. Please choose a module that you wanna try.");
+
+		Button buttonTaskGenerate = new Button(choiceshell, SWT.MULTI | SWT.WRAP);
+		buttonTaskGenerate.setBounds(10, 5, 100, 30);
+		buttonTaskGenerate.setData("Generate a task", null);
+		buttonTaskGenerate.setBackground(choiceshell.getBackground());
+		buttonTaskGenerate.setText("Generate a task");
+
+		Button buttonTaskHandle = new Button(choiceshell, SWT.MULTI | SWT.WRAP);
+		buttonTaskHandle.setBounds(100, 5, 80, 30);
+		buttonTaskHandle.setData("Finish a task", null);
+		buttonTaskHandle.setBackground(choiceshell.getBackground());
+		buttonTaskHandle.setText("Finish a task");
+
+		buttonTaskGenerate.addListener(SWT.Selection, event ->
+		{
+			System.out.println("task generating...");
+			TaskGenerating(choiceshell, buttonTaskGenerate);
+		});
+		buttonTaskHandle.addListener(SWT.Selection, event ->
+		{
+			TaskHandling();
+		});
+
+		choiceshell.setText("Module Control");
+		FormLayout layout = new FormLayout();
+		layout.spacing = 5;
+		layout.marginHeight = layout.marginWidth = 9;
+		choiceshell.setLayout(layout);
+
+		FormData textData = new FormData();
+		textData.top = new FormAttachment(0);
+		textData.left = new FormAttachment(0);
+		textData.right = new FormAttachment(90);
+		text.setLayoutData(textData);
+
+		FormData buttonTaskGenerateData = new FormData();
+		buttonTaskGenerateData.top = new FormAttachment(text);
+		buttonTaskGenerateData.left = new FormAttachment(0);
+		buttonTaskGenerateData.right = new FormAttachment(40);
+		buttonTaskGenerate.setLayoutData(buttonTaskGenerateData);
+
+		FormData buttonTaskHandleData = new FormData();
+		buttonTaskHandleData.top = new FormAttachment(text);
+		buttonTaskHandleData.left = new FormAttachment(buttonTaskGenerate);
+		buttonTaskHandle.setLayoutData(buttonTaskHandleData);
+
+		/*GridLayout choicelayout = new GridLayout();
+		choicelayout.numColumns = 2;
+		choiceshell.setLayout(choicelayout);*/
+		//Rectangle rectangle = Display.getCurrent().getPrimaryMonitor().getClientArea();
+		//popupshell.setLocation((rectangle.width - 286) / 2 + 300, 0);
+		//choiceshell.setMenuBar(new Menu(choiceshell, SWT.BAR));
+		choiceshell.setSize(320, 480);
+		choiceshell.open();
+	}
+	public static void TaskGenerating(Shell choiceshell, Button button){
+
+		Combo combo = new Combo(choiceshell, SWT.DROP_DOWN | SWT.READ_ONLY);
+		combo.setItems(new String[]{"in other words", "in plain English", "that is to say", "namely"});
+		combo.select(0);
+		combo.setBounds(10,100, 200,50);
+		choiceshell.redraw();
+		//combo.setData("in other words", "in other words");
+		//combo.setData("in plain English", "in plain English");
+		//combo.setData("that is to say", "that is to say");
+		//combo.setData("namely", "namely");
+
+		/*List list = new List(choiceshell, SWT.MULTI | SWT.WRAP);
+		Menu menu = new Menu(choiceshell, SWT.BAR);
+		choiceshell.setMenuBar(menu);
+		MenuItem taskGenerate = new MenuItem(menu, SWT.CASCADE);
+		taskGenerate.setText("task generation");
+
+		Menu taskgenrateMenu = new Menu(choiceshell, SWT.DROP_DOWN);
+		taskGenerate.setMenu(taskgenrateMenu);
+		Button buttonInOtherWords = new Button(choiceshell, SWT.MULTI | SWT.WRAP);
+		buttonInOtherWords.setBounds(10, 45, 100, 30);
+		buttonInOtherWords.setData("in other words", null);
+		buttonInOtherWords.setBackground(choiceshell.getBackground());
+		buttonInOtherWords.setText("in other words");
+
+		Button buttonThatIsToSay = new Button(choiceshell, SWT.MULTI | SWT.WRAP);
+		buttonInOtherWords.setBounds(10, 90, 100, 30);
+		buttonThatIsToSay.setData("that is to say", null);
+		buttonThatIsToSay.setBackground(choiceshell.getBackground());
+		buttonThatIsToSay.setText("that is to say");
+
+		Button buttonNamely = new Button(choiceshell, SWT.MULTI | SWT.WRAP);
+		buttonNamely.setBounds(10, 45, 135, 30);
+		buttonNamely.setData("namely", null);
+		buttonNamely.setBackground(choiceshell.getBackground());
+		buttonNamely.setText("namely");
+
+		Button buttonInPlainEnglish = new Button(choiceshell, SWT.MULTI | SWT.WRAP);
+		buttonInPlainEnglish.setBounds(10, 180, 100, 30);
+		buttonInPlainEnglish.setData("in plain English", null);
+		buttonInPlainEnglish.setBackground(choiceshell.getBackground());
+		buttonInPlainEnglish.setText("in plain English");*/
+
+		/*MenuItem inPlainEnglish = new MenuItem(menu, SWT.CASCADE);
+		inPlainEnglish.setText("in plain English");*/
+
+		/*
+		FormData listData = new FormData();
+		listData.top = new FormAttachment(button);
+		listData.left = new FormAttachment(0);
+		listData.right = new FormAttachment(40);
+		list.setLayoutData(listData);
+		*/
+	}
+	public static void TaskHandling(){
+		Shell popupshell = new Shell();
+		//Shell popupshell = new Shell(SWT.ON_TOP | SWT.Close);
 		popupshell.setText("Session Control");
+		popupshell.setSize(286, 80);
+
+		//Rectangle rectangle = Display.getCurrent().getPrimaryMonitor().getClientArea();
+		//popupshell.setLocation((rectangle.width - 286) / 2 + 300, 0);
+		popupshell.setMenuBar(new Menu(popupshell, SWT.DROP_DOWN));
+		popupshell.open();
 		//Text text = new Text(popupshell, SWT.MULTI | SWT.WRAP);
 		//text.setBounds(10, 10, 180, 40);
 		//text.setBackground(popupshell.getBackground());
 		//text.setText("Session Control:");
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 4;
+		popupshell.setLayout(layout);
 
 		Button buttonStart = new Button(popupshell, SWT.MULTI | SWT.WRAP);
 		buttonStart.setBounds(10, 5, 80, 30);
@@ -82,9 +208,18 @@ public class Xog_win_itm_ {
 		buttonGiveUp.setText("Give Up");
 		buttonGiveUp.setEnabled(false);
 
+		/*
+		Button buttonDrawGraph = new Button(popupshell, SWT.MULTI | SWT.WRAP);
+		buttonDrawGraph.setBounds(280, 5, 80, 30);
+		buttonDrawGraph.setData("Review Navigation", null);
+		buttonDrawGraph.setBackground(popupshell.getBackground());
+		buttonDrawGraph.setText("Review");
+		buttonDrawGraph.setEnabled(false);*/
+
 		buttonStart.addListener(SWT.Selection, event -> {
 			//System.out.println("start clicked...");
-			UUID uuid = UUID.randomUUID();
+			//UUID uuid = UUID.randomUUID();
+			uuid = UUID.randomUUID();
 			Action startAction = new StartSessionAction(uuid.toString());
 			startAction.perform();
 			buttonStart.setEnabled(false);
@@ -99,6 +234,7 @@ public class Xog_win_itm_ {
 			buttonStart.setEnabled(true);
 			buttonEnd.setEnabled(false);
 			buttonGiveUp.setEnabled(false);
+			//buttonDrawGraph.setEnabled(true);
 		});
 
 		buttonGiveUp.addListener(SWT.Selection, event -> {
@@ -108,27 +244,31 @@ public class Xog_win_itm_ {
 			buttonStart.setEnabled(true);
 			buttonEnd.setEnabled(false);
 			buttonGiveUp.setEnabled(false);
+			//buttonDrawGraph.setEnabled(true);
 		});
 
-		popupshell.setSize(286, 48);
-
-		Rectangle rectangle = Display.getCurrent().getPrimaryMonitor().getClientArea();
-		//System.out.println(rectangle.width + ", " + rectangle.height);
-
-		popupshell.setLocation((rectangle.width - 286) / 2 + 300, 0);
-		popupshell.setMenuBar(new Menu(popupshell, SWT.BAR));
-		popupshell.open();
+		/*
+		buttonDrawGraph.addListener(SWT.Selection, event -> {
+			Canvas canvas = new Canvas(popupshell, SWT.NONE);
+			canvas.setSize(280, 280);
+			canvas.setLocation(6,20);
+			Action drawpathAction = new DrawpathAction(uuid.toString(), canvas);
+			drawpathAction.perform();
+			popupshell.setSize(286, 300);
+		});*/
 	}
 
 	public static void Show_win(Xog_win_itm win) {
 		PopupLoginForm();
-		Xoae_app app = win.App(); GfuiWin win_box = win.Win_box();			
+		Xoae_app app = win.App();
+		GfuiWin win_box = win.Win_box();
 		win_box.Focus_able_(false);
 		app.Gui_mgr().Nightmode_mgr().Enabled_by_cfg();
 		Xog_startup_win_.Startup(app, win_box);
 
 		win_box.Icon_(IconAdp.file_or_blank(app.Fsys_mgr().Bin_xowa_dir().GenSubFil_nest("file", "app.window", "app_icon.png")));
 	}
+
 	public static void Show_widget(boolean show, GfuiElem box, GfuiElem btn) {
 		int box_w, btn_w;
 		if (show) {

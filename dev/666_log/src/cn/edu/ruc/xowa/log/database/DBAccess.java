@@ -27,7 +27,7 @@ public class DBAccess
             DRIVER = "com.mysql.jdbc.Driver";
             URL = "jdbc:mysql://localhost:3306/xowa_log";
             USER = "root";
-            PASSWORD = "111111";
+            PASSWORD = "xly19710908";
 
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -59,7 +59,7 @@ public class DBAccess
         }
     }
 
-    public void insertSessionAllnodes(String sessionId, Map<String, GraphNode> allNodes) throws SQLException
+    public void insertSessionAllnodes(String sessionId, String userName, Map<String, GraphNode> allNodes, double gini) throws SQLException
     {
         Map<String, SerializableGraphNode> serializableAllNodes = new HashMap<>();
 
@@ -68,9 +68,11 @@ public class DBAccess
             serializableAllNodes.put(entry.getKey(), new SerializableGraphNode(entry.getValue()));
         }
 
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.navigation_path(session_id, path)VALUES (?,?)");
+        pstmt = conn.prepareStatement("INSERT INTO xowa_log.navigation_path(session_id, user_name, path, gini)VALUES (?,?,?,?)");
             pstmt.setString(1,sessionId);
-            Sql.setSerializedObject(pstmt, 2, serializableAllNodes);
+            pstmt.setString(2, userName);
+            Sql.setSerializedObject(pstmt, 3, serializableAllNodes);
+            pstmt.setDouble(4, gini);
             pstmt.executeUpdate();
             pstmt.close();
     }
@@ -114,6 +116,7 @@ public class DBAccess
          pstmt.close();
          return allNodes;
     }
+
 
     public static void main(String[] args)
     {
