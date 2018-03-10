@@ -75,6 +75,7 @@ public class Xog_win_itm_ {
 
 		buttonTaskGenerate.addListener(SWT.Selection, event ->
 		{
+			System.out.println("task generating...");
 			TaskGenerating(choiceshell, buttonTaskGenerate);
 		});
 		buttonTaskHandle.addListener(SWT.Selection, event ->
@@ -119,6 +120,8 @@ public class Xog_win_itm_ {
 		Combo combo = new Combo(choiceshell, SWT.DROP_DOWN | SWT.READ_ONLY);
 		combo.setItems(new String[]{"in other words", "in plain English", "that is to say", "namely"});
 		combo.select(0);
+		combo.setBounds(10,100, 200,50);
+		choiceshell.redraw();
 		//combo.setData("in other words", "in other words");
 		//combo.setData("in plain English", "in plain English");
 		//combo.setData("that is to say", "that is to say");
