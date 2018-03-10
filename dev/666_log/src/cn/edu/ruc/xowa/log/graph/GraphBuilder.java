@@ -74,7 +74,7 @@ public class GraphBuilder
                 System.out.println(node.getName()+" :C: "+node.getChildren().keySet()+" :P: "+node.getParents().keySet() +" diversity: "+ node.getDiversity()+ " normality: "+ node.getNormality());
             }
             System.out.println("gini: "+ CalculateGiniImpurity(allNodes));
-            this.dbAccess.insertSessionAllnodes(this.sessionId, this.allNodes, CalculateGiniImpurity(allNodes));
+            this.dbAccess.insertSessionAllnodes(this.sessionId,this.userName, this.allNodes, CalculateGiniImpurity(allNodes));
         } catch (SQLException | SolrServerException | IOException e)
         {
             e.printStackTrace();

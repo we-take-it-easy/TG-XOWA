@@ -59,7 +59,7 @@ public class DBAccess
         }
     }
 
-    public void insertSessionAllnodes(String sessionId, Map<String, GraphNode> allNodes, double gini) throws SQLException
+    public void insertSessionAllnodes(String sessionId, String userName, Map<String, GraphNode> allNodes, double gini) throws SQLException
     {
         Map<String, SerializableGraphNode> serializableAllNodes = new HashMap<>();
 
@@ -68,10 +68,11 @@ public class DBAccess
             serializableAllNodes.put(entry.getKey(), new SerializableGraphNode(entry.getValue()));
         }
 
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.navigation_path(session_id, path, gini)VALUES (?,?,?)");
+        pstmt = conn.prepareStatement("INSERT INTO xowa_log.navigation_path(session_id, user_name, path, gini)VALUES (?,?,?,?)");
             pstmt.setString(1,sessionId);
-            Sql.setSerializedObject(pstmt, 2, serializableAllNodes);
-            pstmt.setDouble(3, gini);
+            pstmt.setString(2, userName);
+            Sql.setSerializedObject(pstmt, 3, serializableAllNodes);
+            pstmt.setDouble(4, gini);
             pstmt.executeUpdate();
             pstmt.close();
     }
