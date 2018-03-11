@@ -35,9 +35,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
 import java.util.List;
@@ -169,6 +167,31 @@ public class Xog_win_itm_ {
                     String keyword = "in other words";
                     Action returnEntities= new ReturnEntitiesAction(keyword);
                     entityResults = returnEntities.get();
+                    /*
+					entityResults = new ArrayList<>();
+					entityResults.add("e1");
+					entityResults.add("e2");
+					entityResults.add("e3");
+					entityResults.add("e4");
+					entityResults.add("e5");
+					entityResults.add("e6");
+					entityResults.add("e7");
+					entityResults.add("e8");
+					entityResults.add("e9");
+					entityResults.add("e10");
+					entityResults.add("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+					entityResults.add("e1");
+					entityResults.add("e2");
+					entityResults.add("e3");
+					entityResults.add("e4");
+					entityResults.add("e5");
+					entityResults.add("e6");
+					entityResults.add("e7");
+					entityResults.add("e8");
+					entityResults.add("e9");
+					entityResults.add("e10");
+					entityResults.add("e11");
+					*/
                 }else if (combo.getText().equals("in plain English"))
                 {
                     //pass "in plain English" to BG and return back entity names
@@ -198,21 +221,46 @@ public class Xog_win_itm_ {
 				text3Data.right = new FormAttachment(90);
 				text3.setLayoutData(text3Data);
 
-				ScrolledComposite scrolledComposite = new ScrolledComposite(choiceshell, SWT.BORDER | SWT.V_SCROLL);
+				ScrolledComposite scrolledComposite = new ScrolledComposite(choiceshell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 				//scrolledComposite.setBounds();
 				Composite composite = new Composite(scrolledComposite, SWT.NONE);
 				composite.setSize(326, 600);
-                scrolledComposite.setContent(composite);
+
+				scrolledComposite.setContent(composite);
 
                 String entityNames = new String();
+                int maxLength = 0;
                 for (String entity : entityResults){
-                	if (entity.length() > 15)
+                	if (entity.length() > 1)
 					{
 						entityNames += entity +"\n";
+						if (entity.length() > maxLength)
+						{
+							maxLength = entity.length();
+						}
 					}
 				}
-                Text entities = new Text(composite, SWT.BORDER);
-                entities.setText(entityNames);
+				Text entities = new Text(composite, SWT.BORDER | SWT.WRAP |SWT.MULTI);
+
+				//下面这几行设置entities的宽度，并设置不允许编辑
+				int compositeWidth = 12*maxLength;
+				if (compositeWidth < 320)
+				{
+					compositeWidth = 320;
+				}
+				int compoSiteHight = 20*entityResults.size();
+				GridData data = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
+				data.widthHint = compositeWidth;  // Some width
+				entities.setLayoutData(data);
+				entities.setEditable(false);
+
+                entities.setText(entityNames.trim());
+
+				//我也不知道为啥要加这4行
+				composite.setLayout(new GridLayout(1, true));
+				scrolledComposite.setMinSize(compositeWidth, compoSiteHight);
+				scrolledComposite.setExpandVertical(true);
+				scrolledComposite.setExpandHorizontal(true);
 
                 FormData scrolledCompositeData = new FormData();
                 scrolledCompositeData.top = new FormAttachment(text3);
