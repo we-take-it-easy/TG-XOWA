@@ -8,6 +8,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -472,5 +474,27 @@ public class GraphBuilder
         else normality = 0.0;
         //System.out.println("normality: "+ normality);
         return normality;
+    }
+
+    public List<String> SolrSearch(String keyword) throws IOException, SolrServerException
+    {
+        List<String> entities = new ArrayList<>();
+        SolrQuery query = new SolrQuery();
+        query.setQuery("REVISION_TEXT: "+ "\"" + keyword + "\"");
+        query.setFields("TITLE");
+        query.setRows(30);
+
+        QueryResponse resp = client.query(query);
+        SolrDocumentList docs = resp.getResults();
+        docs.toString();
+        for (SolrDocument doc:docs)
+        {
+            //System.out.println("doc: "+doc);
+            //System.out.println("doc get TITLE: "+ doc.get("TITLE"));
+            String entityName = (String) doc.get("TITLE");
+            entities.add(entityName);
+        }
+        //resp.getFacetField("TITLE").getName();
+        return entities;
     }
 }

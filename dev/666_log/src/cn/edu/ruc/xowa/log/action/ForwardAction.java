@@ -3,6 +3,8 @@ package cn.edu.ruc.xowa.log.action;
 import cn.edu.ruc.xowa.log.graph.GraphBuilder;
 import cn.edu.ruc.xowa.log.page.Page;
 
+import java.util.List;
+
 /**
  * Created by hank on 18-1-19.
  */
@@ -22,4 +24,7 @@ public class ForwardAction implements Action
     {
         GraphBuilder.getInstance().goForward(fromPage, toPage);
     }
+
+    @Override
+    public List<String> get() { return null; }
 }
