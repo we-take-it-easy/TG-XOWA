@@ -2,6 +2,8 @@ package cn.edu.ruc.xowa.log.action;
 
 import org.eclipse.swt.widgets.Canvas;
 
+import java.util.List;
+
 public class DrawpathAction implements Action
 {
     private String sessionId;
@@ -18,4 +20,7 @@ public class DrawpathAction implements Action
     {
         //GraphBuilder.getInstance().drawPath(sessionId, canvas);
     }
+
+    @Override
+    public List<String> get() { return null; }
 }
