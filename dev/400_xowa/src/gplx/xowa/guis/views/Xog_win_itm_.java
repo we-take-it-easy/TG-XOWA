@@ -167,31 +167,6 @@ public class Xog_win_itm_ {
                     String keyword = "in other words";
                     Action returnEntities= new ReturnEntitiesAction(keyword);
                     entityResults = returnEntities.get();
-                    /*
-					entityResults = new ArrayList<>();
-					entityResults.add("e1");
-					entityResults.add("e2");
-					entityResults.add("e3");
-					entityResults.add("e4");
-					entityResults.add("e5");
-					entityResults.add("e6");
-					entityResults.add("e7");
-					entityResults.add("e8");
-					entityResults.add("e9");
-					entityResults.add("e10");
-					entityResults.add("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-					entityResults.add("e1");
-					entityResults.add("e2");
-					entityResults.add("e3");
-					entityResults.add("e4");
-					entityResults.add("e5");
-					entityResults.add("e6");
-					entityResults.add("e7");
-					entityResults.add("e8");
-					entityResults.add("e9");
-					entityResults.add("e10");
-					entityResults.add("e11");
-					*/
                 }else if (combo.getText().equals("in plain English"))
                 {
                     //pass "in plain English" to BG and return back entity names

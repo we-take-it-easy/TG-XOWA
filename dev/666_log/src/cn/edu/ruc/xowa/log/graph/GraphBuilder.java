@@ -464,7 +464,7 @@ public class GraphBuilder
         {
             SolrQuery query = new SolrQuery();
             for (int i=0; i<nodesNameList.size(); i++){
-                query.setQuery("REVISION_TEXT: "+"\""+ nodesNameList.get(0) +"\"");
+                query.setQuery("REVISION_TEXT: "+"\""+ nodesNameList.get(i) +"\"");
                 QueryResponse resp = client.query(query);
                 //numFound = resp.getResults().getNumFound();
                 sum += (double)resp.getResults().getNumFound();
@@ -480,13 +480,12 @@ public class GraphBuilder
     {
         List<String> entities = new ArrayList<>();
         SolrQuery query = new SolrQuery();
-        query.setQuery("REVISION_TEXT: "+ "\"" + keyword + "\"");
+        query.setQuery("REVISION_TEXT:"+"\""+keyword+"\"");
         query.setFields("TITLE");
         query.setRows(30);
 
         QueryResponse resp = client.query(query);
         SolrDocumentList docs = resp.getResults();
-        docs.toString();
         for (SolrDocument doc:docs)
         {
             //System.out.println("doc: "+doc);
