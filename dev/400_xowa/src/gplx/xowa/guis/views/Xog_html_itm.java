@@ -89,6 +89,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 		// set the html and links for the page here.
 		Url url1 = new Url(page.Url().To_str());
 		Page page1 = PageCache.getInstance().getPage(url1);
+		System.out.println("3. get html for: " + url1.getFull());
 		if (page1 == null)
 		{
 			System.err.println("Xog_html_itm.Show(): page is null");

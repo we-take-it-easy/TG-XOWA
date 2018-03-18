@@ -41,6 +41,7 @@ public class Load_page_wkr implements Gfo_thread_wkr {
 		Url url1 = new Url(this.url.To_str());
 		Page page1 = new Page(url1);
 		PageCache.getInstance().putPage(url1, page1);
+		System.out.println("1.init page for: " + url1.getFull());
 
 		try {
 			Running_(true);
