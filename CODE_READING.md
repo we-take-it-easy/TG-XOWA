@@ -23,3 +23,18 @@ CREATE TABLE `navigation_path` (
   `path` blob,
   PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+创建表 `explo_ques_ans` :
+CREATE TABLE `explo_ques_ans` (
+  `user_name` varchar(45) NOT NULL,
+  `entity_name` varchar(255) DEFAULT NULL,
+  `question` blob,
+  `answer` blob
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+创建表 ‘deleted_sentence’: 
+CREATE TABLE `deleted_sentence` (
+  `entity_name` varchar(45) NOT NULL,
+  `flag_sentence` blob,
+  `deleted_sentence` blob
+) ENGINE=InnoDB DEFAULT CHARSET=latin1

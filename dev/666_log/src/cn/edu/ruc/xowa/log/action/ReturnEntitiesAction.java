@@ -1,7 +1,7 @@
 package cn.edu.ruc.xowa.log.action;
 
 import cn.edu.ruc.xowa.log.graph.GraphBuilder;
-import org.apache.solr.client.solrj.SolrServerException;
+import org.htmlparser.util.ParserException;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,8 +23,8 @@ public class ReturnEntitiesAction implements Action
         List<String> entities = null;
         try
         {
-            entities = GraphBuilder.getInstance().SolrSearch(keyword);
-        } catch (IOException | SolrServerException e)
+            entities = GraphBuilder.getInstance().GetEntityNames(keyword);
+        } catch (IOException | ParserException e)
         {
             e.printStackTrace();
         }
