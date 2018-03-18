@@ -4,10 +4,7 @@ import cn.edu.ruc.xowa.log.graph.GraphNode;
 import cn.edu.ruc.xowa.log.graph.SerializableGraphNode;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DBAccess
 {
@@ -77,6 +74,27 @@ public class DBAccess
             pstmt.close();
     }
 
+    public void insertQuesForUser(String userName,String entityName, String question, String answer) throws SQLException
+    {
+        pstmt = conn.prepareStatement("INSERT INTO xowa_log.explo_ques_ans(user_name, entity_name, question, answer)VALUES (?,?,?,?)");
+        pstmt.setString(1,userName);
+        pstmt.setString(2,entityName);
+        Sql.setSerializedObject(pstmt, 3, question);
+        Sql.setSerializedObject(pstmt, 4, answer);
+        pstmt.executeUpdate();
+        pstmt.close();
+    }
+
+    public void insertDeletedForPages(String entityName, String flag, String deletedSentence) throws SQLException
+    {
+        pstmt = conn.prepareStatement("INSERT INTO xowa_log.deleted_sentence(entity_name, flag_sentence, deleted_sentence)VALUES (?,?,?)");
+        pstmt.setString(1,entityName);
+        Sql.setSerializedObject(pstmt,2,flag);
+        Sql.setSerializedObject(pstmt, 3, deletedSentence);
+        pstmt.executeUpdate();
+        pstmt.close();
+    }
+
     public Map<String, GraphNode> getSessionAllnodes(String sessionId) throws SQLException
     {
          Map<String, GraphNode> allNodes = new HashMap<>();
@@ -116,8 +134,17 @@ public class DBAccess
          pstmt.close();
          return allNodes;
     }
+    public List<List<String>> getSentencesForEntity(String entityName) throws SQLException
+    {
+        List<List<String>> sentenceList = new ArrayList<>();
+        List<String> sentences = new ArrayList<>();
+        pstmt = conn.prepareStatement("SELECT * FROM xowa_log.deleted_sentence WHERE entity_name = ?");
+        pstmt.setString(1, entityName);
+        rs = pstmt.executeQuery();
+        return sentenceList;
+    }
 
-
+    /*
     public static void main(String[] args)
     {
         // 简单测试一下反序列化
@@ -134,5 +161,5 @@ public class DBAccess
         {
             e.printStackTrace();
         }
-    }
+    }*/
 }

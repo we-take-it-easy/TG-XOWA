@@ -1,5 +1,6 @@
 package cn.edu.ruc.xowa.log.graph;
 
+import cn.edu.ruc.xowa.log.crawler.HttpUtils;
 import cn.edu.ruc.xowa.log.database.DBAccess;
 import cn.edu.ruc.xowa.log.page.Page;
 import cn.edu.ruc.xowa.log.page.Url;
@@ -8,8 +9,13 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
+import org.htmlparser.Node;
+import org.htmlparser.NodeFilter;
+import org.htmlparser.Parser;
+import org.htmlparser.filters.NodeClassFilter;
+import org.htmlparser.tags.LinkTag;
+import org.htmlparser.util.NodeList;
+import org.htmlparser.util.ParserException;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -476,24 +482,63 @@ public class GraphBuilder
         return normality;
     }
 
-    public List<String> SolrSearch(String keyword) throws IOException, SolrServerException
+    public List<String> GetEntityNames(String keyword) throws IOException,ParserException
     {
         List<String> entities = new ArrayList<>();
-        SolrQuery query = new SolrQuery();
-        query.setQuery("REVISION_TEXT:"+"\""+keyword+"\"");
-        query.setFields("TITLE");
-        query.setRows(30);
+        String transKeyword = null;
+        if (keyword.equals("in other words")) transKeyword = "in+other+words";
+        else if (keyword.equals("that is to say")) transKeyword = "that+is+to+say";
+        else if (keyword.equals("in plain English")) transKeyword = "in+plain+english";
+        else if (keyword.equals("namely")) transKeyword = "namely";
+        //in+other+words
+        String html = HttpUtils.Instance().getPageContent("https://en.wikipedia.org/w/index.php?title=Special:Search&limit=50&profile=default&fulltext=1&searchToken=ew6grhl6iyet3idku9lvggeqx&search=%22"+transKeyword+"%22");
+        //System.out.println(html);
+        Parser parser = Parser.createParser(html, "utf-8");
+        NodeFilter linkFilter = new NodeClassFilter(LinkTag.class);
 
-        QueryResponse resp = client.query(query);
-        SolrDocumentList docs = resp.getResults();
-        for (SolrDocument doc:docs)
+        NodeList links = parser.extractAllNodesThatMatch(linkFilter);
+        for (Node node : links.toNodeArray())
         {
-            //System.out.println("doc: "+doc);
-            //System.out.println("doc get TITLE: "+ doc.get("TITLE"));
-            String entityName = (String) doc.get("TITLE");
-            entities.add(entityName);
+            if (node != null && node instanceof LinkTag)
+            {
+                LinkTag link = (LinkTag) node;
+                //System.out.println(link.getText());
+                if (link.getLink().startsWith("/wiki/") && !link.getLink().contains("Main_Page") && !link.getLink().contains("Portal:Contents")
+                        && !link.getLink().contains("Portal:Featured_content") && !link.getLink().contains("Portal:Current_events")
+                        && !link.getLink().contains("Special:Random") && !link.getLink().contains("Help:Contents")
+                        && !link.getLink().contains("Wikipedia:About") && !link.getLink().contains("Wikipedia:Community_portal")
+                        && !link.getLink().contains("Special:RecentChanges") && !link.getLink().contains("/Wikipedia:File_Upload_Wizard")
+                        && !link.getLink().contains("Special:SpecialPages") && !link.getLink().contains("Wikipedia:About")
+                        && !link.getLink().contains("Wikipedia:General_disclaimer") && !link.getLink().contains("Help:Searching")
+                        && !link.getLink().contains("Special:MyTalk") && !link.getLink().contains("Special:MyContributions"))
+                {
+                    entities.add(link.getLinkText());
+                    //System.out.println(link.getLinkText());
+                }
+            }
         }
-        //resp.getFacetField("TITLE").getName();
         return entities;
+    }
+
+    public void saveQuestions(String userName,String entityName, String question, String answer)
+    {
+        try
+        {
+            this.dbAccess.insertQuesForUser(userName,entityName, question, answer);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveSentences(String entityName, String flag, String deletedSentence)
+    {
+        try
+        {
+            this.dbAccess.insertDeletedForPages(entityName, flag, deletedSentence);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

@@ -137,6 +137,7 @@ public class Xog_tab_itm implements Gfo_invk {
 		}
 
 		Url url1 = new Url(currPage.Url().To_str());
+		System.out.println("2. get prev for: "+url1.getFull());
 		Page page1 = PageCache.getInstance().getPage(url1);
 
 		if (page1 == null)

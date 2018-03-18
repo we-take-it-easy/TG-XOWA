@@ -71,7 +71,7 @@ public class Page
     {
         this.html = html;
         // parse the html and get links.
-        Parser parser = Parser.createParser(html, "ut-8");
+        Parser parser = Parser.createParser(html, "utf-8");
         NodeFilter linkFilter = new NodeClassFilter(LinkTag.class);
         try
         {

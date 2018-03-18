@@ -10,6 +10,7 @@ public class Url implements Serializable
     private UrlType type = UrlType.NONE;
     // 完整、原始的的url
     private String full = "";
+    private String normalizedFull = "";
 
     /**
      * 新建一个空的url
@@ -63,6 +64,7 @@ public class Url implements Serializable
         {
             this.type = UrlType.UNKNOWN_TYPE_URL;
         }
+        this.normalizedFull = NormalizeUrl(this.full);
     }
 
     public String getKeyWord()
@@ -80,10 +82,19 @@ public class Url implements Serializable
         return full;
     }
 
+    private static String NormalizeUrl (String url)
+    {
+        if (url == null)
+        {
+            return null;
+        }
+        return url.replace('_', ' ').toLowerCase();
+    }
+
     @Override
     public int hashCode()
     {
-        return this.full.hashCode();
+        return this.normalizedFull.hashCode();
     }
 
     @Override
@@ -92,11 +103,11 @@ public class Url implements Serializable
         if (o instanceof Url)
         {
             Url u = (Url) o;
-            return this.full.equalsIgnoreCase(u.full);
+            return this.normalizedFull.equals(u.normalizedFull);
         }
         if (o instanceof String)
         {
-            return this.full.equalsIgnoreCase((String)o);
+            return this.normalizedFull.equals(NormalizeUrl((String)o));
         }
         return false;
     }

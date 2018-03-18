@@ -61,6 +61,7 @@ public class Xog_win_itm_ {
 		}
 
 		Shell choiceshell = new Shell();
+
 		Text text = new Text(choiceshell, SWT.SINGLE | SWT.READ_ONLY);
 		text.setText("Step 1. Please choose a module that you wanna enjoy.");
 
@@ -76,28 +77,35 @@ public class Xog_win_itm_ {
 		buttonTaskHandle.setBackground(choiceshell.getBackground());
 		buttonTaskHandle.setText("Finish a task");
 
+		/*
 		Button buttonReset = new Button(choiceshell, SWT.MULTI | SWT.WRAP | SWT.TOGGLE);
 		buttonReset.setData("Reset", null);
 		buttonReset.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
 		buttonReset.setText("Reset");
+		*/
 
 		buttonTaskGenerate.addListener(SWT.Selection, event ->
 		{
 		    TaskGenerating(choiceshell, buttonTaskGenerate);
 		    buttonTaskGenerate.setEnabled(false);
+		    buttonTaskHandle.setEnabled(false);
 		});
 		buttonTaskHandle.addListener(SWT.Selection, event ->
 		{
 		    TaskHandling(choiceshell, buttonTaskGenerate);
 		    buttonTaskHandle.setEnabled(false);
+		    buttonTaskGenerate.setEnabled(false);
 		});
+		/*
 		buttonReset.addListener(SWT.Selection, event -> {
 		    buttonTaskGenerate.setEnabled(true);
 		    buttonTaskHandle.setEnabled(true);
+
             choiceshell.setSize(400, 480);
-            choiceshell.layout();
-            choiceshell.redraw();
-        });
+			choiceshell.layout();
+			choiceshell.redraw();
+
+        });*/
 
 		choiceshell.setText("Module Controller");
 		FormLayout layout = new FormLayout();
@@ -122,11 +130,18 @@ public class Xog_win_itm_ {
 		buttonTaskHandleData.left = new FormAttachment(buttonTaskGenerate);
 		buttonTaskHandle.setLayoutData(buttonTaskHandleData);
 
-		FormData buttonResetData = new FormData();
+		/*FormData buttonResetData = new FormData();
 		buttonResetData.top = new FormAttachment(text);
         buttonResetData.left = new FormAttachment(buttonTaskHandle);
         buttonReset.setLayoutData(buttonResetData);
-
+        buttonReset.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent selectionEvent)
+			{
+				//super.widgetSelected(selectionEvent);
+			}
+		});*/
 		/*GridLayout choicelayout = new GridLayout();
 		choicelayout.numColumns = 2;
 		choiceshell.setLayout(choicelayout);*/
@@ -187,7 +202,7 @@ public class Xog_win_itm_ {
                     entityResults = returnEntities.get();
                 }
                 Text text3 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
-				text3.setText("Step 3. Wikipedia pages of the following entities" +
+				text3.setText("Step 3. Wikipedia pages of the following entities " +
 						"have the selected phrase, please choose one and get the corresponding " +
 						"entity page in XOWA.");
 				FormData text3Data = new FormData();
@@ -226,12 +241,13 @@ public class Xog_win_itm_ {
 				int compoSiteHight = 20*entityResults.size();
 				GridData data = new GridData(SWT.BEGINNING, SWT.CENTER, false, false);
 				data.widthHint = compositeWidth;  // Some width
+                data.heightHint = compoSiteHight;
 				entities.setLayoutData(data);
 				entities.setEditable(false);
 
                 entities.setText(entityNames.trim());
 
-				//我也不知道为啥要加这4行
+				// 必须加这四行
 				composite.setLayout(new GridLayout(1, true));
 				scrolledComposite.setMinSize(compositeWidth, compoSiteHight);
 				scrolledComposite.setExpandVertical(true);
@@ -243,6 +259,125 @@ public class Xog_win_itm_ {
                 scrolledCompositeData.right = new FormAttachment(90);
                 scrolledCompositeData.height = 200;
                 scrolledComposite.setLayoutData(scrolledCompositeData);
+
+                Text text4 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
+                text4.setText("Step 4. After selecting an entity in step3, go to the \"Edit\" tab in corresponding XOWA wikipedia page, and find the sentence containing phrase " +
+						"in step 2. " +
+						"\n" +
+						"(1) Read and understand this sentence in context. \n" +
+						"(2) Generate a question according to your understanding to this sentence. This means that your answer could be answered by this sentence. \n" +
+						"(3) Input your question in the question box and the answer the answer box.)");
+                FormData text4Data = new FormData();
+                text4Data.top = new FormAttachment(scrolledComposite);
+                text4Data.left = new FormAttachment(0);
+                text4Data.right = new FormAttachment(90);
+                text4.setLayoutData(text4Data);
+
+                /*Label labelQuestion = new Label(choiceshell, SWT.NONE);
+                labelQuestion.setText("Question");
+                FormData labelQuesData = new FormData();
+                labelQuesData.top = new FormAttachment(text4);
+				labelQuesData.left = new FormAttachment(0);
+				labelQuestion.setLayoutData(labelQuesData);*/
+				Text textEntity = new Text(choiceshell, SWT.BORDER);
+				textEntity.setMessage("Input the selected entity.");
+				FormData textEntityData = new FormData();
+				textEntityData.top = new FormAttachment(text4);
+				textEntityData.left = new FormAttachment(0);
+				textEntityData.right = new FormAttachment(90);
+				textEntity.setLayoutData(textEntityData);
+				Text textQues = new Text(choiceshell, SWT.BORDER);
+				textQues.setMessage("Input your question here.");
+				FormData textInputData = new FormData();
+				textInputData.top = new FormAttachment(textEntity);
+				textInputData.left = new FormAttachment(0);
+				textInputData.right = new FormAttachment(90);
+				textInputData.height = 80;
+				textQues.setLayoutData(textInputData);
+
+				/*Label labelAnswer = new Label(choiceshell, SWT.NONE);
+				labelAnswer.setText("Answer");
+				FormData labelAnsData = new FormData();
+				labelAnsData.top = new FormAttachment(textQues);
+				labelAnsData.left = new FormAttachment(0);
+				labelAnswer.setLayoutData(labelAnsData);*/
+
+				Text textAnswer = new Text(choiceshell, SWT.BORDER);
+				textAnswer.setMessage("Input answer of your question.");
+				FormData textAnswerData = new FormData();
+				textAnswerData.top = new FormAttachment(textQues);
+				textAnswerData.left = new FormAttachment(0);
+				textAnswerData.right = new FormAttachment(90);
+				textAnswer.setLayoutData(textAnswerData);
+
+				Button buttonSubmit = new Button(choiceshell, SWT.ABORT);
+				buttonSubmit.addSelectionListener(new SelectionAdapter()
+				{
+					@Override
+					public void widgetSelected(SelectionEvent selectionEvent)
+					{
+						Action saveQuesAction = new SaveQuesAction(UserName,textEntity.getText(), textQues.getText(), textAnswer.getText());
+						saveQuesAction.perform();
+
+						Text text5 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
+						text5.setText("Step 5. Delete the sentence containing entity in step 2 from the XOWA page.\n" +
+								"Save the sentence you wanna delete before you do that.");
+						Text deletedSentence = new Text(choiceshell, SWT.BORDER);
+						deletedSentence.setMessage("Input the sentence you wanna delete.");
+						Text flagSentence = new Text(choiceshell, SWT.BORDER);
+						flagSentence.setMessage("Input the sentence just before the deleted sentence");
+
+						FormData text5Data = new FormData();
+						text5Data.top = new FormAttachment(buttonSubmit);
+						text5Data.left = new FormAttachment(0);
+						text5Data.right = new FormAttachment(90);
+						text5.setLayoutData(text5Data);
+
+						FormData flagSentenceData = new FormData();
+						flagSentenceData.top = new FormAttachment(text5);
+						flagSentenceData.left = new FormAttachment(0);
+						flagSentenceData.right = new FormAttachment(90);
+						flagSentence.setLayoutData(flagSentenceData);
+
+						FormData deletedSentenceData = new FormData();
+						deletedSentenceData.top = new FormAttachment(flagSentence);
+						deletedSentenceData.left = new FormAttachment(0);
+						deletedSentenceData.right = new FormAttachment(90);
+						deletedSentence.setLayoutData(deletedSentenceData);
+
+						Button buttonSubmit2 = new Button(choiceshell, SWT.ABORT);
+						buttonSubmit2.addSelectionListener(new SelectionAdapter()
+						{
+							@Override
+							public void widgetSelected(SelectionEvent selectionEvent)
+							{
+								Action saveDeletedSentence = new SaveSentAction(textEntity.getText(), flagSentence.getText(), deletedSentence.getText());
+								saveDeletedSentence.perform();
+							}
+						});
+						buttonSubmit2.setText("submit");
+						FormData buttonSubmit2Data= new FormData();
+						buttonSubmit2Data.top = new FormAttachment(deletedSentence);
+						buttonSubmit2Data.right = new FormAttachment(90);
+						buttonSubmit2.setLayoutData(buttonSubmit2Data);
+						choiceshell.setSize(400, 920);
+						choiceshell.layout();
+						choiceshell.redraw();
+					}
+				});
+				buttonSubmit.setText("submit");
+				FormData buttonSubmitData= new FormData();
+				buttonSubmitData.top = new FormAttachment(textAnswer);
+				buttonSubmitData.right = new FormAttachment(90);
+				buttonSubmit.setLayoutData(buttonSubmitData);
+				/*if(input.open()== Window.OK)
+				{
+					String question = input.getValue();
+					Action saveQuesAction = new SaveQuesAction(question);
+					saveQuesAction.perform();
+					//System.out.println(input.getValue());
+				}*/
+				choiceshell.setSize(400, 800);
                 choiceshell.layout();
                 choiceshell.redraw();
             }
@@ -414,7 +549,7 @@ public class Xog_win_itm_ {
 		}
 	}
 	public static String new_tiptext(Xoae_app app, int id) {return String_.new_u8(app.Usere().Lang().Msg_mgr().Val_by_id(app.Usere().Wiki(), id));}
-	public static final int 
+	public static final int
 	  Toolbar_grp_h = 24
 	, Toolbar_txt_w = 160
 	, Toolbar_btn_w = 16;
