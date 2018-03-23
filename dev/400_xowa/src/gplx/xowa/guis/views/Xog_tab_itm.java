@@ -136,9 +136,12 @@ public class Xog_tab_itm implements Gfo_invk {
 			System.err.println("Xog_tab_itm.History_mgr(): root page is null");
 		}
 
+		// create the tap page here
 		Url url1 = new Url(currPage.Url().To_str());
+		Page page1 = new Page(url1);
+		System.out.println("1.init page for: " + url1.getFull());
+
 		System.out.println("2. get prev for: "+url1.getFull());
-		Page page1 = PageCache.getInstance().getPage(url1);
 
 		if (page1 == null)
 		{
@@ -154,6 +157,7 @@ public class Xog_tab_itm implements Gfo_invk {
 			page1.setPrevious(new Url(UrlType.NONE.name()));
 		}
 
+		PageCache.getInstance().putPage(url1, page1);
 
 		return history_mgr;} private Xog_history_mgr history_mgr = new Xog_history_mgr();
 	public byte					View_mode() {return view_mode;} public Xog_tab_itm View_mode_(byte v) {view_mode = v; return this;} private byte view_mode = Xopg_page_.Tid_read;
