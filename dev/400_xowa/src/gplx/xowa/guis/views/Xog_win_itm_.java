@@ -117,7 +117,7 @@ public class Xog_win_itm_ {
 		textData.top = new FormAttachment(0);
 		textData.left = new FormAttachment(0);
 		textData.right = new FormAttachment(90);
-		text.setLayoutData(textData);
+		btext.setLayoutData(textData);
 
 		FormData buttonTaskGenerateData = new FormData();
 		buttonTaskGenerateData.top = new FormAttachment(text);
@@ -148,7 +148,7 @@ public class Xog_win_itm_ {
 		//Rectangle rectangle = Display.getCurrent().getPrimaryMonitor().getClientArea();
 		//popupshell.setLocation((rectangle.width - 286) / 2 + 300, 0);
 		//choiceshell.setMenuBar(new Menu(choiceshell, SWT.BAR));
-		choiceshell.setSize(400, 480);
+		choiceshell.setSize(550, 200);
 		choiceshell.open();
 	}
 	public static void TaskGenerating(Shell choiceshell, Button button){
@@ -214,7 +214,7 @@ public class Xog_win_itm_ {
 				ScrolledComposite scrolledComposite = new ScrolledComposite(choiceshell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 				//scrolledComposite.setBounds();
 				Composite composite = new Composite(scrolledComposite, SWT.NONE);
-				composite.setSize(326, 600);
+				composite.setSize(550, 500);
 
 				scrolledComposite.setContent(composite);
 
@@ -257,7 +257,7 @@ public class Xog_win_itm_ {
                 scrolledCompositeData.top = new FormAttachment(text3);
                 scrolledCompositeData.left = new FormAttachment(0);
                 scrolledCompositeData.right = new FormAttachment(90);
-                scrolledCompositeData.height = 200;
+                scrolledCompositeData.height = 100;
                 scrolledComposite.setLayoutData(scrolledCompositeData);
 
                 Text text4 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
@@ -292,7 +292,7 @@ public class Xog_win_itm_ {
 				textInputData.top = new FormAttachment(textEntity);
 				textInputData.left = new FormAttachment(0);
 				textInputData.right = new FormAttachment(90);
-				textInputData.height = 80;
+				textInputData.height = 60;
 				textQues.setLayoutData(textInputData);
 
 				/*Label labelAnswer = new Label(choiceshell, SWT.NONE);
@@ -360,7 +360,7 @@ public class Xog_win_itm_ {
 						buttonSubmit2Data.top = new FormAttachment(deletedSentence);
 						buttonSubmit2Data.right = new FormAttachment(90);
 						buttonSubmit2.setLayoutData(buttonSubmit2Data);
-						choiceshell.setSize(400, 920);
+						choiceshell.setSize(550, 750);
 						choiceshell.layout();
 						choiceshell.redraw();
 					}
@@ -377,7 +377,7 @@ public class Xog_win_itm_ {
 					saveQuesAction.perform();
 					//System.out.println(input.getValue());
 				}*/
-				choiceshell.setSize(400, 800);
+				choiceshell.setSize(550, 600);
                 choiceshell.layout();
                 choiceshell.redraw();
             }
