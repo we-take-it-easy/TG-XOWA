@@ -117,7 +117,7 @@ public class Xog_win_itm_ {
 		textData.top = new FormAttachment(0);
 		textData.left = new FormAttachment(0);
 		textData.right = new FormAttachment(90);
-		btext.setLayoutData(textData);
+		text.setLayoutData(textData);
 
 		FormData buttonTaskGenerateData = new FormData();
 		buttonTaskGenerateData.top = new FormAttachment(text);

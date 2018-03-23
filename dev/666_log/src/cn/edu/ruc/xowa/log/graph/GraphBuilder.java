@@ -43,8 +43,7 @@ public class GraphBuilder
     private DBAccess dbAccess;
 
     //start solr
-    private static final String urlString = "http://localhost:8983/solr/wikipediaCollection";
-    private static SolrClient client = new HttpSolrClient (urlString);
+    private static SolrClient client = new HttpSolrClient (SolrConfig.urlString);
 
     private GraphBuilder()
     {
