@@ -35,6 +35,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
@@ -60,6 +61,11 @@ public class Xog_win_itm_ {
 			//System.out.println(input.getValue());
 		}
 
+		OpenChoiceshell();
+	}
+
+	public static void OpenChoiceshell()
+	{
 		Shell choiceshell = new Shell();
 
 		Text text = new Text(choiceshell, SWT.SINGLE | SWT.READ_ONLY);
@@ -86,15 +92,15 @@ public class Xog_win_itm_ {
 
 		buttonTaskGenerate.addListener(SWT.Selection, event ->
 		{
-		    TaskGenerating(choiceshell, buttonTaskGenerate);
-		    buttonTaskGenerate.setEnabled(false);
-		    buttonTaskHandle.setEnabled(false);
+			TaskGenerating(choiceshell, buttonTaskGenerate);
+			buttonTaskGenerate.setEnabled(false);
+			buttonTaskHandle.setEnabled(false);
 		});
 		buttonTaskHandle.addListener(SWT.Selection, event ->
 		{
-		    TaskHandling(choiceshell, buttonTaskGenerate);
-		    buttonTaskHandle.setEnabled(false);
-		    buttonTaskGenerate.setEnabled(false);
+			TaskHandling(choiceshell, buttonTaskGenerate);
+			buttonTaskHandle.setEnabled(false);
+			buttonTaskGenerate.setEnabled(false);
 		});
 		/*
 		buttonReset.addListener(SWT.Selection, event -> {
@@ -151,6 +157,7 @@ public class Xog_win_itm_ {
 		choiceshell.setSize(550, 200);
 		choiceshell.open();
 	}
+
 	public static void TaskGenerating(Shell choiceshell, Button button){
 		Text text2 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
 		text2.setText("Step 2. You choose the task generation module. Please select a phrase below.");
@@ -319,6 +326,8 @@ public class Xog_win_itm_ {
 						Action saveQuesAction = new SaveQuesAction(UserName,textEntity.getText(), textQues.getText(), textAnswer.getText());
 						saveQuesAction.perform();
 
+						buttonSubmit.setEnabled(false);
+
 						Text text5 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
 						text5.setText("Step 5. Delete the sentence containing entity in step 2 from the XOWA page.\n" +
 								"Save the sentence you wanna delete before you do that.");
@@ -353,19 +362,32 @@ public class Xog_win_itm_ {
 							{
 								Action saveDeletedSentence = new SaveSentAction(textEntity.getText(), flagSentence.getText(), deletedSentence.getText());
 								saveDeletedSentence.perform();
+								MessageBox messageBox = new MessageBox(choiceshell, SWT.ABORT);
+								messageBox.setText("Task Generation");
+								messageBox.setMessage("Task generation finished.\nClick OK to reset.");
+								messageBox.open();
+								buttonSubmit2.setEnabled(false);
+								choiceshell.close();
+								OpenChoiceshell();
 							}
 						});
-						buttonSubmit2.setText("submit");
+						buttonSubmit2.setText("Delete sentence");
 						FormData buttonSubmit2Data= new FormData();
 						buttonSubmit2Data.top = new FormAttachment(deletedSentence);
 						buttonSubmit2Data.right = new FormAttachment(90);
 						buttonSubmit2.setLayoutData(buttonSubmit2Data);
-						choiceshell.setSize(550, 750);
+						Point size = choiceshell.getSize();
+						if (size.x == 550)
+						{
+							size.y += 150;
+							choiceshell.setSize(size);
+						}
+						//choiceshell.setSize(550, 750);
 						choiceshell.layout();
 						choiceshell.redraw();
 					}
 				});
-				buttonSubmit.setText("submit");
+				buttonSubmit.setText("Save task");
 				FormData buttonSubmitData= new FormData();
 				buttonSubmitData.top = new FormAttachment(textAnswer);
 				buttonSubmitData.right = new FormAttachment(90);
