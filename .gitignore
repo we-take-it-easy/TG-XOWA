@@ -47,7 +47,7 @@ dev/400_xowa/wiki/
 *.rar
 
 # DB access
-DBAccess.java
+DBConfig.java
 SolrConfig.java
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
