@@ -293,7 +293,7 @@ public class Xog_win_itm_ {
 				textEntityData.left = new FormAttachment(0);
 				textEntityData.right = new FormAttachment(90);
 				textEntity.setLayoutData(textEntityData);
-				Text textQues = new Text(choiceshell, SWT.BORDER);
+				Text textQues = new Text(choiceshell, SWT.BORDER | SWT.MULTI);
 				textQues.setMessage("Input your question here.");
 				FormData textInputData = new FormData();
 				textInputData.top = new FormAttachment(textEntity);
