@@ -16,6 +16,7 @@ Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 package gplx.xowa.guis.views;
 
 import cn.edu.ruc.xowa.log.action.*;
+import cn.edu.ruc.xowa.log.database.DBAccess;
 import gplx.Keyval_;
 import gplx.String_;
 import gplx.gfui.controls.elems.GfuiElem;
@@ -39,6 +40,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,6 +48,7 @@ public class Xog_win_itm_ {
 
 	private static UUID uuid;
 	private static String UserName;
+	private static int userId;
 
 	public static void PopupLoginForm() {
 		Shell shell = Display.getDefault().getActiveShell();
@@ -56,6 +59,24 @@ public class Xog_win_itm_ {
 		{
 			String userName = input.getValue();
 			UserName = userName;
+			userId = -1;
+			try
+			{
+				userId = DBAccess.Instance().login(userName);
+				if (userId < 0)
+				{
+					userId = DBAccess.Instance().register(userName);
+					MessageBox messageBox = new MessageBox(new Shell(), SWT.ABORT);
+					messageBox.setText("Login");
+					messageBox.setMessage("Create new user: " + userName + ", please remember it.\nClick OK to continue.");
+					messageBox.open();
+				}
+			} catch (SQLException e)
+			{
+				System.err.println("login exception...");
+				e.printStackTrace();
+				System.exit(1);
+			}
 			Action loginAction = new LoginAction(userName);
 			loginAction.perform();
 			//System.out.println(input.getValue());
@@ -323,7 +344,7 @@ public class Xog_win_itm_ {
 					@Override
 					public void widgetSelected(SelectionEvent selectionEvent)
 					{
-						Action saveQuesAction = new SaveQuesAction(UserName,textEntity.getText(), textQues.getText(), textAnswer.getText());
+						Action saveQuesAction = new SaveQuesAction(userId, textEntity.getText(), textQues.getText(), textAnswer.getText());
 						saveQuesAction.perform();
 
 						buttonSubmit.setEnabled(false);
@@ -360,7 +381,7 @@ public class Xog_win_itm_ {
 							@Override
 							public void widgetSelected(SelectionEvent selectionEvent)
 							{
-								Action saveDeletedSentence = new SaveSentAction(textEntity.getText(), flagSentence.getText(), deletedSentence.getText());
+								Action saveDeletedSentence = new SaveSentAction(userId, textEntity.getText(), flagSentence.getText(), deletedSentence.getText());
 								saveDeletedSentence.perform();
 								MessageBox messageBox = new MessageBox(choiceshell, SWT.ABORT);
 								messageBox.setText("Task Generation");

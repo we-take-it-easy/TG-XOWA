@@ -519,22 +519,22 @@ public class GraphBuilder
         return entities;
     }
 
-    public void saveQuestions(String userName,String entityName, String question, String answer)
+    public void saveQuestions(int userId,String entityName, String question, String answer)
     {
         try
         {
-            this.dbAccess.insertQuesForUser(userName,entityName, question, answer);
+            this.dbAccess.insertQuesForUser2(userId,entityName, question, answer);
         } catch (SQLException e)
         {
             e.printStackTrace();
         }
     }
 
-    public void saveSentences(String entityName, String flag, String deletedSentence)
+    public void saveSentences(int userId, String entityName, String flag, String deletedSentence)
     {
         try
         {
-            this.dbAccess.insertDeletedForPages(entityName, flag, deletedSentence);
+            this.dbAccess.insertDeletedForPages2(userId, entityName, flag, deletedSentence);
         } catch (SQLException e)
         {
             e.printStackTrace();
