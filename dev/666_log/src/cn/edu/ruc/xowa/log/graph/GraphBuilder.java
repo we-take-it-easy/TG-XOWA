@@ -530,6 +530,17 @@ public class GraphBuilder
         }
     }
 
+    public void saveStepQuestion(String description, int certainty)
+    {
+        try
+        {
+            this.dbAccess.insertStepQuestion(sessionId, description, certainty);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void saveSentences(int userId, String entityName, String flag, String deletedSentence)
     {
         try
@@ -539,5 +550,12 @@ public class GraphBuilder
         {
             e.printStackTrace();
         }
+    }
+
+    public List<String> GetTask()
+    {
+        List<String> task = new ArrayList<>();
+        task = this.dbAccess.getRandomTask();
+        return task;
     }
 }

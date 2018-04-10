@@ -11,10 +11,9 @@ import java.util.List;
 public class LoadPageAction implements Action
 {
     private Page page = null;
-    public LoadPageAction (Page page)
-    {
-        this.page = page;
-    }
+    //private Boolean flag;
+    //public LoadPageAction(){this.flag = false;}
+    public LoadPageAction (Page page) { this.page = page; }
 
     @Override
     public void perform()
@@ -28,8 +27,19 @@ public class LoadPageAction implements Action
         {
             GraphBuilder.getInstance().searchTo(page);
         }
+
+        String description = "test";
+        int certainty = 22;
+        GraphBuilder.getInstance().saveStepQuestion(description, certainty);
+
     }
 
     @Override
     public List<String> get() { return null; }
+
+    //@Override
+    //public Boolean judge()
+    //{
+      //  return this.flag;
+    //}
 }

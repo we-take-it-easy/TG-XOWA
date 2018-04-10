@@ -9,4 +9,5 @@ public interface Action
 {
     void perform ();
     List<String> get();
+    //Boolean judge();
 }

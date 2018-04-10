@@ -429,8 +429,14 @@ public class Xog_win_itm_ {
 		choiceshell.redraw();
 	}
 	public static void TaskHandling(Shell choiceshell, Button button){
+		//从数据库中随机抽取一个问题显示出来
+		Action returnTask = new ReturnTaskAction();
+		List<String> task = returnTask.get();
+
         Text text2 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
-        text2.setText("Step 2. You choose to handle a task.\nClick on \"Begin\" to start search. \n" +
+        text2.setText("Step 2. You choose to handle a task. \n" +
+				"Please finish the task below. You may also need to answer some questions during the process. \n" +
+				"Click on \"Begin\" to start search. \n" +
                 "Click on \"Finish\" to finish you explorations.\n" +
                 "Click on \"Give up\" when you wanna give up.");
         FormData textData = new FormData();
@@ -438,6 +444,14 @@ public class Xog_win_itm_ {
         textData.left = new FormAttachment(0);
         textData.right = new FormAttachment(90);
         text2.setLayoutData(textData);
+
+        Text textTask = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
+        textTask.setText(task.get(0));
+        FormData taskData = new FormData();
+        taskData.top = new FormAttachment(text2);
+        taskData.left = new FormAttachment(0);
+        taskData.right = new FormAttachment(90);
+        textTask.setLayoutData(taskData);
 
 		Button buttonStart = new Button(choiceshell, SWT.MULTI | SWT.WRAP | SWT.TOGGLE);
 		//buttonStart.setBounds(10, 5, 80, 30);
@@ -475,13 +489,60 @@ public class Xog_win_itm_ {
 			buttonStart.setEnabled(false);
 			buttonEnd.setEnabled(true);
 			buttonGiveUp.setEnabled(true);
-			Text text3 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
-			text3.setText("Step 3. Start exploration.......\n"+"User Name: "+ UserName);
+
+			Text qus1 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
+			qus1.setText("Q1: Please choose a case to describe your plan(goal) of solving it? ");
+			//text3.setText("Step 3. Start exploration.......\n"+"User Name: "+ UserName);
             FormData txtData = new FormData();
             txtData.top = new FormAttachment(buttonStart);
             txtData.left = new FormAttachment(0);
             txtData.right = new FormAttachment(90);
-            text3.setLayoutData(txtData);
+            qus1.setLayoutData(txtData);
+
+            //问题1, 用户阅读完题目后，对解决该问题有没有一个明确的方向感：directed/undirected/others，选择题
+            Button undirected = new Button(choiceshell, SWT.RADIO);
+			undirected.setText("undirected");
+			undirected.setSelection(false);
+			FormData r1Data = new FormData();
+			r1Data.top = new FormAttachment(qus1);
+			r1Data.left = new FormAttachment(0);
+            undirected.setLayoutData(r1Data);
+
+            Button directed = new Button(choiceshell, SWT.RADIO);
+            directed.setText("directed");
+            directed.setSelection(false);
+			FormData r2Data = new FormData();
+			r2Data.top = new FormAttachment(qus1);
+			r2Data.left = new FormAttachment(undirected);
+			directed.setLayoutData(r2Data);
+
+            Button unknown = new Button(choiceshell, SWT.RADIO);
+            unknown.setText("others");
+            unknown.setSelection(false);
+			FormData r3Data = new FormData();
+			r3Data.top = new FormAttachment(qus1);
+			r3Data.left = new FormAttachment(directed);
+			unknown.setLayoutData(r3Data);
+
+			undirected.addSelectionListener(new SelectionAdapter()
+			{
+				@Override
+				public void widgetSelected(SelectionEvent selectionEvent)
+				{
+					Qs2(choiceshell, undirected);
+				}
+			});
+
+			directed.addSelectionListener(new SelectionAdapter()
+			{
+				@Override
+				public void widgetSelected(SelectionEvent selectionEvent)
+				{
+					Qs2(choiceshell, directed);
+				}
+			});
+
+            choiceshell.setSize(550, 330);
             choiceshell.layout();
             choiceshell.redraw();
 		});
@@ -494,6 +555,15 @@ public class Xog_win_itm_ {
 			buttonEnd.setEnabled(false);
 			buttonGiveUp.setEnabled(false);
 			//buttonDrawGraph.setEnabled(true);
+
+			Text finalQs = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
+			finalQs.setText("Do you think a multi-facet filter would help you during the exploring process?");
+			FormData txtData = new FormData();
+			txtData.left = new FormAttachment(0);
+			txtData.right = new FormAttachment(90);
+			txtData.bottom = new FormAttachment(SWT.BOTTOM);
+			finalQs.setLayoutData(txtData);
+
 		});
 
 		buttonGiveUp.addListener(SWT.Selection, event -> {
@@ -516,25 +586,95 @@ public class Xog_win_itm_ {
 			popupshell.setSize(286, 300);
 		});*/
         FormData buttonStartData = new FormData();
-        buttonStartData.top = new FormAttachment(text2);
+        buttonStartData.top = new FormAttachment(textTask);
         buttonStartData.left = new FormAttachment(0);
         buttonStartData.right = new FormAttachment(30);
         buttonStart.setLayoutData(buttonStartData);
 
         FormData buttonEndData = new FormData();
-        buttonEndData.top = new FormAttachment(text2);
+        buttonEndData.top = new FormAttachment(textTask);
         buttonEndData.left = new FormAttachment(buttonStart);
         buttonEnd.setLayoutData(buttonEndData);
 
         FormData buttonGiveUpData = new FormData();
-        buttonGiveUpData.top = new FormAttachment(text2);
+        buttonGiveUpData.top = new FormAttachment(textTask);
         buttonGiveUpData.left = new FormAttachment(buttonEnd);
         buttonGiveUp.setLayoutData(buttonGiveUpData);
 
+        choiceshell.setSize(550, 280);
         choiceshell.layout();
         choiceshell.redraw();
 	}
 
+	public static void Qs2(Shell choiceshell, Button button){
+		Text qus2 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
+		//qus2.setText("Q2: Do you already have a query(a well-formed phrase or a well-defined concept) in mind?");
+		qus2.setText("Q2: Do you have a specific question in mind?");
+		FormData txtData = new FormData();
+		txtData.top = new FormAttachment(button);
+		txtData.left = new FormAttachment(0);
+		txtData.right = new FormAttachment(90);
+		qus2.setLayoutData(txtData);
+
+		Button specificYes = new Button(choiceshell, SWT.RADIO);
+		specificYes.setText("yes");
+		specificYes.setSelection(false);
+		FormData r4Data = new FormData();
+		r4Data.top = new FormAttachment(qus2);
+		r4Data.left = new FormAttachment(0);
+		specificYes.setLayoutData(r4Data);
+
+		Button specificNo = new Button(choiceshell, SWT.RADIO);
+		specificNo.setText("no");
+		specificNo.setSelection(false);
+		FormData r5Data = new FormData();
+		r5Data.top = new FormAttachment(qus2);
+		r5Data.left = new FormAttachment(specificYes);
+		specificNo.setLayoutData(r5Data);
+
+		specificYes.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent selectionEvent)
+			{
+				Qs3(choiceshell, specificYes);
+			}
+		});
+
+		specificNo.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent selectionEvent)
+			{
+				Qs3(choiceshell, specificNo);
+			}
+		});
+		choiceshell.setSize(550, 480);
+		choiceshell.layout();
+		choiceshell.redraw();
+	}
+
+	public static void Qs3(Shell choiceshell, Button button){
+		Text qus3 = new Text(choiceshell, SWT.READ_ONLY | SWT.MULTI);
+		qus3.setText("Q3: Please express your current goal(question) in terms of natural language.\n" +
+				"It might be in forms like: ....");
+		FormData txtData = new FormData();
+		txtData.top = new FormAttachment(button);
+		txtData.left = new FormAttachment(0);
+		txtData.right = new FormAttachment(90);
+		qus3.setLayoutData(txtData);
+
+		Text qus3input = new Text(choiceshell, SWT.BORDER | SWT.MULTI);
+		FormData txtData1 = new FormData();
+		txtData1.top = new FormAttachment(qus3);
+		txtData1.left = new FormAttachment(0);
+		txtData1.right = new FormAttachment(90);
+		txtData1.height = 40;
+		qus3input.setLayoutData(txtData1);
+
+		choiceshell.layout();
+		choiceshell.redraw();
+	}
 	public static void Show_win(Xog_win_itm win) {
 		PopupLoginForm();
 		Xoae_app app = win.App();

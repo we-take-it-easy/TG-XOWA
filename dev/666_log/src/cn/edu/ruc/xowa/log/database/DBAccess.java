@@ -103,6 +103,16 @@ public class DBAccess
         pstmt.close();
     }
 
+    public void insertStepQuestion(String sessionId, String description, int certainty) throws SQLException
+    {
+        pstmt = conn.prepareStatement("INSERT INTO xowa_log.step_question(session_id, description, certainty)VALUES (?,?,?)");
+        pstmt.setString(1,sessionId);
+        pstmt.setString(2,description);
+        pstmt.setInt(3, certainty);
+        pstmt.executeUpdate();
+        pstmt.close();
+    }
+
     public void insertQuesForUser2(int userId, String entityName, String question, String answer) throws SQLException
     {
         pstmt = conn.prepareStatement("INSERT INTO xowa_log.explo_task(sys_user_id, entity_name, question, answer)VALUES (?,?,?,?)");
@@ -207,6 +217,24 @@ public class DBAccess
         while(rs.next())
         {
             task.add(rs.getString("question"));
+        }
+        return task;
+    }
+
+    public List<String> getRandomTask()
+    {
+        List<String> task = new ArrayList<>();
+        try
+        {
+            pstmt = conn.prepareStatement("SELECT question FROM xowa_log.explo_task ORDER BY RAND() LIMIT 1");
+            rs = pstmt.executeQuery();
+            while(rs.next())
+            {
+                task.add(rs.getString("question"));
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
         }
         return task;
     }
