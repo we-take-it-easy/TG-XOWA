@@ -540,4 +540,11 @@ public class GraphBuilder
             e.printStackTrace();
         }
     }
+
+    public List<String> GetTask()
+    {
+        List<String> task = new ArrayList<>();
+        task = this.dbAccess.getRandomTask();
+        return task;
+    }
 }

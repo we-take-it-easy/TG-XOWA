@@ -210,6 +210,24 @@ public class DBAccess
         }
         return task;
     }
+
+    public List<String> getRandomTask()
+    {
+        List<String> task = new ArrayList<>();
+        try
+        {
+            pstmt = conn.prepareStatement("SELECT question FROM xowa_log.explo_task ORDER BY RAND() LIMIT 1");
+            rs = pstmt.executeQuery();
+            while(rs.next())
+            {
+                task.add(rs.getString("question"));
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return task;
+    }
     /*
     public static void main(String[] args)
     {
