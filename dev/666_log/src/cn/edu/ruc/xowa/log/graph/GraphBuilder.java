@@ -530,6 +530,17 @@ public class GraphBuilder
         }
     }
 
+    public void saveStepQuestion(String description, int certainty)
+    {
+        try
+        {
+            this.dbAccess.insertStepQuestion(sessionId, description, certainty);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void saveSentences(int userId, String entityName, String flag, String deletedSentence)
     {
         try

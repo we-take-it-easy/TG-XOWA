@@ -1,7 +1,14 @@
 package cn.edu.ruc.xowa.log.test;
 
+import cn.edu.ruc.xowa.log.graph.GraphBuilder;
+
 public class TestDB
 {
+    public static void main(String[] args)
+    {
+        GraphBuilder.getInstance().start("123");
+        GraphBuilder.getInstance().saveStepQuestion("test", 22);
+    }
     /*
     public static void main(String[] args) throws SQLException
     {

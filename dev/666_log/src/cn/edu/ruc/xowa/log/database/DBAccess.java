@@ -103,6 +103,16 @@ public class DBAccess
         pstmt.close();
     }
 
+    public void insertStepQuestion(String sessionId, String description, int certainty) throws SQLException
+    {
+        pstmt = conn.prepareStatement("INSERT INTO xowa_log.step_question(session_id, description, certainty)VALUES (?,?,?)");
+        pstmt.setString(1,sessionId);
+        pstmt.setString(2,description);
+        pstmt.setInt(3, certainty);
+        pstmt.executeUpdate();
+        pstmt.close();
+    }
+
     public void insertQuesForUser2(int userId, String entityName, String question, String answer) throws SQLException
     {
         pstmt = conn.prepareStatement("INSERT INTO xowa_log.explo_task(sys_user_id, entity_name, question, answer)VALUES (?,?,?,?)");
