@@ -142,29 +142,14 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				Button radio1 = new Button(groupQ4, SWT.RADIO);
 				radio1.setText("I want to look for a specified information to better understand a result. ");
 				radio1.setSelection(false);
-				//radio1.setBounds(0, 0, 90, 20);
-				//FormData r1Data = new FormData();
-				//r1Data.top = new FormAttachment(stepInfoNeed);
-				//r1Data.left = new FormAttachment(0);
-				//radio1.setLayoutData(r1Data);
 
 				Button radio2 = new Button(groupQ4, SWT.RADIO|SWT.WRAP);
 				radio2.setText("I want to start a new search direction that I was inspired by some points \nbefore serendipitously.");
 				radio2.setSelection(false);
-				//radio2.setBounds(0, 30, 90, 40);
-				//FormData r2Data = new FormData();
-				//r2Data.top = new FormAttachment(radio1);
-				//r2Data.left = new FormAttachment(0);
-				//radio2.setLayoutData(r2Data);
 
 				Button radio3 = new Button(groupQ4, SWT.RADIO);
 				radio3.setText("Other information needs that I think will fall under this category. ");
 				radio3.setSelection(false);
-				//radio3.setBounds(0, 80, 90, 20);
-				//FormData r3Data = new FormData();
-				//r3Data.top = new FormAttachment(radio2);
-				//r3Data.left = new FormAttachment(0);
-				//radio3.setLayoutData(r3Data);
 
 				//Q5
 				Text uncertainty = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
@@ -196,25 +181,14 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				groupQ6Data.right=new FormAttachment(60);
 				groupQ6.setLayoutData(groupQ6Data);
 				groupQ6.setLayout(new FillLayout());
-				//groupQ6.setSize(200,400);
-				//groupQ6.setBounds(22, 10, 188, 89);
+
 				Button changedYes = new Button(groupQ6, SWT.RADIO);
 				changedYes.setText("yes");
 				changedYes.setSelection(false);
-				//changedYes.setBounds(0, 0, 60, 20);
-				//FormData cyData = new FormData();
-				//cyData.top = new FormAttachment(uncertainInput);
-				//cyData.left = new FormAttachment(changed);
-				//changedYes.setLayoutData(cyData);
 
 				Button changedNo = new Button(groupQ6, SWT.RADIO);
 				changedNo.setText("no");
 				changedNo.setSelection(false);
-				//changedYes.setBounds(80, 0, 60, 20);
-				//FormData cnData = new FormData();
-				//cnData.top = new FormAttachment(uncertainInput);
-				//cnData.left = new FormAttachment(changedYes);
-				//changedNo.setLayoutData(cnData);
 
 				Button submit = new Button(messageShell, SWT.ABORT);
 				submit.addSelectionListener(new SelectionAdapter()
