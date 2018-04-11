@@ -654,8 +654,8 @@ public class Xog_win_itm_ {
 	}
 
 	public static void Qs3(Shell choiceshell, Button button){
-		Text qus3 = new Text(choiceshell, SWT.READ_ONLY | SWT.MULTI);
-		qus3.setText("Q3: Please express your current goal(question) in terms of natural language.\n" +
+		Text qus3 = new Text(choiceshell, SWT.READ_ONLY | SWT.WRAP);
+		qus3.setText("Q3: Please express your current information need(goal/question) in terms of natural language.\n" +
 				"It might be in forms like: ....");
 		FormData txtData = new FormData();
 		txtData.top = new FormAttachment(button);
@@ -671,6 +671,21 @@ public class Xog_win_itm_ {
 		txtData1.height = 40;
 		qus3input.setLayoutData(txtData1);
 
+		Button subqs123 = new Button(choiceshell, SWT.MULTI | SWT.WRAP | SWT.TOGGLE);
+		subqs123.setText("submit Q1,Q2,Q3");
+		FormData subData = new FormData();
+		subData.top = new FormAttachment(qus3input);
+		subData.right = new FormAttachment(90);
+		subqs123.setLayoutData(subData);
+
+		subqs123.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent selectionEvent)
+			{
+				//提交问题123到数据库
+			}
+		});
 		choiceshell.layout();
 		choiceshell.redraw();
 	}
