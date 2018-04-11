@@ -41,13 +41,8 @@ import gplx.xowa.wikis.pages.Xopg_page_;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.layout.*;
+import org.eclipse.swt.widgets.*;
 
 import java.util.regex.Pattern;
 
@@ -133,44 +128,55 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				FormData stepData = new FormData();
 				stepData.top = new FormAttachment(0);
 				stepData.left = new FormAttachment(0);
-				stepData.right = new FormAttachment(90);
+				stepData.right = new FormAttachment(100);
 				stepInfoNeed.setLayoutData(stepData);
 
-				Button radio1 = new Button(messageShell, SWT.RADIO);
+				Group groupQ4 = new Group(messageShell, SWT.NONE);
+				FormData groupQ4Data = new FormData();
+				groupQ4Data.top= new FormAttachment(stepInfoNeed);
+				groupQ4Data.left=new FormAttachment(0);
+				groupQ4Data.right=new FormAttachment(100);
+				groupQ4.setLayoutData(groupQ4Data);
+				groupQ4.setLayout(new RowLayout());
+
+				Button radio1 = new Button(groupQ4, SWT.RADIO);
 				radio1.setText("I want to look for a specified information to better understand a result. ");
 				radio1.setSelection(false);
-				FormData r1Data = new FormData();
-				r1Data.top = new FormAttachment(stepInfoNeed);
-				r1Data.left = new FormAttachment(0);
-				radio1.setLayoutData(r1Data);
+				//radio1.setBounds(0, 0, 90, 20);
+				//FormData r1Data = new FormData();
+				//r1Data.top = new FormAttachment(stepInfoNeed);
+				//r1Data.left = new FormAttachment(0);
+				//radio1.setLayoutData(r1Data);
 
-				Button radio2 = new Button(messageShell, SWT.RADIO|SWT.WRAP);
-				radio2.setText("I want to start a new search direction that I was inspired by some points \n" + " before serendipitously.");
+				Button radio2 = new Button(groupQ4, SWT.RADIO|SWT.WRAP);
+				radio2.setText("I want to start a new search direction that I was inspired by some points \nbefore serendipitously.");
 				radio2.setSelection(false);
-				FormData r2Data = new FormData();
-				r2Data.top = new FormAttachment(radio1);
-				r2Data.left = new FormAttachment(0);
-				radio2.setLayoutData(r2Data);
+				//radio2.setBounds(0, 30, 90, 40);
+				//FormData r2Data = new FormData();
+				//r2Data.top = new FormAttachment(radio1);
+				//r2Data.left = new FormAttachment(0);
+				//radio2.setLayoutData(r2Data);
 
-				Button radio3 = new Button(messageShell, SWT.RADIO);
+				Button radio3 = new Button(groupQ4, SWT.RADIO);
 				radio3.setText("Other information needs that I think will fall under this category. ");
 				radio3.setSelection(false);
-				FormData r3Data = new FormData();
-				r3Data.top = new FormAttachment(radio2);
-				r3Data.left = new FormAttachment(0);
-				radio3.setLayoutData(r3Data);
+				//radio3.setBounds(0, 80, 90, 20);
+				//FormData r3Data = new FormData();
+				//r3Data.top = new FormAttachment(radio2);
+				//r3Data.left = new FormAttachment(0);
+				//radio3.setLayoutData(r3Data);
 
 				//Q5
 				Text uncertainty = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
 				uncertainty.setText("Q5: Your confidence: ");
 				FormData txtData1 = new FormData();
-				txtData1.top = new FormAttachment(radio3);
+				txtData1.top = new FormAttachment(groupQ4);
 				txtData1.left = new FormAttachment(0);
 				txtData1.right = new FormAttachment(30);
 				uncertainty.setLayoutData(txtData1);
 				Text uncertainInput = new Text(messageShell, SWT.BORDER);
 				FormData txtData2 = new FormData();
-				txtData2.top = new FormAttachment(radio3);
+				txtData2.top = new FormAttachment(groupQ4);
 				txtData2.left = new FormAttachment(uncertainty);
 				uncertainInput.setLayoutData(txtData2);
 
@@ -183,19 +189,32 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				txtData.right = new FormAttachment(60);
 				changed.setLayoutData(txtData);
 
-				Button changedYes = new Button(messageShell, SWT.RADIO);
+				Group groupQ6 = new Group(messageShell, SWT.NONE);
+				FormData groupQ6Data = new FormData();
+				groupQ6Data.top= new FormAttachment(changed);
+				groupQ6Data.left=new FormAttachment(0);
+				groupQ6Data.right=new FormAttachment(60);
+				groupQ6.setLayoutData(groupQ6Data);
+				groupQ6.setLayout(new FillLayout());
+				//groupQ6.setSize(200,400);
+				//groupQ6.setBounds(22, 10, 188, 89);
+				Button changedYes = new Button(groupQ6, SWT.RADIO);
 				changedYes.setText("yes");
-				FormData cyData = new FormData();
-				cyData.top = new FormAttachment(uncertainInput);
-				cyData.left = new FormAttachment(changed);
-				changedYes.setLayoutData(cyData);
+				changedYes.setSelection(false);
+				//changedYes.setBounds(0, 0, 60, 20);
+				//FormData cyData = new FormData();
+				//cyData.top = new FormAttachment(uncertainInput);
+				//cyData.left = new FormAttachment(changed);
+				//changedYes.setLayoutData(cyData);
 
-				Button changedNo = new Button(messageShell, SWT.RADIO);
+				Button changedNo = new Button(groupQ6, SWT.RADIO);
 				changedNo.setText("no");
-				FormData cnData = new FormData();
-				cnData.top = new FormAttachment(uncertainInput);
-				cnData.left = new FormAttachment(changedYes);
-				changedNo.setLayoutData(cnData);
+				changedNo.setSelection(false);
+				//changedYes.setBounds(80, 0, 60, 20);
+				//FormData cnData = new FormData();
+				//cnData.top = new FormAttachment(uncertainInput);
+				//cnData.left = new FormAttachment(changedYes);
+				//changedNo.setLayoutData(cnData);
 
 				Button submit = new Button(messageShell, SWT.ABORT);
 				submit.addSelectionListener(new SelectionAdapter()
@@ -224,7 +243,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 							messageBox.open();
 							return;
 						}
-						String text = uncertainty.getText();
+						String text = uncertainInput.getText();
 						Pattern pattern = Pattern.compile("[0-9]*");
 						int certainty = -1;
 						if (text != null && !text.isEmpty() && pattern.matcher(text).matches())
@@ -246,11 +265,11 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				});
 				submit.setText("Submit");
 				FormData subData = new FormData();
-				subData.top = new FormAttachment(changed);
+				subData.top = new FormAttachment(groupQ6);
 				subData.left = new FormAttachment(70);
 				submit.setLayoutData(subData);
 				messageShell.setLocation(0,0);
-				messageShell.setSize(550, 230);
+				messageShell.setSize(660, 380);
 				messageShell.open();
 			}
 			else
