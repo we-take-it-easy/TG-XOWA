@@ -489,6 +489,7 @@ public class Xog_win_itm_ {
 			buttonEnd.setEnabled(true);
 			buttonGiveUp.setEnabled(true);
 
+			////问题1, 用户阅读完题目后，对解决该问题有没有一个明确的方向感：directed/undirected/others，选择题
 			Text qus1 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
 			qus1.setText("Q1: Please choose a case to describe your plan(goal) of solving it? ");
 			//text3.setText("Step 3. Start exploration.......\n"+"User Name: "+ UserName);
@@ -498,37 +499,32 @@ public class Xog_win_itm_ {
             txtData.right = new FormAttachment(90);
             qus1.setLayoutData(txtData);
 
-            //问题1, 用户阅读完题目后，对解决该问题有没有一个明确的方向感：directed/undirected/others，选择题
-            Button undirected = new Button(choiceshell, SWT.RADIO);
-			undirected.setText("undirected");
+            Group groupQ1 = new Group(choiceshell, SWT.NONE|SWT.WRAP);
+            FormData groupQ1Data = new FormData();
+            groupQ1Data.top= new FormAttachment(qus1);
+            groupQ1Data.left=new FormAttachment(0);
+            groupQ1Data.right=new FormAttachment(100);
+            groupQ1.setLayoutData(groupQ1Data);
+            groupQ1.setLayout(new RowLayout());
+
+            Button undirected = new Button(groupQ1, SWT.RADIO);
+			undirected.setText("undirected(I want to learn something specific about my topic)");
 			undirected.setSelection(false);
-			FormData r1Data = new FormData();
-			r1Data.top = new FormAttachment(qus1);
-			r1Data.left = new FormAttachment(0);
-            undirected.setLayoutData(r1Data);
 
-            Button directed = new Button(choiceshell, SWT.RADIO);
-            directed.setText("directed");
+            Button directed = new Button(groupQ1, SWT.RADIO);
+            directed.setText("directed(tell me about my topic)");
             directed.setSelection(false);
-			FormData r2Data = new FormData();
-			r2Data.top = new FormAttachment(qus1);
-			r2Data.left = new FormAttachment(undirected);
-			directed.setLayoutData(r2Data);
 
-            Button unknown = new Button(choiceshell, SWT.RADIO);
-            unknown.setText("others");
+            Button unknown = new Button(groupQ1, SWT.RADIO);
+            unknown.setText("others(ones that we were unable to classify)");
             unknown.setSelection(false);
-			FormData r3Data = new FormData();
-			r3Data.top = new FormAttachment(qus1);
-			r3Data.left = new FormAttachment(directed);
-			unknown.setLayoutData(r3Data);
 
 			undirected.addSelectionListener(new SelectionAdapter()
 			{
 				@Override
 				public void widgetSelected(SelectionEvent selectionEvent)
 				{
-					Qs2(choiceshell, undirected);
+					Qs2(choiceshell, groupQ1);
 				}
 			});
 
@@ -537,11 +533,11 @@ public class Xog_win_itm_ {
 				@Override
 				public void widgetSelected(SelectionEvent selectionEvent)
 				{
-					Qs2(choiceshell, directed);
+					Qs2(choiceshell, groupQ1);
 				}
 			});
 
-            choiceshell.setSize(550, 330);
+            choiceshell.setSize(550, 380);
             choiceshell.layout();
             choiceshell.redraw();
 		});
@@ -605,38 +601,38 @@ public class Xog_win_itm_ {
         choiceshell.redraw();
 	}
 
-	public static void Qs2(Shell choiceshell, Button button){
+	public static void Qs2(Shell choiceshell, Group buttonGroup){
 		Text qus2 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
 		//qus2.setText("Q2: Do you already have a query(a well-formed phrase or a well-defined concept) in mind?");
 		qus2.setText("Q2: Do you have a specific question in mind?");
 		FormData txtData = new FormData();
-		txtData.top = new FormAttachment(button);
+		txtData.top = new FormAttachment(buttonGroup);
 		txtData.left = new FormAttachment(0);
 		txtData.right = new FormAttachment(90);
 		qus2.setLayoutData(txtData);
 
-		Button specificYes = new Button(choiceshell, SWT.RADIO);
+        Group groupQ2 = new Group(choiceshell, SWT.NONE);
+        FormData groupQ2Data = new FormData();
+        groupQ2Data.top= new FormAttachment(qus2);
+        groupQ2Data.left=new FormAttachment(0);
+        groupQ2Data.right=new FormAttachment(100);
+        groupQ2.setLayoutData(groupQ2Data);
+        groupQ2.setLayout(new RowLayout());
+
+		Button specificYes = new Button(groupQ2, SWT.RADIO);
 		specificYes.setText("yes");
 		specificYes.setSelection(false);
-		FormData r4Data = new FormData();
-		r4Data.top = new FormAttachment(qus2);
-		r4Data.left = new FormAttachment(0);
-		specificYes.setLayoutData(r4Data);
 
-		Button specificNo = new Button(choiceshell, SWT.RADIO);
+		Button specificNo = new Button(groupQ2, SWT.RADIO);
 		specificNo.setText("no");
 		specificNo.setSelection(false);
-		FormData r5Data = new FormData();
-		r5Data.top = new FormAttachment(qus2);
-		r5Data.left = new FormAttachment(specificYes);
-		specificNo.setLayoutData(r5Data);
 
 		specificYes.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent selectionEvent)
 			{
-				Qs3(choiceshell, specificYes);
+				Qs3(choiceshell, groupQ2);
 			}
 		});
 
@@ -645,20 +641,25 @@ public class Xog_win_itm_ {
 			@Override
 			public void widgetSelected(SelectionEvent selectionEvent)
 			{
-				Qs3(choiceshell, specificNo);
+				Qs3(choiceshell, groupQ2);
 			}
 		});
-		choiceshell.setSize(550, 480);
+		choiceshell.setSize(550, 450);
 		choiceshell.layout();
 		choiceshell.redraw();
 	}
 
-	public static void Qs3(Shell choiceshell, Button button){
+	public static void Qs3(Shell choiceshell, Group buttonGroup){
 		Text qus3 = new Text(choiceshell, SWT.READ_ONLY | SWT.WRAP);
 		qus3.setText("Q3: Please express your current information need(goal/question) in terms of natural language.\n" +
-				"It might be in forms like: ....");
+				"It might be in forms like: \n" +
+                "–  I want to know how to make pasta. I want to know why bears hibernate. \n" +
+                "–  I want to know something about lung cancer. I want to know who Micheal Jackson is. \n" +
+                "–  I want to know the capital city of Kenya. I want to know who invented the telephone.\n" +
+                "–  I want the list of countries in Latin America. I want the names of some programming languages. \n" +
+                "If none of the above, could you formulate a question expressing your information need?");
 		FormData txtData = new FormData();
-		txtData.top = new FormAttachment(button);
+		txtData.top = new FormAttachment(buttonGroup);
 		txtData.left = new FormAttachment(0);
 		txtData.right = new FormAttachment(90);
 		qus3.setLayoutData(txtData);
@@ -686,6 +687,7 @@ public class Xog_win_itm_ {
 				//提交问题123到数据库
 			}
 		});
+		choiceshell.setSize(550,700);
 		choiceshell.layout();
 		choiceshell.redraw();
 	}

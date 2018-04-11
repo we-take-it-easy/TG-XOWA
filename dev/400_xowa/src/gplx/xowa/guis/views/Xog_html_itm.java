@@ -151,17 +151,35 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				radio3.setText("Other information needs that I think will fall under this category. ");
 				radio3.setSelection(false);
 
+				Text q4 = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
+				q4.setText("Input the current question in your mind.");
+				FormData q4Data1 = new FormData();
+				q4Data1.top = new FormAttachment(groupQ4);
+				q4Data1.left = new FormAttachment(0);
+				q4Data1.right = new FormAttachment(90);
+				q4.setLayoutData(q4Data1);
+
+				Text q4Input = new Text(messageShell, SWT.WRAP|SWT.BORDER);
+				FormData q4IData1 = new FormData();
+				q4IData1.top = new FormAttachment(q4);
+				q4IData1.left = new FormAttachment(0);
+				q4IData1.height = 20;
+				q4IData1.right = new FormAttachment(90);
+				q4Input.setLayoutData(q4IData1);
+
+
+
 				//Q5
 				Text uncertainty = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
-				uncertainty.setText("Q5: Your confidence: ");
+				uncertainty.setText("Q5: Your confidence:__%");
 				FormData txtData1 = new FormData();
-				txtData1.top = new FormAttachment(groupQ4);
+				txtData1.top = new FormAttachment(q4Input);
 				txtData1.left = new FormAttachment(0);
 				txtData1.right = new FormAttachment(30);
 				uncertainty.setLayoutData(txtData1);
 				Text uncertainInput = new Text(messageShell, SWT.BORDER);
 				FormData txtData2 = new FormData();
-				txtData2.top = new FormAttachment(groupQ4);
+				txtData2.top = new FormAttachment(q4Input);
 				txtData2.left = new FormAttachment(uncertainty);
 				uncertainInput.setLayoutData(txtData2);
 
