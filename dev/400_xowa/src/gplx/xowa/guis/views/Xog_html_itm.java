@@ -127,8 +127,9 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				layout.marginHeight = layout.marginWidth = 9;
 				messageShell.setLayout(layout);
 
-				Text stepInfoNeed = new Text(messageShell, SWT.MULTI | SWT.READ_ONLY);
-				stepInfoNeed.setText("You come to the current step(issued a new query/chained a link on the previous page) because ...");
+
+				Text stepInfoNeed = new Text(messageShell, SWT.WRAP | SWT.READ_ONLY);
+				stepInfoNeed.setText("Q4: You come to the current step(issued a new query/chained a link on the previous page) because ...");
 				FormData stepData = new FormData();
 				stepData.top = new FormAttachment(0);
 				stepData.left = new FormAttachment(0);
@@ -143,8 +144,8 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				r1Data.left = new FormAttachment(0);
 				radio1.setLayoutData(r1Data);
 
-				Button radio2 = new Button(messageShell, SWT.RADIO);
-				radio2.setText("I want to start a new search direction that I was inspired by some points before serendipitously.");
+				Button radio2 = new Button(messageShell, SWT.RADIO|SWT.WRAP);
+				radio2.setText("I want to start a new search direction that I was inspired by some points \n" + " before serendipitously.");
 				radio2.setSelection(false);
 				FormData r2Data = new FormData();
 				r2Data.top = new FormAttachment(radio1);
@@ -159,15 +160,42 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				r3Data.left = new FormAttachment(0);
 				radio3.setLayoutData(r3Data);
 
-
-				Text other = new Text(messageShell, SWT.MULTI | SWT.BORDER);
+				//Q5
+				Text uncertainty = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
+				uncertainty.setText("Q5: Your confidence: ");
 				FormData txtData1 = new FormData();
 				txtData1.top = new FormAttachment(radio3);
 				txtData1.left = new FormAttachment(0);
-				txtData1.right = new FormAttachment(90);
-				txtData1.height = 40;
-				other.setLayoutData(txtData1);
+				txtData1.right = new FormAttachment(30);
+				uncertainty.setLayoutData(txtData1);
+				Text uncertainInput = new Text(messageShell, SWT.BORDER);
+				FormData txtData2 = new FormData();
+				txtData2.top = new FormAttachment(radio3);
+				txtData2.left = new FormAttachment(uncertainty);
+				uncertainInput.setLayoutData(txtData2);
 
+				//Q6
+				Text changed = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
+				changed.setText("Q6: Did your information need change in this step?");
+				FormData txtData = new FormData();
+				txtData.top = new FormAttachment(uncertainInput);
+				txtData.left = new FormAttachment(0);
+				txtData.right = new FormAttachment(60);
+				changed.setLayoutData(txtData);
+
+				Button changedYes = new Button(messageShell, SWT.RADIO);
+				changedYes.setText("yes");
+				FormData cyData = new FormData();
+				cyData.top = new FormAttachment(uncertainInput);
+				cyData.left = new FormAttachment(changed);
+				changedYes.setLayoutData(cyData);
+
+				Button changedNo = new Button(messageShell, SWT.RADIO);
+				changedNo.setText("no");
+				FormData cnData = new FormData();
+				cnData.top = new FormAttachment(uncertainInput);
+				cnData.left = new FormAttachment(changedYes);
+				changedNo.setLayoutData(cnData);
 
 				Button submit = new Button(messageShell, SWT.ABORT);
 				submit.addSelectionListener(new SelectionAdapter()
@@ -190,13 +218,13 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 						}
 						else
 						{
-							MessageBox messageBox = new MessageBox(messageShell, SWT.ABORT);
+							MessageBox messageBox = new MessageBox(messageShell, SWT.ABORT|SWT.ON_TOP);
 							messageBox.setText("Error");
 							messageBox.setMessage("No radio is selected.");
 							messageBox.open();
 							return;
 						}
-						String text = other.getText();
+						String text = uncertainty.getText();
 						Pattern pattern = Pattern.compile("[0-9]*");
 						int certainty = -1;
 						if (text != null && !text.isEmpty() && pattern.matcher(text).matches())
@@ -205,7 +233,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 						}
 						else
 						{
-							MessageBox messageBox = new MessageBox(messageShell, SWT.ABORT);
+							MessageBox messageBox = new MessageBox(messageShell, SWT.ABORT|SWT.ON_TOP);
 							messageBox.setText("Error");
 							messageBox.setMessage("Please input an integer (0-100) in the text box.");
 							messageBox.open();
@@ -218,10 +246,11 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				});
 				submit.setText("Submit");
 				FormData subData = new FormData();
-				subData.top = new FormAttachment(other);
-				subData.left = new FormAttachment(0);
+				subData.top = new FormAttachment(changed);
+				subData.left = new FormAttachment(70);
 				submit.setLayoutData(subData);
-				messageShell.setSize(660, 260);
+				messageShell.setLocation(0,0);
+				messageShell.setSize(550, 230);
 				messageShell.open();
 			}
 			else
