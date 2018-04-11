@@ -27,9 +27,9 @@ public class LoadPageAction implements Action
             GraphBuilder.getInstance().searchTo(page);
         }
 
-        String description = "test";
-        int certainty = 22;
-        GraphBuilder.getInstance().saveStepQuestion(description, certainty);
+        //String description = "test";
+        //int certainty = 22;
+        //GraphBuilder.getInstance().saveStepQuestion(description, certainty);
 
     }
 
