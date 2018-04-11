@@ -4,7 +4,6 @@ import cn.edu.ruc.xowa.log.graph.GraphBuilder;
 import cn.edu.ruc.xowa.log.page.Page;
 
 import java.util.List;
-
 /**
  * Created by hank on 18-1-19.
  */

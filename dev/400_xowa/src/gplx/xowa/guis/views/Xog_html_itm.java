@@ -13,7 +13,9 @@ The terms of each license can be found in the source code repository:
 GPLv3 License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-GPLv3.txt
 Apache License: https://github.com/gnosygnu/xowa/blob/master/LICENSE-APACHE2.txt
 */
-package gplx.xowa.guis.views; import cn.edu.ruc.xowa.log.action.Action;
+package gplx.xowa.guis.views;
+
+import cn.edu.ruc.xowa.log.action.Action;
 import cn.edu.ruc.xowa.log.action.LoadPageAction;
 import cn.edu.ruc.xowa.log.page.Page;
 import cn.edu.ruc.xowa.log.page.PageCache;
@@ -35,6 +37,17 @@ import gplx.xowa.htmls.heads.Xoh_head_mgr;
 import gplx.xowa.htmls.hrefs.Xoh_href_gui_utl;
 import gplx.xowa.htmls.js.Xoh_js_cbk;
 import gplx.xowa.wikis.pages.Xopg_page_;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page_html_source {
 	private Xoae_app app; private final    Object thread_lock = new Object();
 	private final    String_obj_ref scroll_top = String_obj_ref.null_(), node_path = String_obj_ref.null_();
@@ -100,6 +113,68 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 		{
 			Action loadPageAction = new LoadPageAction(page1);
 			loadPageAction.perform();
+
+			//加一个step RECORDER
+			Shell messageShell = Display.getDefault().getActiveShell();
+			messageShell.setText("Step INFO-NEED Recorder");
+			FormLayout layout = new FormLayout();
+			layout.spacing = 6;
+			layout.marginHeight = layout.marginWidth = 9;
+			messageShell.setLayout(layout);
+
+			Text stepInfoNeed = new Text(messageShell, SWT.MULTI | SWT.READ_ONLY);
+			stepInfoNeed.setText("You come to the current step(issued a new query/chained a link on the previous page) because ...");
+			FormData stepData = new FormData();
+			stepData.top = new FormAttachment(0);
+			stepData.left = new FormAttachment(0);
+			stepData.right = new FormAttachment(90);
+			stepInfoNeed.setLayoutData(stepData);
+
+			Button radio1 = new Button(messageShell, SWT.RADIO);
+			radio1.setText("I want to look for a specified information to better understand a result. ");
+			radio1.setSelection(false);
+			FormData r1Data = new FormData();
+			r1Data.top = new FormAttachment(stepInfoNeed);
+			r1Data.left = new FormAttachment(0);
+			radio1.setLayoutData(r1Data);
+
+			Button radio2 = new Button(messageShell, SWT.RADIO);
+			radio2.setText("I want to start a new search direction that I was inspired by some points before serendipitously.");
+			radio2.setSelection(false);
+			FormData r2Data = new FormData();
+			r2Data.top = new FormAttachment(radio1);
+			r2Data.left = new FormAttachment(0);
+			radio2.setLayoutData(r2Data);
+
+			Button radio3 = new Button(messageShell, SWT.RADIO);
+			radio3.setText("Other information needs that I think will fall under this category. ");
+			radio3.setSelection(false);
+			FormData r3Data = new FormData();
+			r3Data.top = new FormAttachment(radio2);
+			r3Data.left = new FormAttachment(0);
+			radio3.setLayoutData(r1Data);
+
+			Text other = new Text(messageShell, SWT.MULTI | SWT.BORDER);
+			FormData txtData1 = new FormData();
+			txtData1.top = new FormAttachment(radio3);
+			txtData1.left = new FormAttachment(0);
+			txtData1.right = new FormAttachment(90);
+			txtData1.height = 40;
+			other.setLayoutData(txtData1);
+
+			Button submit = new Button(messageShell, SWT.ABORT);
+			submit.addSelectionListener(new SelectionAdapter()
+			{
+				@Override
+				public void widgetSelected(SelectionEvent selectionEvent)
+				{
+					messageShell.close();
+				}
+			});
+			FormData subData = new FormData();
+			subData.top = new FormAttachment(other);
+			subData.right = new FormAttachment(0);
+			submit.setLayoutData(subData);
 		}
 		else
 		{
