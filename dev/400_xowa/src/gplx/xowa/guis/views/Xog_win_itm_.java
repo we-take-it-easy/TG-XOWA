@@ -88,6 +88,11 @@ public class Xog_win_itm_ {
 	public static void OpenChoiceshell()
 	{
 		Shell choiceshell = new Shell();
+		choiceshell.setText("Module Controller");
+		FormLayout layout = new FormLayout();
+		layout.spacing = 6;
+		layout.marginHeight = layout.marginWidth = 9;
+		choiceshell.setLayout(layout);
 
 		Text text = new Text(choiceshell, SWT.SINGLE | SWT.READ_ONLY);
 		text.setText("Step 1. Please choose a module that you wanna enjoy.");
@@ -133,12 +138,6 @@ public class Xog_win_itm_ {
 			choiceshell.redraw();
 
         });*/
-
-		choiceshell.setText("Module Controller");
-		FormLayout layout = new FormLayout();
-		layout.spacing = 6;
-		layout.marginHeight = layout.marginWidth = 9;
-		choiceshell.setLayout(layout);
 
 		FormData textData = new FormData();
 		textData.top = new FormAttachment(0);

@@ -4,7 +4,6 @@ import cn.edu.ruc.xowa.log.graph.GraphBuilder;
 import cn.edu.ruc.xowa.log.page.Page;
 
 import java.util.List;
-
 /**
  * Created by hank on 18-1-19.
  */
@@ -28,9 +27,9 @@ public class LoadPageAction implements Action
             GraphBuilder.getInstance().searchTo(page);
         }
 
-        String description = "test";
-        int certainty = 22;
-        GraphBuilder.getInstance().saveStepQuestion(description, certainty);
+        //String description = "test";
+        //int certainty = 22;
+        //GraphBuilder.getInstance().saveStepQuestion(description, certainty);
 
     }
 

@@ -62,6 +62,11 @@ public class GraphBuilder
         System.out.println("user login: " + userName);
     }
 
+    public boolean isStarted ()
+    {
+        return this.sessionId != null && !this.sessionId.isEmpty();
+    }
+
     public void start (String sessionId)
     {
         this.sessionId = sessionId;
@@ -532,12 +537,19 @@ public class GraphBuilder
 
     public void saveStepQuestion(String description, int certainty)
     {
-        try
+        if (this.sessionId != null && !this.sessionId.isEmpty())
         {
-            this.dbAccess.insertStepQuestion(sessionId, description, certainty);
-        } catch (SQLException e)
+            try
+            {
+                this.dbAccess.insertStepQuestion(sessionId, description, certainty);
+            } catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
         {
-            e.printStackTrace();
+            System.err.println("session id is null, please begin a session first.");
         }
     }
 
