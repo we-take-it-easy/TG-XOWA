@@ -103,12 +103,25 @@ public class DBAccess
         pstmt.close();
     }
 
-    public void insertStepQuestion(String sessionId, String description, int certainty) throws SQLException
+    public void insertStepQuestion(String sessionId, String curQus, String description, int certainty, String changed) throws SQLException
     {
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.step_question(session_id, description, certainty)VALUES (?,?,?)");
-        pstmt.setString(1,sessionId);
-        pstmt.setString(2,description);
-        pstmt.setInt(3, certainty);
+        pstmt = conn.prepareStatement("INSERT INTO xowa_log.step_question(session_id, curQus, description, certainty, changed)VALUES (?,?,?,?,?)");
+        pstmt.setString(1, sessionId);
+        pstmt.setString(2, curQus);
+        pstmt.setString(3, description);
+        pstmt.setInt(4, certainty);
+        pstmt.setString(5, changed);
+        pstmt.executeUpdate();
+        pstmt.close();
+    }
+
+    public void insertSessionQuestion(String sessionId, String plan, String specific, String question) throws SQLException
+    {
+        pstmt = conn.prepareStatement("INSERT INTO xowa_log.session_question(session_id, whether_directed, specific_qus, info_need)VALUES (?,?,?,?)");
+        pstmt.setString(1, sessionId);
+        pstmt.setString(2, plan);
+        pstmt.setString(3, specific);
+        pstmt.setString(4, question);
         pstmt.executeUpdate();
         pstmt.close();
     }

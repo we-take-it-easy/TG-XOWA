@@ -17,6 +17,7 @@ package gplx.xowa.guis.views;
 
 import cn.edu.ruc.xowa.log.action.*;
 import cn.edu.ruc.xowa.log.database.DBAccess;
+import cn.edu.ruc.xowa.log.graph.GraphBuilder;
 import gplx.Keyval_;
 import gplx.String_;
 import gplx.gfui.controls.elems.GfuiElem;
@@ -519,12 +520,12 @@ public class Xog_win_itm_ {
             unknown.setText("others(ones that we were unable to classify)");
             unknown.setSelection(false);
 
-			undirected.addSelectionListener(new SelectionAdapter()
+            undirected.addSelectionListener(new SelectionAdapter()
 			{
 				@Override
 				public void widgetSelected(SelectionEvent selectionEvent)
 				{
-					Qs2(choiceshell, groupQ1);
+					Qs2(choiceshell, groupQ1, "undirected");
 				}
 			});
 
@@ -533,7 +534,16 @@ public class Xog_win_itm_ {
 				@Override
 				public void widgetSelected(SelectionEvent selectionEvent)
 				{
-					Qs2(choiceshell, groupQ1);
+					Qs2(choiceshell, groupQ1, "directed");
+				}
+			});
+
+			unknown.addSelectionListener(new SelectionAdapter()
+			{
+				@Override
+				public void widgetSelected(SelectionEvent selectionEvent)
+				{
+					Qs2(choiceshell, groupQ1, "others");
 				}
 			});
 
@@ -601,7 +611,7 @@ public class Xog_win_itm_ {
         choiceshell.redraw();
 	}
 
-	public static void Qs2(Shell choiceshell, Group buttonGroup){
+	public static void Qs2(Shell choiceshell, Group buttonGroup, String plan){
 		Text qus2 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
 		//qus2.setText("Q2: Do you already have a query(a well-formed phrase or a well-defined concept) in mind?");
 		qus2.setText("Q2: Do you have a specific question in mind?");
@@ -632,7 +642,7 @@ public class Xog_win_itm_ {
 			@Override
 			public void widgetSelected(SelectionEvent selectionEvent)
 			{
-				Qs3(choiceshell, groupQ2);
+				Qs3(choiceshell, groupQ2, plan, "yes");
 			}
 		});
 
@@ -641,7 +651,7 @@ public class Xog_win_itm_ {
 			@Override
 			public void widgetSelected(SelectionEvent selectionEvent)
 			{
-				Qs3(choiceshell, groupQ2);
+				Qs3(choiceshell, groupQ2, plan, "no");
 			}
 		});
 		choiceshell.setSize(550, 450);
@@ -649,7 +659,7 @@ public class Xog_win_itm_ {
 		choiceshell.redraw();
 	}
 
-	public static void Qs3(Shell choiceshell, Group buttonGroup){
+	public static void Qs3(Shell choiceshell, Group buttonGroup, String plan, String specific){
 		Text qus3 = new Text(choiceshell, SWT.READ_ONLY | SWT.WRAP);
 		qus3.setText("Q3: Please express your current information need(goal/question) in terms of natural language.\n" +
 				"It might be in forms like: \n" +
@@ -682,9 +692,12 @@ public class Xog_win_itm_ {
 		subqs123.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
+
 			public void widgetSelected(SelectionEvent selectionEvent)
 			{
 				//提交问题123到数据库
+				String q3 = qus3input.getText();
+				GraphBuilder.getInstance().saveSessionQuestions(plan, specific, q3);
 			}
 		});
 		choiceshell.setSize(550,700);

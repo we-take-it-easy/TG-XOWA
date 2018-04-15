@@ -535,13 +535,31 @@ public class GraphBuilder
         }
     }
 
-    public void saveStepQuestion(String description, int certainty)
+    public void saveStepQuestion(String description, String curQus, int certainty, String changed)
     {
         if (this.sessionId != null && !this.sessionId.isEmpty())
         {
             try
             {
-                this.dbAccess.insertStepQuestion(sessionId, description, certainty);
+                this.dbAccess.insertStepQuestion(sessionId, description, curQus, certainty, changed);
+            } catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.err.println("session id is null, please begin a session first.");
+        }
+    }
+
+    public void saveSessionQuestions(String plan, String specific, String q3)
+    {
+        if (this.sessionId != null && !this.sessionId.isEmpty())
+        {
+            try
+            {
+                this.dbAccess.insertSessionQuestion(sessionId, plan, specific, q3);
             } catch (SQLException e)
             {
                 e.printStackTrace();

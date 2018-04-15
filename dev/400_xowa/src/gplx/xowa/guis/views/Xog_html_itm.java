@@ -167,8 +167,6 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				q4IData1.right = new FormAttachment(90);
 				q4Input.setLayoutData(q4IData1);
 
-
-
 				//Q5
 				Text uncertainty = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
 				uncertainty.setText("Q5: Your confidence:__%");
@@ -215,6 +213,8 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 					public void widgetSelected(SelectionEvent selectionEvent)
 					{
 						String description = null;
+						String curQus = null;
+						String changed = null;
 						if (radio1.getSelection())
 						{
 							description = radio1.getText();
@@ -250,8 +250,15 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 							messageBox.open();
 							return;
 						}
-
-						GraphBuilder.getInstance().saveStepQuestion(description, certainty);
+						curQus = q4Input.getText();
+						if (changedYes.getSelection())
+						{
+							changed = "yes";
+						}else if(changedNo.getSelection())
+						{
+							changed = "no";
+						}
+						GraphBuilder.getInstance().saveStepQuestion(curQus, description, certainty, changed);
 						messageShell.close();
 					}
 				});
