@@ -33,7 +33,19 @@ public class DBAccess
 
     public Connection getConnection ()
     {
-        return this.conn;
+        try
+        {
+            if (!conn.isValid(3))
+            {
+                conn.close();
+                conn = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
+            }
+            return conn;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void close() {
@@ -53,7 +65,7 @@ public class DBAccess
 
     public int login (String userName) throws SQLException
     {
-        pstmt = conn.prepareStatement("SELECT id FROM xowa_log.sys_user WHERE user_name=?");
+        pstmt = getConnection().prepareStatement("SELECT id FROM xowa_log.sys_user WHERE user_name=?");
         pstmt.setString(1, userName);
         rs = pstmt.executeQuery();
         int userId = -1;
@@ -67,7 +79,7 @@ public class DBAccess
 
     public int register (String userName) throws SQLException
     {
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.sys_user (user_name) VALUES(?)");
+        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.sys_user (user_name) VALUES(?)");
         pstmt.setString(1, userName);
         pstmt.execute();
         pstmt.close();
@@ -83,7 +95,7 @@ public class DBAccess
             serializableAllNodes.put(entry.getKey(), new SerializableGraphNode(entry.getValue()));
         }
 
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.navigation_path(session_id, user_name, path, gini)VALUES (?,?,?,?)");
+        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.navigation_path(session_id, user_name, path, gini)VALUES (?,?,?,?)");
         pstmt.setString(1,sessionId);
         pstmt.setString(2, userName);
         Sql.setSerializedObject(pstmt, 3, serializableAllNodes);
@@ -94,7 +106,7 @@ public class DBAccess
 
     public void insertQuesForUser(String userName,String entityName, String question, String answer) throws SQLException
     {
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.explo_ques_ans(user_name, entity_name, question, answer)VALUES (?,?,?,?)");
+        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.explo_ques_ans(user_name, entity_name, question, answer)VALUES (?,?,?,?)");
         pstmt.setString(1,userName);
         pstmt.setString(2,entityName);
         Sql.setSerializedObject(pstmt, 3, question);
@@ -105,7 +117,7 @@ public class DBAccess
 
     public void insertStepQuestion(String sessionId, String curQus, String description, int certainty, String changed) throws SQLException
     {
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.step_question(session_id, curQus, description, certainty, changed)VALUES (?,?,?,?,?)");
+        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.step_question(session_id, curQus, description, certainty, changed)VALUES (?,?,?,?,?)");
         pstmt.setString(1, sessionId);
         pstmt.setString(2, curQus);
         pstmt.setString(3, description);
@@ -117,7 +129,7 @@ public class DBAccess
 
     public void insertSessionQuestion(String sessionId, String plan, String specific, String question) throws SQLException
     {
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.session_question(session_id, whether_directed, specific_qus, info_need)VALUES (?,?,?,?)");
+        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.session_question(session_id, whether_directed, specific_qus, info_need)VALUES (?,?,?,?)");
         pstmt.setString(1, sessionId);
         pstmt.setString(2, plan);
         pstmt.setString(3, specific);
@@ -130,13 +142,13 @@ public class DBAccess
     {
         if (answer == null)
         {
-            pstmt = conn.prepareStatement("UPDATE xowa_log.session_question SET multifacet=? WHERE session_id=?");
+            pstmt = getConnection().prepareStatement("UPDATE xowa_log.session_question SET multifacet=? WHERE session_id=?");
             pstmt.setString(2, sessionId);
             pstmt.setString(1, multifacet);
         }
         else
         {
-            pstmt = conn.prepareStatement("UPDATE xowa_log.session_question SET multifacet=?, answer=? WHERE session_id=?");
+            pstmt = getConnection().prepareStatement("UPDATE xowa_log.session_question SET multifacet=?, answer=? WHERE session_id=?");
             pstmt.setString(3, sessionId);
             pstmt.setString(1, multifacet);
             pstmt.setString(2, answer);
@@ -149,7 +161,7 @@ public class DBAccess
 
     public void insertQuesForUser2(int userId, String entityName, String question, String answer) throws SQLException
     {
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.explo_task(sys_user_id, entity_name, question, answer)VALUES (?,?,?,?)");
+        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.explo_task(sys_user_id, entity_name, question, answer)VALUES (?,?,?,?)");
         pstmt.setInt(1, userId);
         pstmt.setString(2, entityName);
         pstmt.setString(3, question);
@@ -160,7 +172,7 @@ public class DBAccess
 
     public void insertDeletedForPages(String entityName, String flag, String deletedSentence) throws SQLException
     {
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.deleted_sentence(entity_name, flag_sentence, deleted_sentence)VALUES (?,?,?)");
+        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.deleted_sentence(entity_name, flag_sentence, deleted_sentence)VALUES (?,?,?)");
         pstmt.setString(1,entityName);
         Sql.setSerializedObject(pstmt,2,flag);
         Sql.setSerializedObject(pstmt, 3, deletedSentence);
@@ -170,7 +182,7 @@ public class DBAccess
 
     public void insertDeletedForPages2(int userId, String entityName, String flag, String deletedSentence) throws SQLException
     {
-        pstmt = conn.prepareStatement("SELECT max(id) FROM xowa_log.explo_task WHERE sys_user_id=? AND entity_name=?");
+        pstmt = getConnection().prepareStatement("SELECT max(id) FROM xowa_log.explo_task WHERE sys_user_id=? AND entity_name=?");
         pstmt.setInt(1, userId);
         pstmt.setString(2, entityName);
         rs = pstmt.executeQuery();
@@ -184,7 +196,7 @@ public class DBAccess
             throw new SQLException("task id not found in explo_ques_ans: " + taskId);
         }
         pstmt.close();
-        pstmt = conn.prepareStatement("INSERT INTO xowa_log.deleted_sentence2(explo_task_id, flag_sentence, deleted_sentence)VALUES (?,?,?)");
+        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.deleted_sentence2(explo_task_id, flag_sentence, deleted_sentence)VALUES (?,?,?)");
         pstmt.setInt(1,taskId);
         pstmt.setString(2,flag);
         pstmt.setString(3, deletedSentence);
@@ -195,7 +207,7 @@ public class DBAccess
     public Map<String, GraphNode> getSessionAllnodes(String sessionId) throws SQLException
     {
         Map<String, GraphNode> allNodes = new HashMap<>();
-        pstmt = conn.prepareStatement("SELECT * FROM xowa_log.navigation_path WHERE session_id = ?");
+        pstmt = getConnection().prepareStatement("SELECT * FROM xowa_log.navigation_path WHERE session_id = ?");
         pstmt.setString(1, sessionId);
         rs = pstmt.executeQuery();
         //关闭pstmt会把rs也关闭了，所以应该在读完rs之后再关闭pstmt
@@ -231,11 +243,12 @@ public class DBAccess
         pstmt.close();
         return allNodes;
     }
+
     public List<List<String>> getSentencesForEntity(String entityName) throws SQLException
     {
         List<List<String>> sentenceList = new ArrayList<>();
         List<String> sentences = new ArrayList<>();
-        pstmt = conn.prepareStatement("SELECT * FROM xowa_log.deleted_sentence WHERE entity_name = ?");
+        pstmt = getConnection().prepareStatement("SELECT * FROM xowa_log.deleted_sentence WHERE entity_name = ?");
         pstmt.setString(1, entityName);
         rs = pstmt.executeQuery();
         pstmt.close();
@@ -245,7 +258,7 @@ public class DBAccess
     public List<String> getTasksForUserName(String userName) throws SQLException
     {
         List<String> task = new ArrayList<>();
-        pstmt = conn.prepareStatement("SELECT * FROM xowa_log.explo_ques_ans WHERE user_name = ?");
+        pstmt = getConnection().prepareStatement("SELECT * FROM xowa_log.explo_ques_ans WHERE user_name = ?");
         pstmt.setString(1, userName);
         rs = pstmt.executeQuery();
         while(rs.next())
@@ -260,7 +273,7 @@ public class DBAccess
         List<String> task = new ArrayList<>();
         try
         {
-            pstmt = conn.prepareStatement("SELECT question FROM xowa_log.explo_task ORDER BY RAND() LIMIT 1");
+            pstmt = getConnection().prepareStatement("SELECT question FROM xowa_log.explo_task ORDER BY RAND() LIMIT 1");
             rs = pstmt.executeQuery();
             while(rs.next())
             {
