@@ -126,6 +126,27 @@ public class DBAccess
         pstmt.close();
     }
 
+    public int updateSessionQuestion(String sessionId, String answer, String multifacet) throws SQLException
+    {
+        if (answer == null)
+        {
+            pstmt = conn.prepareStatement("UPDATE xowa_log.session_question SET multifacet=? WHERE session_id=?");
+            pstmt.setString(2, sessionId);
+            pstmt.setString(1, multifacet);
+        }
+        else
+        {
+            pstmt = conn.prepareStatement("UPDATE xowa_log.session_question SET multifacet=?, answer=? WHERE session_id=?");
+            pstmt.setString(3, sessionId);
+            pstmt.setString(1, multifacet);
+            pstmt.setString(2, answer);
+        }
+        int affectedRows = 0;
+        affectedRows = pstmt.executeUpdate();
+        pstmt.close();
+        return affectedRows;
+    }
+
     public void insertQuesForUser2(int userId, String entityName, String question, String answer) throws SQLException
     {
         pstmt = conn.prepareStatement("INSERT INTO xowa_log.explo_task(sys_user_id, entity_name, question, answer)VALUES (?,?,?,?)");

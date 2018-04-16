@@ -495,7 +495,7 @@ public class Xog_win_itm_ {
 		FormData groupQ1Data = new FormData();
 		groupQ1Data.top= new FormAttachment(qus1);
 		groupQ1Data.left=new FormAttachment(0);
-		groupQ1Data.right=new FormAttachment(100);
+		groupQ1Data.right=new FormAttachment(90);
 		groupQ1.setLayoutData(groupQ1Data);
 		groupQ1.setLayout(new RowLayout());
 		groupQ1.setVisible(false);
@@ -527,7 +527,7 @@ public class Xog_win_itm_ {
 		FormData groupQ2Data = new FormData();
 		groupQ2Data.top= new FormAttachment(qus2);
 		groupQ2Data.left=new FormAttachment(0);
-		groupQ2Data.right=new FormAttachment(100);
+		groupQ2Data.right=new FormAttachment(90);
 		groupQ2.setLayoutData(groupQ2Data);
 		groupQ2.setLayout(new RowLayout());
 		groupQ2.setVisible(false);
@@ -575,7 +575,7 @@ public class Xog_win_itm_ {
 
 		//question 5 and 6, along with the answer of the exploration task.
 		Text answerTxt = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
-		answerTxt.setText("Answer:");
+		answerTxt.setText("Answer of the Task:");
 		FormData answerTxtData = new FormData();
 		answerTxtData.top = new FormAttachment(subqs123);
 		answerTxtData.left = new FormAttachment(0);
@@ -592,7 +592,7 @@ public class Xog_win_itm_ {
 		answer.setVisible(false);
 
 		Text finalQsTxt = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
-		finalQsTxt.setText("Do you think a multi-facet filter would help you during the exploring process?");
+		finalQsTxt.setText("Q6: Do you think a multi-facet filter would help you during the exploring process?");
 		FormData txtData = new FormData();
 		txtData.left = new FormAttachment(0);
 		txtData.right = new FormAttachment(90);
@@ -609,7 +609,7 @@ public class Xog_win_itm_ {
 		finalQs.setVisible(false);
 
 		Button subqs56 = new Button(choiceshell, SWT.MULTI | SWT.WRAP | SWT.TOGGLE);
-		subqs56.setText("submit Q5,Q6");
+		subqs56.setText("submit Q6/Answer");
 		FormData subData2 = new FormData();
 		subData2.top = new FormAttachment(finalQs);
 		subData2.right = new FormAttachment(90);
@@ -646,6 +646,11 @@ public class Xog_win_itm_ {
 					specific = "no";
 				}
 				GraphBuilder.getInstance().saveSessionQuestions(plan, specific, q3);
+				subqs123.setEnabled(false);
+				MessageBox messageBox = new MessageBox(choiceshell, SWT.ABORT);
+				messageBox.setText("Task Controller");
+				messageBox.setMessage("Q1, Q2, Q3 have been submitted.");
+				messageBox.open();
 			}
 		});
 
@@ -655,6 +660,40 @@ public class Xog_win_itm_ {
 			public void widgetSelected(SelectionEvent selectionEvent)
 			{
 				// update the database.
+				MessageBox messageBox = new MessageBox(choiceshell, SWT.ABORT);
+				messageBox.setText("Task Controller");
+				String answerStr = answer.getText();
+				String finalStr = finalQs.getText();
+				if (subqs123.getEnabled() == true)
+				{
+					messageBox.setMessage("Submit Q1,Q2,Q3 first.");
+					messageBox.open();
+					return;
+				}
+				if (finalStr == null || (answer.getVisible() == true && answerStr == null))
+				{
+					messageBox.setMessage("Please enter Q6 and/or task answer.");
+					messageBox.open();
+					return;
+				}
+				boolean succ = false;
+				if (answerStr == null || answerStr.isEmpty())
+				{
+					succ = GraphBuilder.getInstance().updateSessionQuestion(finalStr);
+				}
+				else
+				{
+					succ = GraphBuilder.getInstance().updateSessionQuestion(answerStr, finalStr);
+				}
+				if (succ == false)
+				{
+					messageBox.setMessage("Failed to submit W6 and/or task answer.");
+					messageBox.open();
+					return;
+				}
+				subqs56.setEnabled(false);
+				messageBox.setMessage("Q6 and/or task answer have been submitted.");
+				messageBox.open();
 			}
 		});
 
@@ -758,7 +797,7 @@ public class Xog_win_itm_ {
         buttonGiveUpData.left = new FormAttachment(buttonEnd);
         buttonGiveUp.setLayoutData(buttonGiveUpData);
 
-        choiceshell.setSize(550, 880);
+        choiceshell.setSize(1000, 880);
         choiceshell.layout();
         choiceshell.redraw();
 	}

@@ -571,6 +571,32 @@ public class GraphBuilder
         }
     }
 
+    public boolean updateSessionQuestion(String answer, String multifacet)
+    {
+        try
+        {
+            int affected = DBAccess.Instance().updateSessionQuestion(sessionId,answer,multifacet);
+            return affected == 1;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateSessionQuestion(String multifacet)
+    {
+        try
+        {
+            int affected = DBAccess.Instance().updateSessionQuestion(sessionId, null, multifacet);
+            return affected == 1;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public void saveSentences(int userId, String entityName, String flag, String deletedSentence)
     {
         try
