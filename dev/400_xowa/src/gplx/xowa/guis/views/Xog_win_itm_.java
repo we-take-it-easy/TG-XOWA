@@ -54,7 +54,7 @@ public class Xog_win_itm_ {
 	public static void PopupLoginForm() {
 		Shell shell = Display.getDefault().getActiveShell();
 		InputDialog input = new InputDialog(shell,
-		"User Registration", "Please input your name here:",
+		"User Login/Registration", "Please input your name here:",
 		"",null);
 		if(input.open()== Window.OK)
 		{
@@ -68,7 +68,7 @@ public class Xog_win_itm_ {
 				{
 					userId = DBAccess.Instance().register(userName);
 					MessageBox messageBox = new MessageBox(new Shell(), SWT.ABORT);
-					messageBox.setText("Login");
+					messageBox.setText("User Login/Registration");
 					messageBox.setMessage("Create new user: " + userName + ", please remember it.\nClick OK to continue.");
 					messageBox.open();
 				}
@@ -384,7 +384,7 @@ public class Xog_win_itm_ {
 								Action saveDeletedSentence = new SaveSentAction(userId, textEntity.getText(), flagSentence.getText(), deletedSentence.getText());
 								saveDeletedSentence.perform();
 								MessageBox messageBox = new MessageBox(choiceshell, SWT.ABORT);
-								messageBox.setText("Task Generation");
+								messageBox.setText("Module Controller");
 								messageBox.setMessage("Task generation finished.\nClick OK to reset.");
 								messageBox.open();
 								buttonSubmit2.setEnabled(false);
@@ -458,6 +458,7 @@ public class Xog_win_itm_ {
 		buttonStart.setData("Begin", null);
 		buttonStart.setBackground(choiceshell.getBackground());
 		buttonStart.setText("Begin");
+		buttonStart.setEnabled(true);
 
 		Button buttonEnd = new Button(choiceshell, SWT.MULTI | SWT.WRAP | SWT.TOGGLE);
 		//buttonEnd.setBounds(100, 5, 80, 30);
@@ -648,8 +649,8 @@ public class Xog_win_itm_ {
 				GraphBuilder.getInstance().saveSessionQuestions(plan, specific, q3);
 				subqs123.setEnabled(false);
 				MessageBox messageBox = new MessageBox(choiceshell, SWT.ABORT);
-				messageBox.setText("Task Controller");
-				messageBox.setMessage("Q1, Q2, Q3 have been submitted.");
+				messageBox.setText("Module Controller");
+				messageBox.setMessage("Q1, Q2, Q3 have been submitted.\nClick \"Finish\" or \"Give Up\" in the controller to end this task.");
 				messageBox.open();
 			}
 		});
@@ -661,7 +662,7 @@ public class Xog_win_itm_ {
 			{
 				// update the database.
 				MessageBox messageBox = new MessageBox(choiceshell, SWT.ABORT);
-				messageBox.setText("Task Controller");
+				messageBox.setText("Module Controller");
 				String answerStr = answer.getText();
 				String finalStr = finalQs.getText();
 				if (subqs123.getEnabled() == true)
@@ -687,13 +688,15 @@ public class Xog_win_itm_ {
 				}
 				if (succ == false)
 				{
-					messageBox.setMessage("Failed to submit W6 and/or task answer.");
+					messageBox.setMessage("Failed to submit Q6 and/or task answer.");
 					messageBox.open();
 					return;
 				}
 				subqs56.setEnabled(false);
-				messageBox.setMessage("Q6 and/or task answer have been submitted.");
+				messageBox.setMessage("Q6 and/or task answer have been submitted.\nTask finished.\nClick OK to reset.");
 				messageBox.open();
+				choiceshell.close();
+				OpenChoiceshell();
 			}
 		});
 
@@ -746,7 +749,7 @@ public class Xog_win_itm_ {
 			//System.out.println("finish clicked...");
 			Action endAction = new EndSessionAction();
 			endAction.perform();
-			buttonStart.setEnabled(true);
+			buttonStart.setEnabled(false);
 			buttonEnd.setEnabled(false);
 			buttonGiveUp.setEnabled(false);
 			//buttonDrawGraph.setEnabled(true);
@@ -762,11 +765,14 @@ public class Xog_win_itm_ {
 			//System.out.println("give up clicked...");
 			Action giveupAction = new GiveupSessionAction();
 			giveupAction.perform();
-			buttonStart.setEnabled(true);
+			buttonStart.setEnabled(false);
 			buttonEnd.setEnabled(false);
 			buttonGiveUp.setEnabled(false);
 			//buttonDrawGraph.setEnabled(true);
 
+			answerTxt.setVisible(false);
+			answer.setVisible(false);
+			answer.setText("");
 			finalQsTxt.setVisible(true);
 			finalQs.setVisible(true);
 			subqs56.setVisible(true);
