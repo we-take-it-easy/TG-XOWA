@@ -210,6 +210,20 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				changedNo.setSelection(false);
 
 				Button submit = new Button(messageShell, SWT.ABORT);
+				submit.setText("Submit");
+				FormData subData = new FormData();
+				subData.top = new FormAttachment(groupQ6);
+				subData.left = new FormAttachment(70);
+				submit.setLayoutData(subData);
+
+				Label message = new Label(messageShell, SWT.WRAP);
+				FormData messageData = new FormData();
+				messageData.top = new FormAttachment(submit);
+				messageData.left = new FormAttachment(0);
+				messageData.right = new FormAttachment(100);
+				message.setLayoutData(messageData);
+				message.setForeground(message.getDisplay().getSystemColor(SWT.COLOR_RED));
+
 				submit.addSelectionListener(new SelectionAdapter()
 				{
 					@Override
@@ -232,10 +246,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 						}
 						else
 						{
-							MessageBox messageBox = new MessageBox(messageShell, SWT.ABORT|SWT.ON_TOP);
-							messageBox.setText("Error");
-							messageBox.setMessage("No radio is selected.");
-							messageBox.open();
+							message.setText("Error: No radio is selected.");
 							return;
 						}
 						String text = uncertainInput.getText();
@@ -248,9 +259,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 						else
 						{
 							MessageBox messageBox = new MessageBox(messageShell, SWT.ABORT|SWT.ON_TOP);
-							messageBox.setText("Error");
-							messageBox.setMessage("Please input an integer (0-100) in the text box.");
-							messageBox.open();
+							message.setText("Error: Please input an integer (0-100) in the text box.");
 							return;
 						}
 						curQus = q4Input.getText();
@@ -267,13 +276,9 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 
 					}
 				});
-				submit.setText("Submit");
-				FormData subData = new FormData();
-				subData.top = new FormAttachment(groupQ6);
-				subData.left = new FormAttachment(70);
-				submit.setLayoutData(subData);
+
 				messageShell.setLocation(0,0);
-				messageShell.setSize(660, 380);
+				messageShell.setSize(660, 420);
 				messageShell.open();
 				if (UnsubmittedShellNum == 0)
 				{
@@ -282,10 +287,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				else
 				{
 					UnsubmittedShellNum ++;
-					MessageBox messageBox = new MessageBox(messageShell, SWT.ABORT|SWT.ON_TOP);
-					messageBox.setText("Error");
-					messageBox.setMessage(UnsubmittedShellNum + " forms of (Q4,Q5,Q6) have not been submitted!\nPlease finish and submit these forms before opening new pages.");
-					messageBox.open();
+					message.setText("Error: " + UnsubmittedShellNum + " forms of (Q4,Q5,Q6) not been submitted. Submit before continue!");
 				}
 			}
 			else
