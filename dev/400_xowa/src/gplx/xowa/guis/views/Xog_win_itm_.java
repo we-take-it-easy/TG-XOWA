@@ -650,7 +650,7 @@ public class Xog_win_itm_ {
 				subqs123.setEnabled(false);
 				MessageBox messageBox = new MessageBox(choiceshell, SWT.ABORT);
 				messageBox.setText("Module Controller");
-				messageBox.setMessage("Q1, Q2, Q3 have been submitted.\nClick \"Finish\" or \"Give Up\" in the controller to end this task.");
+				messageBox.setMessage("Q1, Q2, Q3 have been submitted.\nClick \"Finish\" or \"Give Up\" in the controller to continue.");
 				messageBox.open();
 			}
 		});

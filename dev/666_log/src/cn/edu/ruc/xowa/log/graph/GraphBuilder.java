@@ -103,11 +103,15 @@ public class GraphBuilder
     {
         //this.pageNode = null;
         this.sessionId = null;
-        this.pointerNode = null;
-        this.rootNode = null;
-        this.allNodes = null;
+        this.pointerNode = new GraphNode();
+        this.rootNode = new GraphNode();
+        if (this.allNodes != null)
+        {
+            this.allNodes.clear();
+        }
+        this.allNodes = new HashMap<>();
         this.searchOrNot = false;
-        System.out.println("give up session, clear...");
+        System.out.println("clear...");
     }
 
     public void goTo (Page page)
@@ -421,10 +425,16 @@ public class GraphBuilder
         for (Integer itm: listEdgeSingleNode)
         {
             double f = ((double)itm/numEdges) * ((double)itm/numEdges);
-            sum += f;
+            if (f != Double.NaN)
+            {
+                sum += f;
+            }
         }
-         numNodes = allNodes.keySet().size();
-        gini = sum * numNodes;
+        numNodes = allNodes.keySet().size();
+        if (numEdges != 0)
+        {
+            gini = sum * numNodes;
+        }
         return gini;
     }
 
