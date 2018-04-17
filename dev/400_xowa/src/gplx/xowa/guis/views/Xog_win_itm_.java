@@ -502,11 +502,11 @@ public class Xog_win_itm_ {
 		groupQ1.setVisible(false);
 
 		Button undirected = new Button(groupQ1, SWT.RADIO);
-		undirected.setText("undirected(I want to learn something specific about my topic)");
+		undirected.setText("directed(I want to learn something specific about my topic)");
 		undirected.setSelection(false);
 
 		Button directed = new Button(groupQ1, SWT.RADIO);
-		directed.setText("directed(tell me about my topic)");
+		directed.setText("undirected(tell me about my topic)");
 		directed.setSelection(false);
 
 		Button unknown = new Button(groupQ1, SWT.RADIO);
