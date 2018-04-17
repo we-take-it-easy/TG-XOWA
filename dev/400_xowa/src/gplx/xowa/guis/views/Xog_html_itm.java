@@ -89,6 +89,9 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 		String ttl = String_.new_u8(page.Ttl().Full_db());
 		return Xoh_href_gui_utl.Html_extract_text(site, ttl, v);
 	}
+
+	public static int UnsubmittedShellNum = 0;
+
 	public void Show(Xoae_page page) {
 		byte view_mode = owner_tab.View_mode();			
 		byte[] html_src = page.Wikie().Html_mgr().Page_wtr_mgr().Gen(page, this, view_mode);	// NOTE: must use wiki of page, not of owner tab; DATE:2015-03-05
@@ -260,6 +263,8 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 						}
 						GraphBuilder.getInstance().saveStepQuestion(curQus, description, certainty, changed);
 						messageShell.close();
+						UnsubmittedShellNum--;
+
 					}
 				});
 				submit.setText("Submit");
@@ -270,6 +275,18 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				messageShell.setLocation(0,0);
 				messageShell.setSize(660, 380);
 				messageShell.open();
+				if (UnsubmittedShellNum == 0)
+				{
+					UnsubmittedShellNum ++;
+				}
+				else
+				{
+					UnsubmittedShellNum ++;
+					MessageBox messageBox = new MessageBox(messageShell, SWT.ABORT|SWT.ON_TOP);
+					messageBox.setText("Error");
+					messageBox.setMessage(UnsubmittedShellNum + " forms of (Q4,Q5,Q6) have not been submitted!\nPlease finish and submit these forms before opening new pages.");
+					messageBox.open();
+				}
 			}
 			else
 			{

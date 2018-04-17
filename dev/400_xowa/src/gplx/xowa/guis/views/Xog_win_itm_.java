@@ -502,11 +502,11 @@ public class Xog_win_itm_ {
 		groupQ1.setVisible(false);
 
 		Button undirected = new Button(groupQ1, SWT.RADIO);
-		undirected.setText("undirected(I want to learn something specific about my topic)");
+		undirected.setText("directed(I want to learn something specific about my topic)");
 		undirected.setSelection(false);
 
 		Button directed = new Button(groupQ1, SWT.RADIO);
-		directed.setText("directed(tell me about my topic)");
+		directed.setText("undirected(tell me about my topic)");
 		directed.setSelection(false);
 
 		Button unknown = new Button(groupQ1, SWT.RADIO);
@@ -593,7 +593,7 @@ public class Xog_win_itm_ {
 		answer.setVisible(false);
 
 		Text finalQsTxt = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
-		finalQsTxt.setText("Q6: Do you think a multi-facet filter would help you during the exploring process?");
+		finalQsTxt.setText("Q7: Do you think a multi-facet filter would help you during the exploring process?");
 		FormData txtData = new FormData();
 		txtData.left = new FormAttachment(0);
 		txtData.right = new FormAttachment(90);
@@ -610,7 +610,7 @@ public class Xog_win_itm_ {
 		finalQs.setVisible(false);
 
 		Button subqs56 = new Button(choiceshell, SWT.MULTI | SWT.WRAP | SWT.TOGGLE);
-		subqs56.setText("submit Q6/Answer");
+		subqs56.setText("submit Q7/Answer");
 		FormData subData2 = new FormData();
 		subData2.top = new FormAttachment(finalQs);
 		subData2.right = new FormAttachment(90);
@@ -650,7 +650,7 @@ public class Xog_win_itm_ {
 				subqs123.setEnabled(false);
 				MessageBox messageBox = new MessageBox(choiceshell, SWT.ABORT);
 				messageBox.setText("Module Controller");
-				messageBox.setMessage("Q1, Q2, Q3 have been submitted.\nClick \"Finish\" or \"Give Up\" in the controller to continue.");
+				messageBox.setMessage("Q1, Q2, Q3 have been submitted, you can continue your search now. \n Please click \"Finish\" when you finish handling the task, or \"Give Up\" to stop it anyway.");
 				messageBox.open();
 			}
 		});
