@@ -37,7 +37,8 @@ public class GraphBuilder
     private GraphNode pointerNode;
     private GraphNode rootNode;
     private Map<String, GraphNode> allNodes;
-    private Boolean searchOrNot;
+    private boolean searchOrNot;
+    private boolean started = false;
 
     //DB
     private DBAccess dbAccess;
@@ -64,13 +65,14 @@ public class GraphBuilder
 
     public boolean isStarted ()
     {
-        return this.sessionId != null && !this.sessionId.isEmpty();
+        return this.started;
     }
 
     public void start (String sessionId)
     {
         this.clear();
         this.sessionId = sessionId;
+        this.started = true;
         System.out.println("start session: " + sessionId);
     }
 
@@ -93,16 +95,13 @@ public class GraphBuilder
             e.printStackTrace();
         }
         //this.pageNode = null;
-        this.pointerNode = null;
-        this.rootNode = null;
-        this.allNodes = null;
+        this.clear();
         System.out.println("end session...");
     }
 
     public void clear ()
     {
         //this.pageNode = null;
-        this.sessionId = null;
         this.pointerNode = new GraphNode();
         this.rootNode = new GraphNode();
         if (this.allNodes != null)
@@ -111,6 +110,7 @@ public class GraphBuilder
         }
         this.allNodes = new HashMap<>();
         this.searchOrNot = false;
+        this.started = false;
         System.out.println("clear...");
     }
 
