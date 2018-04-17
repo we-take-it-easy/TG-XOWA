@@ -69,6 +69,7 @@ public class GraphBuilder
 
     public void start (String sessionId)
     {
+        this.clear();
         this.sessionId = sessionId;
         System.out.println("start session: " + sessionId);
     }
@@ -101,9 +102,11 @@ public class GraphBuilder
     public void clear ()
     {
         //this.pageNode = null;
+        this.sessionId = null;
         this.pointerNode = null;
         this.rootNode = null;
         this.allNodes = null;
+        this.searchOrNot = false;
         System.out.println("give up session, clear...");
     }
 
