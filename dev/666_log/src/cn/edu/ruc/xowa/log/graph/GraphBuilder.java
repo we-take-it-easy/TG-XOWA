@@ -70,7 +70,7 @@ public class GraphBuilder
 
     public void start (String sessionId)
     {
-        this.clear();
+        this.internalClear();
         this.sessionId = sessionId;
         this.started = true;
         System.out.println("start session: " + sessionId);
@@ -95,13 +95,12 @@ public class GraphBuilder
             e.printStackTrace();
         }
         //this.pageNode = null;
-        this.clear();
+        this.internalClear();
         System.out.println("end session...");
     }
 
-    public void clear ()
+    private void internalClear ()
     {
-        //this.pageNode = null;
         this.pointerNode = new GraphNode();
         this.rootNode = new GraphNode();
         if (this.allNodes != null)
@@ -111,7 +110,13 @@ public class GraphBuilder
         this.allNodes = new HashMap<>();
         this.searchOrNot = false;
         this.started = false;
-        System.out.println("clear...");
+    }
+
+    public void clear ()
+    {
+        //this.pageNode = null;
+        this.internalClear();
+        System.out.println("give up, clear...");
     }
 
     public void goTo (Page page)

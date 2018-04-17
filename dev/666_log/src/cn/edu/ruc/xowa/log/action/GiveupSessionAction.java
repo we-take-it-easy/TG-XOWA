@@ -13,7 +13,6 @@ public class GiveupSessionAction implements Action
     public void perform()
     {
         GraphBuilder.getInstance().clear();
-        System.out.println("give up...");
     }
 
     @Override
