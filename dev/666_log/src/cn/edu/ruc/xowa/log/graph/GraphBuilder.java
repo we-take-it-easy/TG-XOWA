@@ -37,8 +37,12 @@ public class GraphBuilder
     private GraphNode pointerNode;
     private GraphNode rootNode;
     private Map<String, GraphNode> allNodes;
+    // searchOrNot only indicates whether or not a search list page is shown.
+    // if a user click a suggested entity from the dropdown search suggestions, searchOrNot will not be set to true.
     private boolean searchOrNot;
     private boolean started = false;
+    private boolean backwardOrForward = false;
+    private String exploreAction = "";
 
     //DB
     private DBAccess dbAccess;
@@ -121,6 +125,11 @@ public class GraphBuilder
 
     public void goTo (Page page)
     {
+        if (this.backwardOrForward == false && this.searchOrNot == false)
+        {
+            this.exploreAction = "click";
+        }
+        this.backwardOrForward = false;
         //System.out.println("page: "+page.getUrl().getKeyWord()+" "+page.getUrl());
         try
         {
@@ -323,6 +332,7 @@ public class GraphBuilder
         //Set<Url> links = page.getLinks();
         //GraphNode tmPointNode = pointerNode;
         searchOrNot = true;
+        this.exploreAction = "search";
         System.out.println(searchOrNot);
         System.out.println("111111111111");
     }
@@ -377,6 +387,8 @@ public class GraphBuilder
 
     public void goBackward (Page from, Page to)
     {
+        this.backwardOrForward = true;
+        this.exploreAction = "backward";
         System.out.println("go backward:");
         System.out.println("from page " + from.getUrl());
         System.out.println("to page " + to.getUrl());
@@ -384,6 +396,8 @@ public class GraphBuilder
 
     public void goForward (Page from, Page to)
     {
+        this.backwardOrForward = true;
+        this.exploreAction = "forward";
         System.out.println("go forward:");
         System.out.println("from page " + from.getUrl());
         System.out.println("to page " + to.getUrl());
@@ -553,13 +567,20 @@ public class GraphBuilder
         }
     }
 
-    public void saveStepQuestion(String description, String curQus, int certainty, String changed)
+    public void saveStepQuestion(String description, String curQus, int certainty, String changed, boolean searched)
     {
         if (this.sessionId != null && !this.sessionId.isEmpty())
         {
             try
             {
-                this.dbAccess.insertStepQuestion(sessionId, description, curQus, certainty, changed);
+                if (searched)
+                {
+                    this.dbAccess.insertStepQuestion(sessionId, description, curQus, certainty, changed, "search");
+                }
+                else
+                {
+                    this.dbAccess.insertStepQuestion(sessionId, description, curQus, certainty, changed, exploreAction);
+                }
             } catch (SQLException e)
             {
                 e.printStackTrace();
