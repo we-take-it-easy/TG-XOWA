@@ -125,11 +125,35 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				layout.marginHeight = layout.marginWidth = 9;
 				messageShell.setLayout(layout);
 
+				Text searched = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
+				searched.setText("Q0: Did you start this step by searching a keyword?");
+				FormData searchedData = new FormData();
+				searchedData.top = new FormAttachment(0);
+				searchedData.left = new FormAttachment(0);
+				searchedData.right = new FormAttachment(100);
+				searched.setLayoutData(searchedData);
+
+				Group groupSearched = new Group(messageShell, SWT.NONE);
+				FormData groupSearchedData = new FormData();
+				groupSearchedData.top= new FormAttachment(searched);
+				groupSearchedData.left=new FormAttachment(0);
+				groupSearchedData.right=new FormAttachment(60);
+				groupSearched.setLayoutData(groupSearchedData);
+				groupSearched.setLayout(new FillLayout());
+
+				Button searchedYes = new Button(groupSearched, SWT.RADIO);
+				searchedYes.setText("yes");
+				searchedYes.setSelection(false);
+
+				Button searchedNo = new Button(groupSearched, SWT.RADIO);
+				searchedNo.setText("no");
+				searchedNo.setSelection(false);
+
 
 				Text stepInfoNeed = new Text(messageShell, SWT.WRAP | SWT.READ_ONLY);
 				stepInfoNeed.setText("Q4: You come to the current step(issued a new query/chained a link on the previous page) because ...");
 				FormData stepData = new FormData();
-				stepData.top = new FormAttachment(0);
+				stepData.top = new FormAttachment(groupSearched);
 				stepData.left = new FormAttachment(0);
 				stepData.right = new FormAttachment(100);
 				stepInfoNeed.setLayoutData(stepData);
@@ -159,7 +183,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				FormData q4Data1 = new FormData();
 				q4Data1.top = new FormAttachment(groupQ4);
 				q4Data1.left = new FormAttachment(0);
-				q4Data1.right = new FormAttachment(90);
+				q4Data1.right = new FormAttachment(100);
 				q4.setLayoutData(q4Data1);
 
 				Text q4Input = new Text(messageShell, SWT.WRAP|SWT.BORDER);
@@ -167,30 +191,30 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				q4IData1.top = new FormAttachment(q4);
 				q4IData1.left = new FormAttachment(0);
 				q4IData1.height = 20;
-				q4IData1.right = new FormAttachment(90);
+				q4IData1.right = new FormAttachment(100);
 				q4Input.setLayoutData(q4IData1);
 
 				//Q5
-				Text uncertainty = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
-				uncertainty.setText("Q5: Your confidence:__%");
+				Text certainty = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
+				certainty.setText("Q5: Your confidence (%):");
 				FormData txtData1 = new FormData();
 				txtData1.top = new FormAttachment(q4Input);
 				txtData1.left = new FormAttachment(0);
-				txtData1.right = new FormAttachment(30);
-				uncertainty.setLayoutData(txtData1);
-				Text uncertainInput = new Text(messageShell, SWT.BORDER);
+				txtData1.right = new FormAttachment(36);
+				certainty.setLayoutData(txtData1);
+				Text certainInput = new Text(messageShell, SWT.BORDER);
 				FormData txtData2 = new FormData();
 				txtData2.top = new FormAttachment(q4Input);
-				txtData2.left = new FormAttachment(uncertainty);
-				uncertainInput.setLayoutData(txtData2);
+				txtData2.left = new FormAttachment(certainty);
+				certainInput.setLayoutData(txtData2);
 
 				//Q6
 				Text changed = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
 				changed.setText("Q6: Did your information need change in this step?");
 				FormData txtData = new FormData();
-				txtData.top = new FormAttachment(uncertainInput);
+				txtData.top = new FormAttachment(certainInput);
 				txtData.left = new FormAttachment(0);
-				txtData.right = new FormAttachment(60);
+				txtData.right = new FormAttachment(100);
 				changed.setLayoutData(txtData);
 
 				Group groupQ6 = new Group(messageShell, SWT.NONE);
@@ -232,6 +256,22 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 						String description = null;
 						String curQus = null;
 						String changed = null;
+						boolean searched = false;
+
+						if (searchedYes.getSelection())
+						{
+							searched = true;
+						}
+						else if (searchedNo.getSelection())
+						{
+							searched = false;
+						}
+						else
+						{
+							message.setText("Error: no option is selected for Q0.");
+							return;
+						}
+
 						if (radio1.getSelection())
 						{
 							description = radio1.getText();
@@ -246,10 +286,18 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 						}
 						else
 						{
-							message.setText("Error: No radio is selected.");
+							message.setText("Error: no option is selected for Q4.");
 							return;
 						}
-						String text = uncertainInput.getText();
+
+						curQus = q4Input.getText();
+						if (curQus == null || curQus.isEmpty())
+						{
+							message.setText("Error: please input your question in the text box of Q4.");
+							return;
+						}
+
+						String text = certainInput.getText();
 						Pattern pattern = Pattern.compile("[0-9]*");
 						int certainty = -1;
 						if (text != null && !text.isEmpty() && pattern.matcher(text).matches())
@@ -258,11 +306,10 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 						}
 						else
 						{
-							MessageBox messageBox = new MessageBox(messageShell, SWT.ABORT|SWT.ON_TOP);
-							message.setText("Error: Please input an integer (0-100) in the text box.");
+							message.setText("Error: please input an integer (0-100) in the text box of Q5.");
 							return;
 						}
-						curQus = q4Input.getText();
+
 						if (changedYes.getSelection())
 						{
 							changed = "yes";
@@ -270,16 +317,18 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 						{
 							changed = "no";
 						}
-						GraphBuilder.getInstance().saveStepQuestion(curQus, description, certainty, changed);
+						else
+						{
+							message.setText("Error: no option is selected for Q6.");
+							return;
+						}
+
+						GraphBuilder.getInstance().saveStepQuestion(curQus, description, certainty, changed, searched);
 						messageShell.close();
 						UnsubmittedShellNum--;
-
 					}
 				});
 
-				messageShell.setLocation(0,0);
-				messageShell.setSize(660, 420);
-				messageShell.open();
 				if (UnsubmittedShellNum == 0)
 				{
 					UnsubmittedShellNum ++;
@@ -289,6 +338,10 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 					UnsubmittedShellNum ++;
 					message.setText("Error: " + UnsubmittedShellNum + " forms of (Q4,Q5,Q6) not been submitted. Submit before continue!");
 				}
+
+				messageShell.setLocation(0,0);
+				messageShell.setSize(660, 460);
+				messageShell.open();
 			}
 			else
 			{

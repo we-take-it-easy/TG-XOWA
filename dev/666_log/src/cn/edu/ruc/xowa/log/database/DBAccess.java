@@ -115,14 +115,15 @@ public class DBAccess
         pstmt.close();
     }
 
-    public void insertStepQuestion(String sessionId, String curQus, String description, int certainty, String changed) throws SQLException
+    public void insertStepQuestion(String sessionId, String curQus, String description, int certainty, String changed, String actionType) throws SQLException
     {
-        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.step_question(session_id, curQus, description, certainty, changed)VALUES (?,?,?,?,?)");
+        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.step_question(session_id, curQus, description, certainty, changed, action_type)VALUES (?,?,?,?,?,?)");
         pstmt.setString(1, sessionId);
         pstmt.setString(2, curQus);
         pstmt.setString(3, description);
         pstmt.setInt(4, certainty);
         pstmt.setString(5, changed);
+        pstmt.setString(6, actionType);
         pstmt.executeUpdate();
         pstmt.close();
     }
