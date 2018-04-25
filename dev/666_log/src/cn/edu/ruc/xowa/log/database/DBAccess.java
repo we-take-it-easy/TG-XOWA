@@ -129,7 +129,7 @@ public class DBAccess
 
     public void insertSessionQuestion(String sessionId, String plan, String specific, String question) throws SQLException
     {
-        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.session_question(session_id, whether_directed, specific_qus, info_need)VALUES (?,?,?,?)");
+        pstmt = getConnection().prepareStatement("INSERT INTO xowa_log.session_question(session_id, whether_directed, specific_qus, info_need, begin_at)VALUES (?,?,?,?,CURRENT_TIMESTAMP )");
         pstmt.setString(1, sessionId);
         pstmt.setString(2, plan);
         pstmt.setString(3, specific);
@@ -142,13 +142,13 @@ public class DBAccess
     {
         if (answer == null)
         {
-            pstmt = getConnection().prepareStatement("UPDATE xowa_log.session_question SET multifacet=? WHERE session_id=?");
+            pstmt = getConnection().prepareStatement("UPDATE xowa_log.session_question SET multifacet=?, end_at=CURRENT_TIMESTAMP WHERE session_id=?");
             pstmt.setString(2, sessionId);
             pstmt.setString(1, multifacet);
         }
         else
         {
-            pstmt = getConnection().prepareStatement("UPDATE xowa_log.session_question SET multifacet=?, answer=? WHERE session_id=?");
+            pstmt = getConnection().prepareStatement("UPDATE xowa_log.session_question SET multifacet=?, answer=?, end_at=CURRENT_TIMESTAMP WHERE session_id=?");
             pstmt.setString(3, sessionId);
             pstmt.setString(1, multifacet);
             pstmt.setString(2, answer);
