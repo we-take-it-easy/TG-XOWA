@@ -50,6 +50,7 @@ public class Xog_win_itm_ {
 	private static UUID uuid;
 	private static String UserName;
 	private static int userId;
+	private FontAdp new_font;
 
 	public static void PopupLoginForm() {
 		Shell shell = Display.getDefault().getActiveShell();
@@ -482,11 +483,28 @@ public class Xog_win_itm_ {
 		buttonDrawGraph.setEnabled(false);*/
 
 		////问题1, 用户阅读完题目后，对解决该问题有没有一个明确的方向感：directed/undirected/others，选择题
+		Text qus0 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
+		qus0.setText("Q0: How difficult do you think it will be to solve this task using a searching engine? ");
+		//text3.setText("Step 3. Start exploration.......\n"+"User Name: "+ UserName);
+		FormData q0TxtData = new FormData();
+		q0TxtData.top = new FormAttachment(buttonStart);
+		q0TxtData.left = new FormAttachment(0);
+		q0TxtData.right = new FormAttachment(90);
+		qus0.setLayoutData(q0TxtData);
+		qus0.setVisible(false);
+		Text qus0input = new Text(choiceshell, SWT.BORDER | SWT.MULTI);
+		FormData txtData0 = new FormData();
+		txtData0.top = new FormAttachment(qus0);
+		txtData0.left = new FormAttachment(0);
+		txtData0.right = new FormAttachment(25);
+		qus0input.setLayoutData(txtData0);
+		qus0input.setVisible(false);
+
 		Text qus1 = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
 		qus1.setText("Q1: Please choose a case to describe your plan(goal) of solving it? ");
 		//text3.setText("Step 3. Start exploration.......\n"+"User Name: "+ UserName);
 		FormData q1TxtData = new FormData();
-		q1TxtData.top = new FormAttachment(buttonStart);
+		q1TxtData.top = new FormAttachment(qus0input);
 		q1TxtData.left = new FormAttachment(0);
 		q1TxtData.right = new FormAttachment(90);
 		qus1.setLayoutData(q1TxtData);
@@ -567,7 +585,7 @@ public class Xog_win_itm_ {
 		qus3input.setVisible(false);
 
 		Button subqs123 = new Button(choiceshell, SWT.MULTI | SWT.WRAP | SWT.TOGGLE);
-		subqs123.setText("submit Q1,Q2,Q3");
+		subqs123.setText("submit Q0,Q1,Q2,Q3");
 		FormData subData = new FormData();
 		subData.top = new FormAttachment(qus3input);
 		subData.right = new FormAttachment(90);
@@ -593,7 +611,7 @@ public class Xog_win_itm_ {
 		answer.setVisible(false);
 
 		Text finalQsTxt = new Text(choiceshell, SWT.WRAP | SWT.READ_ONLY);
-		finalQsTxt.setText("Q7: Do you think a multi-facet filter would help you during the exploring process?");
+		finalQsTxt.setText("Q8: How difficult do you think it was to solve the task using this search engine?");
 		FormData txtData = new FormData();
 		txtData.left = new FormAttachment(0);
 		txtData.right = new FormAttachment(90);
@@ -610,7 +628,7 @@ public class Xog_win_itm_ {
 		finalQs.setVisible(false);
 
 		Button subqs56 = new Button(choiceshell, SWT.MULTI | SWT.WRAP | SWT.TOGGLE);
-		subqs56.setText("submit Q7/Answer");
+		subqs56.setText("submit Q8/Answer");
 		FormData subData2 = new FormData();
 		subData2.top = new FormAttachment(finalQs);
 		subData2.right = new FormAttachment(90);
@@ -741,6 +759,8 @@ public class Xog_win_itm_ {
 			buttonEnd.setEnabled(true);
 			buttonGiveUp.setEnabled(true);
 
+			qus0.setVisible(true);
+			qus0input.setVisible(true);
 			qus1.setVisible(true);
 			groupQ1.setVisible(true);
 		});
