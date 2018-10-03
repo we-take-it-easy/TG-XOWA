@@ -33,7 +33,7 @@ XOWA is an offline Wikipedia application that lets you run Wikipedia on your com
 * Track users' implicit feedbacks through a questionnaire plugin.
 
 
-## LicenseX
+## License
 XOWA is licensed under the terms of the General Public License (GPL) Version 3,
 or alternatively under the terms of the Apache License Version 2.0.
 
