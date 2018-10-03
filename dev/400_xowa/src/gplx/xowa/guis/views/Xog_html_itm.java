@@ -126,7 +126,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 				messageShell.setLayout(layout);
 
 				Text searched = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
-				searched.setText("Q0: Did you start this step by searching a keyword?");
+				searched.setText("Q4: Did you start this step by searching a keyword?");
 				FormData searchedData = new FormData();
 				searchedData.top = new FormAttachment(0);
 				searchedData.left = new FormAttachment(0);
@@ -151,7 +151,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 
 
 				Text stepInfoNeed = new Text(messageShell, SWT.WRAP | SWT.READ_ONLY);
-				stepInfoNeed.setText("Q4: You come to the current step(issued a new query/chained a link on the previous page) because ...");
+				stepInfoNeed.setText("Q5: You come to the current step(issued a new query/chained a link on the previous page) because ...");
 				FormData stepData = new FormData();
 				stepData.top = new FormAttachment(groupSearched);
 				stepData.left = new FormAttachment(0);
@@ -196,7 +196,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 
 				//Q5
 				Text certainty = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
-				certainty.setText("Q5: Your confidence (%):");
+				certainty.setText("Q6: Your confidence (%):");
 				FormData txtData1 = new FormData();
 				txtData1.top = new FormAttachment(q4Input);
 				txtData1.left = new FormAttachment(0);
@@ -210,7 +210,7 @@ public class Xog_html_itm implements Xog_js_wkr, Gfo_invk, Gfo_evt_itm, Xoh_page
 
 				//Q6
 				Text changed = new Text(messageShell, SWT.READ_ONLY|SWT.WRAP);
-				changed.setText("Q6: Did your information need change in this step?");
+				changed.setText("Q7: Did your information need change in this step?");
 				FormData txtData = new FormData();
 				txtData.top = new FormAttachment(certainInput);
 				txtData.left = new FormAttachment(0);
