@@ -1,5 +1,7 @@
 ## Overview
-We add tools for task generation and user behavior logging into XOWA.
+>
+> We add tools for task generation and user behavior logging into XOWA.
+>
 
 XOWA is an offline Wikipedia application that lets you run Wikipedia on your computer.
 
