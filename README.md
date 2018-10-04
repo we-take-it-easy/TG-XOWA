@@ -27,7 +27,7 @@ XOWA is an offline Wikipedia application that lets you run Wikipedia on your com
 * Preview articles by hovering over links
 * Customize any one of over 50 options
 
-## Features of our toolkits for Task Generation and User Behavior Logging
+## Features of Our Toolkits for Task Generation and User Behavior Logging
 * Offer guidance for task generation.
 * Log user behaviors including queries and visited pages, the backward/forward navigation actions, and the user's dwelling time on each page.
 * Track users' implicit feedbacks through a questionnaire plugin.
